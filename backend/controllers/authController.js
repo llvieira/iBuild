@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const User = require("../models/User");
+const User = require("../models/user");
 const authConfig = require("../config/auth");
 
 const router = express.Router();
@@ -10,7 +10,6 @@ const router = express.Router();
 
 function generateToken( params = {}){
 
-    console.log("chegou aki");
 
     return jwt.sign(params, authConfig.secret, {
         expiresIn: 86400
@@ -30,12 +29,9 @@ router.post('/register', async(req, res) => {
             return res.status(400).send({ error: "Usuário já cadastrado" });
         }
 
-        console.log(email);
-
         const user = await User.create(req.body);
 
         user.password = undefined;
-        console.log(user);
 
         return res.send({user, token: generateToken({id: user.id})});
     } catch (e) {
@@ -70,4 +66,4 @@ router.post('/authenticate', async (req, res) => {
 });
 
 
-module.exports = app => app.use('/auth', router)
+module.exports = app => app.use('/auth', router);
