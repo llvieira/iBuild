@@ -1,15 +1,13 @@
 const mongoose = require("../database/index");
+const item = require("./item");
 const bcrypt = require("bcryptjs");
-
-//TODO acrescentar mais atributos no item da loja
-var item = new mongoose.Schema({img: String, title: String, value: Number, delivery: Boolean}, {noId: true});
 
 const StoreSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
     },
-    storage:[item],
+    storage: [item],
     email: {
         type: String,
         unique: true,
@@ -36,7 +34,7 @@ const StoreSchema = new mongoose.Schema({
 });
 
 StoreSchema.pre('save', async function (next) {
-    if(this.password) {
+    if (this.password) {
         const hash = await bcrypt.hash(this.password, 10);
         this.password = hash;
         next();
