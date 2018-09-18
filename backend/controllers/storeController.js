@@ -1,28 +1,61 @@
 const express = require("express");
+const authMiddleware = require("../middlewares/auth");
 const Store = require("../models/store");
-
+const User = require("../models/user");
 const router = express.Router();
+router.use(authMiddleware);
+
+
+
+router.get('/getItensByStore/:storeId', async (req, res) => {
+
+
+    try {
+
+        const user = await User.findById(req.userId);
+        const store = await Store.findById(req.params.storeId);
+
+
+        if(!user) {
+            return res.status(400).send({error: "user not registered"});
+        }
+
+        if(!store) {
+            return res.status(400).send({error: "store not registered"});
+        }
+
+        res.send(store);
+
+    } catch (e) {
+        console.log(e);
+
+        return res.status(400).send({error: "error fetching items from a store"});
+    }
+
+
+});
 
 router.post('/', async (req, res) => {
 
-  let { email } = req.body;
+    let { email } = req.body;
 
-  try {
+    try {
 
-    if (await Store.findOne({ email })) {
-      return res.status(400).send({ error: "Loja já cadastrada" });
+        if (await Store.findOne({ email })) {
+            return res.status(400).send({ error: "Loja já cadastrada" });
+        }
+
+        let store = await Store.create(req.body);
+
+        store.password = undefined;
+
+        return res.send({ store });
+    } catch (e) {
+        return res.status(400).send({ error: 'Registration failed: ' + e });
     }
 
-    let store = await Store.create(req.body);
-
-    store.password = undefined;
-
-    return res.send({ store });
-  } catch (e) {
-    return res.status(400).send({ error: 'Registration failed: ' + e });
-  }
-
 });
+
 
 router.post('/:id/items', async (req, res) => {
 
