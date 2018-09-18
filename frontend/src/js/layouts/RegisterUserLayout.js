@@ -18,12 +18,16 @@ export default class RegisterUserLayout extends React.Component {
         }
     }
 
-    registerUser() {
+    registerUser(e) {
+        e.preventDefault();
         const path = '/auth/register';
         const method = 'POST';
         request(path, method, this.state.user, {
             "Content-Type": "application/json"
-        }).then(response => location.replace('/#/success'));
+        }).then(response => {
+            window.location.replace('/#/success')
+        });
+
         return false;
     }
 
