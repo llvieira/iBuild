@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 export default class AcceptOrRejectButtons extends React.Component {
 

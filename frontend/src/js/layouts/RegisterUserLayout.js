@@ -1,6 +1,7 @@
 import React from "react";
 import Input from "../components/Input";
 import AcceptOrRejectButtons from "../components/AcceptOrRejectButtons";
+import request from "../../config";
 
 export default class RegisterUserLayout extends React.Component {
     constructor() {
@@ -17,6 +18,15 @@ export default class RegisterUserLayout extends React.Component {
         }
     }
 
+    registerUser() {
+        const path = '/auth/register';
+        const method = 'POST';
+        request(path, method, this.state.user, {
+            "Content-Type": "application/json"
+        }).then(response => location.replace('/#/success'));
+        return false;
+    }
+
     render() {
         const inputs = [
             <Input key="1" value={this.state.user.name} changeProperty={this.changeProperty("name").bind(this)} name="Nome" type="text" placeholder="Nome" required="true"></Input>,
@@ -30,7 +40,7 @@ export default class RegisterUserLayout extends React.Component {
         return (
             <div>
                 <h4>Cadastro de Usuário</h4>
-                <form name="registerUser">
+                <form name="registerUser" onSubmit={this.registerUser.bind(this)}>
                     {inputs}
                     <AcceptOrRejectButtons></AcceptOrRejectButtons>
                 </form>
