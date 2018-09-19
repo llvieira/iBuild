@@ -12,12 +12,7 @@ authRouter.use(openMiddleware, authMiddleware);
 authRouter.get('/:storeId', async (req, res) => {
 
     try {
-        const user = await User.findById(req.userId);
         const store = await Store.findById(req.params.storeId);
-
-        if (!user) {
-            return res.status(400).send({ error: "user not registered" });
-        }
 
         if (!store) {
             return res.status(400).send({ error: "store not registered" });
@@ -69,7 +64,7 @@ openRouter.post('/', async (req, res) => {
 
         util.sendEmail(email);
 
-        return res.send({ store });
+        return res.send({ store, token: util.generateToken({ id: store.id }) });
     } catch (e) {
         return res.status(400).send({ error: 'Registration failed: ' + e });
     }
