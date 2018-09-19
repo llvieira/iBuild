@@ -1,13 +1,11 @@
 const express = require("express");
 const authMiddleware = require("../middlewares/auth");
-const openMiddleware = require("../middlewares/open");
 const Store = require("../models/store");
-const User = require("../models/user");
 const util = require("../util/util");
 const authRouter = express.Router();
 const openRouter = express.Router();
 
-authRouter.use(openMiddleware, authMiddleware);
+authRouter.use(authMiddleware);
 
 authRouter.get('/:storeId', async (req, res) => {
 
@@ -70,4 +68,4 @@ openRouter.post('/', async (req, res) => {
     }
 });
 
-module.exports = app => app.use("/stores", authRouter, openRouter);
+module.exports = app => app.use("/stores", openRouter, authRouter);
