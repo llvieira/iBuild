@@ -1,13 +1,14 @@
 const express = require("express");
 const authMiddleware = require("../middlewares/auth");
+const openMiddleware = require("../middlewares/open");
 const Store = require("../models/store");
 const User = require("../models/user");
-const router = express.Router();
-router.use(authMiddleware);
+const authRouter = express.Router();
+const openRouter = express.Router();
 
+authRouter.use(openMiddleware, authMiddleware);
 
-
-router.get('/getItensByStore/:storeId', async (req, res) => {
+authRouter.get('/:storeId', async (req, res) => {
 
 
     try {
@@ -16,12 +17,12 @@ router.get('/getItensByStore/:storeId', async (req, res) => {
         const store = await Store.findById(req.params.storeId);
 
 
-        if(!user) {
-            return res.status(400).send({error: "user not registered"});
+        if (!user) {
+            return res.status(400).send({ error: "user not registered" });
         }
 
-        if(!store) {
-            return res.status(400).send({error: "store not registered"});
+        if (!store) {
+            return res.status(400).send({ error: "store not registered" });
         }
 
         res.send(store);
@@ -29,13 +30,34 @@ router.get('/getItensByStore/:storeId', async (req, res) => {
     } catch (e) {
         console.log(e);
 
-        return res.status(400).send({error: "error fetching items from a store"});
+        return res.status(400).send({ error: "error fetching items from a store" });
     }
 
 
 });
 
-router.post('/', async (req, res) => {
+authRouter.post('/:id/items', async (req, res) => {
+
+    let item = req.body;
+
+    Store.findById(req.params.id, function (err, store) {
+        if (err) return res.status(400).send({ error: "store not registered" });
+
+        if (!store.storage) {
+            store.storage = []
+        }
+
+        store.storage.push(item);
+
+        store.save(function (err, updatedStore) {
+            if (err) return res.status(400).send({ error: 'Registration failed: ' + err });
+
+            return res.send(updatedStore);
+        });
+    });
+});
+
+openRouter.post('/', async (req, res) => {
 
     let { email } = req.body;
 
@@ -56,26 +78,4 @@ router.post('/', async (req, res) => {
 
 });
 
-
-router.post('/:id/items', async (req, res) => {
-
-  let item = req.body;
-
-  Store.findById(req.params.id, function (err, store) {
-    if (err) return res.status(400).send({ error: "store not registered" });
-
-    if (!store.storage) {
-      store.storage = []
-    }
-
-    store.storage.push(item);
-
-    store.save(function (err, updatedStore) {
-      if (err) return res.status(400).send({ error: 'Registration failed: ' + err });
-
-      return res.send(updatedStore);
-    });
-  });
-});
-
-module.exports = app => app.use("/stores", router);
+module.exports = app => app.use("/stores", authRouter, openRouter);
