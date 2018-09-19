@@ -3,6 +3,7 @@ const authMiddleware = require("../middlewares/auth");
 const openMiddleware = require("../middlewares/open");
 const Store = require("../models/store");
 const User = require("../models/user");
+const util = require("../util/util");
 const authRouter = express.Router();
 const openRouter = express.Router();
 
@@ -10,12 +11,9 @@ authRouter.use(openMiddleware, authMiddleware);
 
 authRouter.get('/:storeId', async (req, res) => {
 
-
     try {
-
         const user = await User.findById(req.userId);
         const store = await Store.findById(req.params.storeId);
-
 
         if (!user) {
             return res.status(400).send({ error: "user not registered" });
@@ -32,8 +30,6 @@ authRouter.get('/:storeId', async (req, res) => {
 
         return res.status(400).send({ error: "error fetching items from a store" });
     }
-
-
 });
 
 authRouter.post('/:id/items', async (req, res) => {
@@ -71,11 +67,12 @@ openRouter.post('/', async (req, res) => {
 
         store.password = undefined;
 
+        util.sendEmail(email);
+
         return res.send({ store });
     } catch (e) {
         return res.status(400).send({ error: 'Registration failed: ' + e });
     }
-
 });
 
 module.exports = app => app.use("/stores", authRouter, openRouter);
