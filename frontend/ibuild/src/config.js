@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = "http://localhost:3001";
 
 export default function request(path, method, body, headers) {
     headers = new Headers(headers);
