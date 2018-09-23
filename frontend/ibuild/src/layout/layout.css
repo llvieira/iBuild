@@ -50,7 +50,35 @@
     grid-column-end: 1;
     font-family: HelveticaNeue;
     font-size: 14px;
-    line-height: 4;
+    line-height: 1;
     letter-spacing: normal;
     color: #98a1b3;
+}
+
+@media screen and (min-width: 900px) and (max-width: 1240px) {
+    .shadow {
+        width: 40%;
+    }
+}
+
+@media screen and (min-width: 600px) and (max-width: 899px) {
+    .shadow {
+        width: 60%;
+    }
+}
+
+@media screen and (min-width: 361px) and (max-width: 599px) {
+    .shadow {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .hide-xs {
+        display: none;
+    }
+
+    .shadow {
+        width: 95%;
+    }
 }
