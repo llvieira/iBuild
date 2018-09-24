@@ -45,7 +45,7 @@ export default class RegisterUserLayout extends React.Component {
             request(path, method, this.state.user, {
                 "Content-Type": "application/json"
             }).then(response => {
-                if (response.status === 'ok')
+                if (response.ok)
                     history.push('/success');
                 else
                     console.log("Deu errado");
