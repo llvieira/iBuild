@@ -1,14 +1,14 @@
 #!/bin/bash
 
-npm install;
-
 function run_build {
+	npm install
 	npm run build
 	cd build
 	python -m SimpleHTTPServer 8080
 }
 
 function run_dev {
+	npm install
 	npm start
 }
 
