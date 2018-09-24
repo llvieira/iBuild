@@ -1,0 +1,6 @@
+#!/bin/bash
+
+npm run build
+cd build
+python -m SimpleHTTPServer 8080
+
