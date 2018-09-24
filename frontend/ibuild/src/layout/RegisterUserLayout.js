@@ -8,11 +8,13 @@ import './layout.css';
 export default class RegisterUserLayout extends React.Component {
     constructor() {
         super();
+        this.isValid = false;
         this.state = {
             user: {
                 name: '',
                 email: '',
-                password: ''
+                password: '',
+                confirmPassword: '',
             }
         }
     }
@@ -28,25 +30,37 @@ export default class RegisterUserLayout extends React.Component {
         }
     }
 
+    showError() {
+        const {password, confirmPassword} = this.state.user
+        const equals = password === confirmPassword;
+        this.isValid = equals; 
+        return !equals;
+    }
+
     registerUser(e) {
         e.preventDefault();
-        const path = '/auth/register';
-        const method = 'POST';
-        request(path, method, this.state.user, {
-            "Content-Type": "application/json"
-        }).then(response => {
-            history.push('/success');
-        });
+        if (this.isValid) {
+            const path = '/auth/register';
+            const method = 'POST';
+            request(path, method, this.state.user, {
+                "Content-Type": "application/json"
+            }).then(response => {
+                if (response.status === 'ok')
+                    history.push('/success');
+                else
+                    console.log("Deu errado");
+            });
+        }
 
         return false;
     }
 
     render() {
         const inputs = [
-            <Input key="1" value={this.state.user.name} changeProperty={this.changeProperty("name").bind(this)} name="Nome" type="text" placeholder="Nome" required={true}></Input>,
-            <Input key="2" value={this.state.user.email} changeProperty={this.changeProperty("email").bind(this)} name="Email" type="email" placeholder="example@example.com" required={true}></Input>,
-            <Input key="5" value={this.state.user.password} changeProperty={this.changeProperty("password").bind(this)} name="Senha" type="password" placeholder="senha" required={true}></Input>,
-            <Input key="6" name="Confirmar senha" type="password" changeProperty={() => {}} placeholder="Confirmar senha" required={true}></Input>
+            <Input key="1" showError={() => false} value={this.state.user.name} changeProperty={this.changeProperty("name").bind(this)} name="Nome" type="text" placeholder="Nome" required={true}></Input>,
+            <Input key="2" showError={() => false} value={this.state.user.email} changeProperty={this.changeProperty("email").bind(this)} name="Email" type="email" placeholder="example@example.com" required={true}></Input>,
+            <Input key="5" showError={() => false} value={this.state.user.password} changeProperty={this.changeProperty("password").bind(this)} name="Senha" type="password" placeholder="senha" required={true}></Input>,
+            <Input key="6" showError={this.showError.bind(this)} name="Confirmar senha" type="password" value={this.state.user.confirmPassword} changeProperty={this.changeProperty("confirmPassword").bind(this)} placeholder="Confirmar senha" required={true}></Input>
         ];
 
         return (

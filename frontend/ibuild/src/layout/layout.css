@@ -10,6 +10,7 @@
 
 .background-top h4 {
     margin: 0;
+    font-weight: bold;
 }
 
 .register-layout {
@@ -26,14 +27,12 @@
     text-align: center;
     flex-direction: column;
     justify-content: center;
-    height: 388px;
     border-radius: 5px;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);
 }
 
 .background-bottom {
     padding: 20px;
-    height: 311.8px;
     border-radius: 0 0 5px 5px;
     background-color: #ffffff;
 }
@@ -67,13 +66,13 @@
     }
 }
 
-@media screen and (min-width: 361px) and (max-width: 599px) {
+@media screen and (min-width: 366px) and (max-width: 599px) {
     .shadow {
         width: 90%;
     }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 365px) {
     .hide-xs {
         display: none;
     }
