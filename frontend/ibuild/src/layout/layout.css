@@ -39,7 +39,7 @@
 
 .container {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: auto 110px;
     grid-template-rows: 70px;
     justify-content: space-between;
 }
