@@ -1,6 +1,25 @@
 #!/bin/bash
 
-npm run build
-cd build
-python -m SimpleHTTPServer 8080
 
+function run_build {
+	npm run build
+	cd build
+	python -m SimpleHTTPServer 8080
+}
+
+function run_dev {
+	npm start
+}
+
+case $1 in
+	prod)
+		run_build;
+	;;
+	dev)
+		run_dev;
+	;;
+	*)
+		echo "You need add dev or prod on command to run application";
+		exit 1;
+	;;
+esac
