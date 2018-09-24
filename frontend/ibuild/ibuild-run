@@ -1,5 +1,6 @@
 #!/bin/bash
 
+npm install;
 
 function run_build {
 	npm run build
