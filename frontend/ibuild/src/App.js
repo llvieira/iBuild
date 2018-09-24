@@ -3,7 +3,6 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import RegisterLayout from './layout/RegisterLayout';
 import { history } from './config/history';
 import SuccessLayout from './layout/SuccessLayout';
-import './App.css';
 
 class App extends Component {
 

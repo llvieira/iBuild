@@ -47,8 +47,6 @@ export default class RegisterUserLayout extends React.Component {
             }).then(response => {
                 if (response.ok)
                     history.push('/success');
-                else
-                    console.log("Deu errado");
             });
         }
 
@@ -57,11 +55,44 @@ export default class RegisterUserLayout extends React.Component {
 
     render() {
         const inputs = [
-            <Input key="1" showError={() => false} value={this.state.user.name} changeProperty={this.changeProperty("name").bind(this)} name="Nome" type="text" placeholder="Nome" required={true}></Input>,
-            <Input key="2" showError={() => false} value={this.state.user.email} changeProperty={this.changeProperty("email").bind(this)} name="Email" type="email" placeholder="example@example.com" required={true}></Input>,
-            <Input key="5" showError={() => false} value={this.state.user.password} changeProperty={this.changeProperty("password").bind(this)} name="Senha" type="password" placeholder="senha" required={true}></Input>,
-            <Input key="6" showError={this.showError.bind(this)} name="Confirmar senha" type="password" value={this.state.user.confirmPassword} changeProperty={this.changeProperty("confirmPassword").bind(this)} placeholder="Confirmar senha" required={true}></Input>
-        ];
+            {   
+                key: "1",
+                showError: () => false,
+                value: this.state.user.name,
+                changeProperty: this.changeProperty("name").bind(this),
+                name: "Nome",
+                type: "text",
+                placeholder: "Nome",
+                required: true
+            }, {
+                key: "2",
+                showError: () => false,
+                value: this.state.user.email,
+                changeProperty: this.changeProperty("email").bind(this),
+                name: "Email",
+                type: "email",
+                placeholder: "example@example.com",
+                required: true
+            }, {
+                key: "3",
+                showError: () => false,
+                value: this.state.user.password,
+                changeProperty: this.changeProperty("password").bind(this),
+                name: "Senha",
+                type: "password",
+                placeholder: "senha",
+                required: true
+            }, {
+                key: "4",
+                showError: this.showError.bind(this),
+                value: this.state.user.confirmPassword,
+                changeProperty: this.changeProperty("confirmPassword").bind(this),
+                name: "Confirmar senha",
+                type: "password",
+                placeholder: "Confirmar senha",
+                required: true
+            },
+        ].map(input => <Input key={input.key} showError={input.showError} value={input.value} changeProperty={input.changeProperty} name={input.name} type={input.type} placeholder={input.placeholder} required={input.required}></Input>);
 
         return (
             <div className="shadow">

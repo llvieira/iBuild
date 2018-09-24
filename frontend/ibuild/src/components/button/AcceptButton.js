@@ -1,8 +1,9 @@
 import React from 'react';
+import './button.css';
 
 const AcceptButton  = () => (
-    <div style={{textAlign: "right"}}>
-        <button type="submit" className="btn btn-success" style={{width: "100px", fontWeight: "bold", borderRadius: "50px"}}>Salvar</button>
+    <div className="container-button">
+        <button type="submit" className="btn btn-success accept-button">Salvar</button>
     </div>
 );
 
