@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const jwt = require("jsonwebtoken");
+const authConfig = require("../config/auth");
 
 function sendEmail(userEmail) {
     let transporter = nodemailer.createTransport({
@@ -30,4 +32,11 @@ function sendEmail(userEmail) {
     });
 }
 
+function generateToken(params = {}) {
+    return jwt.sign(params, authConfig.secret, {
+        expiresIn: 86400
+    });
+}
+
 module.exports.sendEmail = sendEmail;
+module.exports.generateToken = generateToken;
