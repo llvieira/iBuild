@@ -33,7 +33,7 @@ authRouter.post('/:id/items', async (req, res) => {
         if (err) return res.status(400).send({ error: "store not registered" });
 
         if (!store.storage) {
-            store.storage = []
+            store.storage = [];
         }
 
         store.storage.push(item);
