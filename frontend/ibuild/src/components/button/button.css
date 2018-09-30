@@ -1,0 +1,10 @@
+.container-button {
+    text-align: right;
+}
+
+
+.accept-button {
+    width: 100px; 
+    font-weight: bold;
+    border-radius: 50px;
+}
