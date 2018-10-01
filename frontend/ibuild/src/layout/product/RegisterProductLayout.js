@@ -11,10 +11,10 @@ export default class RegisterProductLayout extends React.Component {
         this.isValid = false;
         this.state = {
             product: {
-                name: '',
-                email: '',
-                password: '',
-                confirmPassword: '',
+                img: '',
+                title: '',
+                value: 0,
+                delivery: false,
             }
         }
     }
@@ -22,27 +22,27 @@ export default class RegisterProductLayout extends React.Component {
     changeProperty(porpertyName) {
         return event => {
             const value = event.target.value;
-            const user = {
-                ...this.state.user
+            const product = {
+                ...this.state.product
             };
-            user[porpertyName] = value;
-            this.setState({user});
+            product[porpertyName] = value;
+            this.setState({product});
         }
     }
 
     showError() {
-        const {password, confirmPassword} = this.state.user
-        const equals = password === confirmPassword;
-        this.isValid = equals; 
-        return !equals;
+        // const {password, confirmPassword} = this.state.user
+        // const equals = password === confirmPassword;
+        // this.isValid = equals; 
+        // return !equals;
     }
 
     registerProduct(e) {
         e.preventDefault();
         if (this.isValid) {
-            const path = '/auth/register';
+            const path = '/stores/:id/items'; // how about that ID???
             const method = 'POST';
-            request(path, method, this.state.user, {
+            request(path, method, this.state.product, {
                 "Content-Type": "application/json"
             }).then(response => {
                 if (response.ok)
@@ -58,38 +58,38 @@ export default class RegisterProductLayout extends React.Component {
             {   
                 key: "1",
                 showError: () => false,
-                value: this.state.user.name,
-                changeProperty: this.changeProperty("name").bind(this),
-                name: "Nome",
+                value: this.state.product.img,
+                changeProperty: this.changeProperty("img").bind(this),
+                name: "Imagem",
                 type: "text",
-                placeholder: "Nome",
-                required: true
+                placeholder: "Imagem",
+                required: false
             }, {
                 key: "2",
                 showError: () => false,
-                value: this.state.user.email,
-                changeProperty: this.changeProperty("email").bind(this),
-                name: "Email",
-                type: "email",
-                placeholder: "example@example.com",
+                value: this.state.product.title,
+                changeProperty: this.changeProperty("title").bind(this),
+                name: "Título",
+                type: "text",
+                placeholder: "Título",
                 required: true
             }, {
                 key: "3",
                 showError: () => false,
-                value: this.state.user.password,
-                changeProperty: this.changeProperty("password").bind(this),
-                name: "Senha",
-                type: "password",
-                placeholder: "senha",
+                value: this.state.product.value,
+                changeProperty: this.changeProperty("value").bind(this),
+                name: "Valor",
+                type: "number",
+                placeholder: "Valor",
                 required: true
             }, {
                 key: "4",
-                showError: this.showError.bind(this),
-                value: this.state.user.confirmPassword,
-                changeProperty: this.changeProperty("confirmPassword").bind(this),
-                name: "Confirmar senha",
-                type: "password",
-                placeholder: "Confirmar senha",
+                showError: () => false,
+                value: this.state.product.delivery,
+                changeProperty: this.changeProperty("delivery").bind(this),
+                name: "Entregue",
+                type: "boolean",
+                placeholder: "Entregue",
                 required: true
             },
         ].map(input => <Input key={input.key} showError={input.showError} value={input.value} changeProperty={input.changeProperty} name={input.name} type={input.type} placeholder={input.placeholder} required={input.required}></Input>);
@@ -97,10 +97,10 @@ export default class RegisterProductLayout extends React.Component {
         return (
             <div className="shadow">
                 <div className="background-top">
-                    <h4 style={{margin: 0}}>Criar conta</h4>
+                    <h4 style={{margin: 0}}>Adicionar produto</h4>
                 </div>
                 <div className="background-bottom">
-                    <form name="registerUser" onSubmit={this.registerUser.bind(this)}>
+                    <form name="registerUser" onSubmit={this.registerProduct.bind(this)}>
                         {inputs}
                         <div className="container">
                             <p>Eu aceito os <a href="https://google.com.br">termos de uso</a></p>
