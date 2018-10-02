@@ -5,6 +5,7 @@ import RegisterUserLayout from './layout/product/RegisterLayout'
 import { history } from './config/history';
 import SuccessLayout from './layout/SuccessLayout';
 import RegisterStoreLayout from "./layout/store/RegisterStoreLayout";
+import ProductsLayout from './layout/ProductsLayout';
 
 class App extends Component {
 
@@ -16,7 +17,8 @@ class App extends Component {
           <Route exact path="/register/user" component={RegisterLayout}/>
           <Route exact path="/register/product" component={RegisterUserLayout}/>
           <Route exact path="/register/store" component={RegisterStoreLayout}/>
-          <Route exact path="/success" component={SuccessLayout}></Route>
+          <Route exact path="/success" component={SuccessLayout}/>
+          <Route exact path="/products" component={ProductsLayout} />
         </Switch>
       </Router>
     );

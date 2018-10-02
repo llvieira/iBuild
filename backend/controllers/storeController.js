@@ -5,6 +5,9 @@ const User = require("../models/user");
 const util = require("../util/util");
 
 const router = express.Router();
+const routerOpen = express.Router();
+
+router.use(authMiddleware);
 
 router.post('/', async (req, res) => {
     let { email } = req.body;
@@ -27,19 +30,17 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.use(authMiddleware);
-
 router.get('/:storeId', async (req, res) => {
     try {
         const user = await User.findById(req.userId);
         const store = await Store.findById(req.params.storeId);
 
-        if(!user) {
-            return res.status(400).send({error: "user not registered"});
+        if (!user) {
+            return res.status(400).send({ error: "user not registered" });
         }
 
-        if(!store) {
-            return res.status(400).send({error: "store not registered"});
+        if (!store) {
+            return res.status(400).send({ error: "store not registered" });
         }
 
         res.send(store);
@@ -47,29 +48,48 @@ router.get('/:storeId', async (req, res) => {
     } catch (e) {
         console.log(e);
 
-        return res.status(400).send({error: "error fetching items from a store"});
+        return res.status(400).send({ error: "error fetching items from a store" });
+    }
+});
+
+routerOpen.get('/items', async (req, res) => {
+    try {
+
+        const stores = await Store.find({});
+        let products = []
+
+        stores.forEach((item) => {
+            products = products.concat(item.storage);
+        });
+
+        res.send(products);
+
+    } catch (e) {
+        console.log(e);
+
+        return res.status(400).send({ error: 'Get failed: ' + e });
     }
 });
 
 router.post('/:id/items', async (req, res) => {
 
-  let item = req.body;
+    let item = req.body;
 
-  Store.findById(req.params.id, function (err, store) {
-    if (err) return res.status(400).send({ error: "store not registered" });
+    Store.findById(req.params.id, function (err, store) {
+        if (err) return res.status(400).send({ error: "store not registered" });
 
-    if (!store.storage) {
-      store.storage = []
-    }
+        if (!store.storage) {
+            store.storage = []
+        }
 
-    store.storage.push(item);
+        store.storage.push(item);
 
-    store.save(function (err, updatedStore) {
-      if (err) return res.status(400).send({ error: 'Registration failed: ' + err });
+        store.save(function (err, updatedStore) {
+            if (err) return res.status(400).send({ error: 'Registration failed: ' + err });
 
-      return res.send(updatedStore);
+            return res.send(updatedStore);
+        });
     });
-  });
 });
 
-module.exports = app => app.use("/stores", router);
+module.exports = app => app.use("/stores", routerOpen, router);

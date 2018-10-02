@@ -37,14 +37,14 @@
     background-color: #ffffff;
 }
 
-.container {
+.container-register {
     display: grid;
     grid-template-columns: auto 110px;
     grid-template-rows: 70px;
     justify-content: space-between;
 }
 
-.container p {
+.container-register p {
     grid-column-start: 1;
     grid-column-end: 1;
     font-family: HelveticaNeue;

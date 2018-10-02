@@ -3,7 +3,6 @@ import Input from "../../components/input/Input";
 import AcceptButton from "../../components/button/AcceptButton";
 import request from "../../config";
 import { history } from '../../config/history'
-import './layout.css';
 
 export default class RegisterProductLayout extends React.Component {
     constructor() {
