@@ -26,14 +26,14 @@ export default class RegisterUserLayout extends React.Component {
                 ...this.state.user
             };
             user[porpertyName] = value;
-            this.setState({user});
+            this.setState({ user });
         }
     }
 
     showError() {
-        const {password, confirmPassword} = this.state.user
+        const { password, confirmPassword } = this.state.user
         const equals = password === confirmPassword;
-        this.isValid = equals; 
+        this.isValid = equals;
         return !equals;
     }
 
@@ -55,7 +55,7 @@ export default class RegisterUserLayout extends React.Component {
 
     render() {
         const inputs = [
-            {   
+            {
                 key: "1",
                 showError: () => false,
                 value: this.state.user.name,
@@ -97,12 +97,12 @@ export default class RegisterUserLayout extends React.Component {
         return (
             <div className="shadow">
                 <div className="background-top">
-                    <h4 style={{margin: 0}}>Criar conta</h4>
+                    <h4 style={{ margin: 0 }}>Criar conta</h4>
                 </div>
                 <div className="background-bottom">
                     <form name="registerUser" onSubmit={this.registerUser.bind(this)}>
                         {inputs}
-                        <div className="container">
+                        <div className="container-register">
                             <p>Eu aceito os <a href="https://google.com.br">termos de uso</a></p>
                             <AcceptButton></AcceptButton>
                         </div>
