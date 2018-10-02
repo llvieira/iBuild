@@ -8,13 +8,11 @@ import './layout.css';
 export default class RegisterProductLayout extends React.Component {
     constructor() {
         super();
-        this.isValid = false;
         this.state = {
             product: {
                 img: '',
                 title: '',
-                value: 0,
-                delivery: false,
+                value: '0.0',
             }
         }
     }
@@ -30,25 +28,18 @@ export default class RegisterProductLayout extends React.Component {
         }
     }
 
-    showError() {
-        // const {password, confirmPassword} = this.state.user
-        // const equals = password === confirmPassword;
-        // this.isValid = equals; 
-        // return !equals;
-    }
-
     registerProduct(e) {
         e.preventDefault();
-        if (this.isValid) {
-            const path = '/stores/:id/items'; // how about that ID???
-            const method = 'POST';
-            request(path, method, this.state.product, {
-                "Content-Type": "application/json"
-            }).then(response => {
-                if (response.ok)
+        // if (this.isValid) {
+            // const path = '/stores/:id/items'; // how about that ID???
+            // const method = 'POST';
+            // request(path, method, this.state.product, {
+                // "Content-Type": "application/json"
+            // }).then(response => {
+                // if (response.ok)
                     history.push('/success');
-            });
-        }
+            // });
+        // }
 
         return false;
     }
@@ -79,20 +70,12 @@ export default class RegisterProductLayout extends React.Component {
                 value: this.state.product.value,
                 changeProperty: this.changeProperty("value").bind(this),
                 name: "Valor",
-                type: "number",
+                type: "text",
                 placeholder: "Valor",
-                required: true
-            }, {
-                key: "4",
-                showError: () => false,
-                value: this.state.product.delivery,
-                changeProperty: this.changeProperty("delivery").bind(this),
-                name: "Entregue",
-                type: "boolean",
-                placeholder: "Entregue",
+                pattern: "^[0-9]+[.][0-9]+$",
                 required: true
             },
-        ].map(input => <Input key={input.key} showError={input.showError} value={input.value} changeProperty={input.changeProperty} name={input.name} type={input.type} placeholder={input.placeholder} required={input.required}></Input>);
+        ].map(input => <Input key={input.key} showError={input.showError} value={input.value} changeProperty={input.changeProperty} name={input.name} type={input.type} placeholder={input.placeholder} required={input.required} pattern={input.pattern}></Input>);
 
         return (
             <div className="shadow">
