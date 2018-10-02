@@ -5,6 +5,9 @@ const User = require('../models/user');
 const util = require('../util/util');
 
 const router = express.Router();
+const routerOpen = express.Router();
+
+router.use(authMiddleware);
 
 router.post('/', async (req, res) => {
   const { email } = req.body;
@@ -25,8 +28,6 @@ router.post('/', async (req, res) => {
     return res.status(400).send({ error: `Registration failed: ${e}` });
   }
 });
-
-router.use(authMiddleware);
 
 router.get('/:storeId', async (req, res) => {
   try {
@@ -49,6 +50,25 @@ router.get('/:storeId', async (req, res) => {
   }
 });
 
+routerOpen.get('/items', async (req, res) => {
+    try {
+
+        const stores = await Store.find({});
+        let products = [];
+
+        stores.forEach((item) => {
+            products = products.concat(item.storage);
+        });
+
+        res.send(products);
+
+    } catch (e) {
+        console.log(e);
+
+        return res.status(400).send({ error: 'Get failed: ' + e });
+    }
+});
+
 router.post('/:id/items', async (req, res) => {
   const item = req.body;
 
@@ -69,4 +89,4 @@ router.post('/:id/items', async (req, res) => {
   });
 });
 
-module.exports = app => app.use('/stores', router);
+module.exports = app => app.use('/stores', routerOpen, router);
