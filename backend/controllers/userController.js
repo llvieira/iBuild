@@ -1,7 +1,7 @@
-const express = require("express");
+const express = require('express');
 
 const router = express.Router();
 
-//Rotas do usuario aki
+// Rotas do usuario aki
 
-module.exports = app => app.use("/users", router);
+module.exports = app => app.use('/users', router);
