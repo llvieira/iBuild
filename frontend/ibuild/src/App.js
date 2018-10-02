@@ -3,6 +3,7 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import RegisterLayout from './layout/RegisterLayout';
 import { history } from './config/history';
 import SuccessLayout from './layout/SuccessLayout';
+import RegisterStoreLayout from "./layout/store/RegisterStoreLayout";
 import ProductsLayout from './layout/ProductsLayout';
 
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
         <Switch>
           <Redirect exact from="/" to="/register/user" />
           <Route exact path="/register/user" component={RegisterLayout} />
+          <Route exact path="/register/store" component={RegisterStoreLayout}/>
           <Route exact path="/success" component={SuccessLayout} />
           <Route exact path="/products" component={ProductsLayout} />
         </Switch>

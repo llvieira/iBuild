@@ -9,6 +9,27 @@ const routerOpen = express.Router();
 
 router.use(authMiddleware);
 
+router.post('/', async (req, res) => {
+    let { email } = req.body;
+
+    try {
+
+        if (await Store.findOne({ email })) {
+            return res.status(400).send({ error: "Loja já cadastrada" });
+        }
+
+        let store = await Store.create(req.body);
+
+        store.password = undefined;
+
+        util.sendEmail(email);
+
+        return res.send({ store });
+    } catch (e) {
+        return res.status(400).send({ error: 'Registration failed: ' + e });
+    }
+});
+
 router.get('/:storeId', async (req, res) => {
     try {
         const user = await User.findById(req.userId);
@@ -47,27 +68,6 @@ routerOpen.get('/items', async (req, res) => {
         console.log(e);
 
         return res.status(400).send({ error: 'Get failed: ' + e });
-    }
-});
-
-router.post('/', async (req, res) => {
-    let { email } = req.body;
-
-    try {
-
-        if (await Store.findOne({ email })) {
-            return res.status(400).send({ error: "Loja já cadastrada" });
-        }
-
-        let store = await Store.create(req.body);
-
-        store.password = undefined;
-
-        util.sendEmail(email);
-
-        return res.send({ store });
-    } catch (e) {
-        return res.status(400).send({ error: 'Registration failed: ' + e });
     }
 });
 
