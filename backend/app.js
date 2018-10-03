@@ -1,17 +1,23 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-
-// connect to mongoose
-mongoose.connect('mongodb://localhost/ibuild', { useNewUrlParser: true });
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const morgan = require('morgan');
 
 var app = express();
 var db = mongoose.connection;
 
-app.get('/', function(req, res) {
-    res.send('Hello World!');
+app.use(cors());
+app.use(morgan('tiny'));
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false}));
+
+require('./controllers/index')(app);
+
+app.listen(3000, function () {
+
+    console.log('CORS-enabled web server listening on port 3000');
+
 });
-
-app.listen(3000);
-
-console.log('Running on port 3000');
