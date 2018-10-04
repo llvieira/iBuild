@@ -1,11 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
 
 const app = express();
-const db = mongoose.connection;
 
 app.use(cors());
 app.use(morgan('tiny'));

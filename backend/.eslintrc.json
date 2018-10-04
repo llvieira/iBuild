@@ -1,5 +1,11 @@
 {
 
-  "extends": "airbnb"
+  "extends": "airbnb",
+  "rules": {
+    "no-param-reassign": 0,
+    "global-require": 0,
+    "func-names": 0,
+    "no-shadow": 0
+  }
 
 }

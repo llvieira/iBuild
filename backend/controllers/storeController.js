@@ -1,15 +1,28 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 const Store = require('../models/store');
-const User = require('../models/user');
 const util = require('../util/util');
 
-const router = express.Router();
-const routerOpen = express.Router();
+const authRouter = express.Router();
+const openRouter = express.Router();
 
-router.use(authMiddleware);
+authRouter.use(authMiddleware);
 
-router.post('/', async (req, res) => {
+authRouter.get('/:storeId', async (req, res) => {
+  try {
+    const store = await Store.findById(req.params.storeId);
+
+    if (!store) {
+      return res.status(400).send({ error: 'store not registered' });
+    }
+
+    return res.send(store);
+  } catch (e) {
+    return res.status(400).send({ error: 'error fetching items from a store' });
+  }
+});
+
+openRouter.post('/', async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -23,53 +36,13 @@ router.post('/', async (req, res) => {
 
     util.sendEmail(email);
 
-    return res.send({ store });
+    return res.send({ store, token: util.generateToken({ id: store.id }) });
   } catch (e) {
     return res.status(400).send({ error: `Registration failed: ${e}` });
   }
 });
 
-router.get('/:storeId', async (req, res) => {
-  try {
-    const user = await User.findById(req.userId);
-    const store = await Store.findById(req.params.storeId);
-
-    if (!user) {
-      return res.status(400).send({ error: 'user not registered' });
-    }
-
-    if (!store) {
-      return res.status(400).send({ error: 'store not registered' });
-    }
-
-    res.send(store);
-  } catch (e) {
-    console.log(e);
-
-    return res.status(400).send({ error: 'error fetching items from a store' });
-  }
-});
-
-routerOpen.get('/items', async (req, res) => {
-    try {
-
-        const stores = await Store.find({});
-        let products = [];
-
-        stores.forEach((item) => {
-            products = products.concat(item.storage);
-        });
-
-        res.send(products);
-
-    } catch (e) {
-        console.log(e);
-
-        return res.status(400).send({ error: 'Get failed: ' + e });
-    }
-});
-
-router.post('/:id/items', async (req, res) => {
+authRouter.post('/:id/items', async (req, res) => {
   const item = req.body;
 
   Store.findById(req.params.id, (err, store) => {
@@ -86,7 +59,25 @@ router.post('/:id/items', async (req, res) => {
 
       return res.send(updatedStore);
     });
+
+    return res.send(store);
   });
 });
 
-module.exports = app => app.use('/stores', routerOpen, router);
+openRouter.get('/items', async (req, res) => {
+  try {
+    const stores = await Store.find({});
+    let products = [];
+
+    stores.forEach((item) => {
+      products = products.concat(item.storage);
+    });
+
+    return res.send(products);
+  } catch (e) {
+    return res.status(400).send({ error: `Get failed: ${e}` });
+  }
+});
+
+
+module.exports = app => app.use('/stores', openRouter, authRouter);
