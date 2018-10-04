@@ -1,6 +1,6 @@
-const express = require("express");
-const User = require("../models/user");
-const util = require("../util/util");
+const express = require('express');
+const User = require('../models/user');
+const util = require('../util/util');
 
 const router = express.Router();
 
@@ -8,9 +8,8 @@ router.post('/', async (req, res) => {
   const { email } = req.body;
 
   try {
-
     if (await User.findOne({ email })) {
-      return res.status(400).send({ error: "Usuário já cadastrado" });
+      return res.status(400).send({ error: 'Usuário já cadastrado' });
     }
 
     const user = await User.create(req.body);
@@ -20,8 +19,8 @@ router.post('/', async (req, res) => {
     util.sendEmail(email);
     return res.send({ user, token: util.generateToken({ id: user.id }) });
   } catch (e) {
-    return res.status(400).send({ error: 'Registration failed ' + e });
+    return res.status(400).send({ error: `Registration failed ${e}` });
   }
 });
 
-module.exports = app => app.use("/users", router);
+module.exports = app => app.use('/users', router);

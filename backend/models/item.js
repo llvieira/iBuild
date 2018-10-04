@@ -1,22 +1,22 @@
-const mongoose = require("../database/index");
+const mongoose = require('../database/index');
 
-let itemSchema = new mongoose.Schema({
+const itemSchema = new mongoose.Schema({
   img: {
     type: String,
-    required: false
+    required: false,
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   value: {
     type: Number,
-    required: true
+    required: true,
   },
   delivery: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 }, { noId: true });
 
 module.exports = itemSchema;
