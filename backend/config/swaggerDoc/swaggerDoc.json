@@ -1,0 +1,188 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Project IBUILD",
+    "version" : "1.0.0",
+    "title" : "IBUILD",
+    "license" : {
+      "name" : "MIT",
+      "url" : "https://opensource.org/licenses/MIT"
+    }
+  },
+
+
+  "host" : "localhost:3001",
+  "basePath" : "/",
+  "tags" : [
+    {
+      "name" : "Store",
+      "description" : "Api for manipulate Store"
+    }
+  ],
+  "schemes" : [ "http" ],
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+
+    "/stores" : {
+      "post" : {
+        "tags" : [ "Store" ],
+        "summary" : "Store user in system",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "user",
+          "description" : "Store that added in system",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Store"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Loja cadastrada"
+          },
+          "400" : {
+            "description" : "Loja já cadastrada"
+          },
+          "500" : {
+            "description" : "Registration failed: mensagem de erro"
+          }
+        }
+      }
+    },
+    "/stores/{storeId}": {
+      "get": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Get user in system by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "description": "Store ID",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Busca concluída com Sucesso"
+          },
+          "400": {
+            "description": "Store not registered"
+          },
+          "500": {
+            "description": "Error fetching items from a store"
+          }
+        }
+      }
+    },
+    "/stores/{id}/items" : {
+      "post" : {
+        "tags" : [ "Store" ],
+        "summary" : "Store user in system",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "user",
+          "description" : "Store that added in system",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Item"
+          }
+        },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Store id",
+            "required": true
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "Item cadastrado na loja"
+          },
+          "400" : {
+            "description" : "Store not registered"
+          },
+          "500" : {
+            "description" : "Registration failed: Error"
+          }
+        }
+      }
+    }
+
+  },
+
+  "definitions" : {
+
+    "Store" : {
+      "required" : [ "name", "email", "phone", "password", "cnpj" ],
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "phone" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        },
+        "cnpj" : {
+          "type" : "string"
+        }
+      },
+
+      "example" : {
+        "name": "Nome da loja",
+        "email" : "emailloja@email.com",
+        "phone": "(XX)XXXXX-XXXX",
+        "password": "senhadaLoja",
+        "cnpj": "78.425.986/0036-15"
+      }
+    },
+    "Item" : {
+      "required" : [ "img", "title", "value", "delivery" ],
+      "properties" : {
+        "img" : {
+          "type" : "string"
+        },
+        "title" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type": "integer",
+          "format": "int64"
+        },
+        "delivery" : {
+          "type": "boolean"
+        }
+      },
+
+      "example" : {
+        "img": "Nome Item",
+        "title" : "Titulo",
+        "value": 300,
+        "delivery": true
+      }
+    }
+
+  }
+}
+

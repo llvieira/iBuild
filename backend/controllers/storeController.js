@@ -59,8 +59,6 @@ authRouter.post('/:id/items', async (req, res) => {
 
       return res.send(updatedStore);
     });
-
-    return res.send(store);
   });
 });
 
