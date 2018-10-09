@@ -13,7 +13,7 @@ app.use(morgan('tiny'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/swagger', swaggerui.serve, swaggerui.setup(swaggerdocument))
+app.use('/swagger', swaggerui.serve, swaggerui.setup(swaggerdocument));
 require('./controllers/index')(app);
 
 app.listen(3001, () => {
