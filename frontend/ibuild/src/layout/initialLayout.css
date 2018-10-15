@@ -1,0 +1,223 @@
+@charset "utf-8";
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:regular,italic,bold");
+
+section.homepage-slider {
+	margin-left: -10px; 
+	margin-right: -10px;
+}
+section.header_text{
+	text-align:center;
+	padding:15px 0 20px 0;
+	font-size:16px;
+	line-height:30px;
+	border-bottom:1px solid #fff;
+}
+section.homepage-slider{
+	border-bottom:1px dotted #eb4800;
+	padding-bottom:1px;
+	position: relative;
+	top:0;
+	z-index:99;
+	border-bottom:2px solid #ddd;	
+	background-color:#efeeed;
+	min-height:100px;
+}
+section.homepage-slider div.intro{
+	position:absolute;
+	top:20%;
+	left:7%;
+	opacity:.7;
+}
+section.homepage-slider h1{
+	background-color:#eb4800;
+	color:#fff;
+	padding:2px 7px;
+	font-size:30px;
+	text-transform:uppercase;
+	float:left;
+	width:auto;
+}
+section.homepage-slider p{
+	overflow:hidden;
+	width:100%;
+	margin-bottom:2px;
+}
+section.homepage-slider span{
+	background-color:#fff;
+	color:#000;	
+	padding:2px 10px;
+	line-height:30px;
+	font-size:28px;
+	float:left;
+	width:auto;
+}
+section.header_text.sub{
+	font-size:14px;
+	margin-bottom:40px;
+}
+section.header_text.sub h4{
+	text-transform:uppercase;
+	margin:0;	
+}
+
+/* feature box
+----------------------------------------------------------------------------- */
+.feature_box{
+	margin-bottom:20px;	
+}
+.feature_box h4{
+	margin:0 0 10px 0;
+	font-weight:normal;	
+}
+.feature_box img{	
+	margin-bottom:10px;
+	background-color:#eb4800;
+	padding:25px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;	
+	border-radius: 50%;
+}
+.feature_box .service{	
+	margin-top:3px;
+	padding:3px;	
+	text-align:center;
+}
+.feature_box .service:hover{
+	background-color:#f4f4f4;
+}
+.feature_box .service:hover img{
+	-webkit-transition: all 0.7s linear;
+	-webkit-transform: rotate(6.28rad);
+	transition: all 0.7s;
+	transform: rorate(6.28rad);
+}
+.feature_box .service div{	
+	padding:5px 5px 0 5px;
+}
+/* end feature box */
+
+/* product box
+----------------------------------------------------------------------------- */
+.product-box{
+	text-align:center;
+	padding-bottom:15px;
+	position: relative;
+	background-color:#f8f8f8;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-bottom:1px solid #eee;
+}
+.product-box span.sale_tag {
+	height: 54px;
+	position: absolute;
+	width: 55px;
+	z-index: 100;
+	top:0;
+	left:0;
+}
+.product-box:hover{
+	background-color:#eb4800;
+	-webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    -ms-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+	box-shadow: 0px 0px 5px #ccc;
+}
+.product-box:hover a{
+	color:#fff !important;
+}
+.product-box img{
+	overflow:hidden;
+}
+.product-box a.title{
+	text-transform:uppercase;
+	color:#111111;
+	display:inline-block;
+	font-weight:bold;
+	font-size:11px;
+	margin:15px 0 0px 0;
+}
+.product-box a.category{
+	color:#eb4800;
+}
+.product-box p.price{
+	font-size:20px;
+	font-weight:300;
+	padding:10px 0;
+}
+/* end product box */
+
+/* title style for h4 tag
+----------------------------------------------------------------------------- */
+h4.title{
+	background: url(../images/line_bar.png) 0 8px repeat-x;
+	padding-bottom:5px;
+	margin-bottom:15px;
+	overflow:hidden;
+	text-transform:uppercase;
+	font-size:15px;
+	min-height:27px;
+	width:100%;
+}
+h4.title.m{
+	margin-top:15px;	
+	overflow:hidden;
+	width:100%;
+}
+h4.title strong{
+	color:#eb4800;
+}
+h4.title span.text{
+	background-color:#fff;
+	padding-right:10px;
+}
+h4.title .left{
+	background: url(../images/arrow-pleft.png) #eee no-repeat center center;	
+	margin-right:2px;	
+}
+h4.title .right{
+	background: url(../images/arrow-p.png) #eee no-repeat center center;	
+}
+h4.title .pull-right{
+	background-color:#fff;
+	padding-left:10px;	
+}
+h4.title .left,h4.title .right{
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	cursor: pointer;
+}
+h4.title .left:hover,h4.title .right:hover{
+	background-color:#eb4800;
+}
+h4.title .button:hover{
+	text-decoration: none;
+}
+
+/* Responsive
+----------------------------------------------------------------------------- */
+@media (max-width: 767px){	
+	section.homepage-slider{
+		display:none;
+	}
+	.myCarousel .thumbnails li{
+		border-bottom:1px solid #eee;
+		margin-bottom:0;
+	}
+	.product-box{
+		padding-top:10px;
+		padding-bottom:10px;		
+	}
+	.product-box:hover{
+		background-color:#f8f8f8;
+	}
+	.product-box:hover a{
+		color:#333 !important;
+	}
+	.feature_box .service{	
+		border-bottom:1px solid #eee;
+	}
+}
