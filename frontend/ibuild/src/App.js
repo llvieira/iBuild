@@ -7,6 +7,7 @@ import SuccessLayout from './layout/SuccessLayout';
 import RegisterStoreLayout from "./layout/store/RegisterStoreLayout";
 import ProductsLayout from './layout/ProductsLayout';
 import InitialLayout from './layout/InitialLayout';
+import NewRegisterUserLayout from './layout/NewRegisterUserLayout';
 import './index.css';
 
 class App extends Component {
@@ -18,8 +19,8 @@ class App extends Component {
           <div className="row">
             <div className="account pull-right">
               <ul className="user-menu">
-                <li><a href="#">Registro</a></li>
-                <li><a href="#">Login</a></li>
+                <li><a href="/registerUser">Registro</a></li>
+                <li><a href="/registerUser">Login</a></li>
               </ul>
             </div>
           </div>
@@ -27,10 +28,10 @@ class App extends Component {
         <div id="wrapper" className="container">
           <section className="navbar main-menu">
             <div className="navbar-inner main-menu">
-              <a href="index.html" className="logo pull-left"><img src="themes/images/logo.png" className="site_logo" alt=""></img></a>
+              <a href="/" className="logo pull-left"><img src="themes/images/logo.png" className="site_logo" alt=""></img></a>
               <nav id="menu" className="pull-right">
                 <ul>
-                  <li><a href="#">Mais vendidos</a></li>
+                  <li><a href="/products">Produtos</a></li>
                   <li><a href="#">Lojas</a></li>
                   <li><a href="#">Top lojas</a></li>
                 </ul>
@@ -40,9 +41,10 @@ class App extends Component {
           <Router history={history}>
             <Switch>
               <Route exact path="/" component={InitialLayout} />
-              <Route exact path="/register/user" component={RegisterLayout} />
-              <Route exact path="/register/product" component={RegisterUserLayout} />
-              <Route exact path="/register/store" component={RegisterStoreLayout} />
+              <Route exact path="/registerUser" component={NewRegisterUserLayout} />
+              <Route exact path="/oldRegisterUser" component={RegisterLayout} />
+              <Route exact path="/registerProduct" component={RegisterUserLayout} />
+              <Route exact path="/registertore" component={RegisterStoreLayout} />
               <Route exact path="/success" component={SuccessLayout} />
               <Route exact path="/products" component={ProductsLayout} />
             </Switch>
