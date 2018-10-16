@@ -1,0 +1,53 @@
+@charset "utf-8";
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:regular,italic,bold");
+
+/* Block 
+----------------------------------------------------------------------------- */
+.block {
+	text-align: center;
+	padding: 7px;
+	border: 1px solid #ddd;
+	border-top: 3px solid #eb4800;
+	-moz-box-shadow: 0 0 3px 0 #ccc;
+	-webkit-box-shadow: 0 0 3px 0 #ccc;
+	box-shadow: 0 0 3px 0 #ccc;
+	margin-bottom: 20px;
+}
+.small-product {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.small-product li {
+	text-align: left;
+	border-bottom: 1px dotted #eee;
+	padding: 5px 0;
+	font-size:11px;
+}
+.small-product li img {
+	width: 50px;
+}
+.block .carousel{
+	margin-bottom:-30px;
+}
+.block h4{
+	margin: 0 0 20px 0;
+	border-bottom:1px solid #eee;	
+}
+/* end Block */
+
+
+/* Navigation list */
+.nav-header{
+	color:#333;
+	margin-bottom:10px;
+}
+.nav-list li{
+	text-align:left;
+}
+.nav-list > .active > a, .nav-list > .active > a:hover{
+	background-color: transparent;
+	color:#eb4800;
+	text-shadow: none;	
+	font-weight: bold;
+}

@@ -13,12 +13,13 @@
     font-weight: bold;
 }
 
-.register-layout {
+/* Esta interferindo em algums elementos do novo template (Alterar posteriormente)*/
+/*.register-layout {
     display: flex;
     flex-direction: column;
     justify-content: center;
     height: 100vh;
-}
+}*/
 
 .shadow {
     display: flex;
