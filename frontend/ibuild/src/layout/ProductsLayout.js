@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CardProduct from "../components/card/CardProduct";
+import CardProduct from "../components/product/CardProduct";
 import request from "../config";
 
 const pathProducts = '/stores/items';
@@ -10,7 +10,7 @@ class ProductsLayout extends Component {
     super(props);
 
     this.state = {
-      items: []
+      items: [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]
     };
 
     request(pathProducts, method, undefined, {}).then(response => {
