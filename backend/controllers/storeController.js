@@ -62,6 +62,24 @@ authRouter.post('/:id/items', async (req, res) => {
   });
 });
 
+authRouter.put('/', async (req, res) => {
+  let store = await Store.findById(req.userId);
+
+  try {
+
+
+    store = req.body;
+
+    store.save();
+
+
+    return res.send(store);
+  } catch (e) {
+    return res.status(400).send({ error: `Registration failed: ${e}` });
+  }
+
+});
+
 openRouter.get('/items', async (req, res) => {
   try {
     const stores = await Store.find({});
