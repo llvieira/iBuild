@@ -134,9 +134,9 @@ class NewRegisterLayout extends Component {
                     </div>
                   </div>
                   <div className="control-group">
-                    <label className="control-label">Comfirmar senha:</label>
+                    <label className="control-label">Confirmar senha:</label>
                     <div className="controls">
-                      <input type="password" placeholder="Comfirme sua senha" className="input-xlarge" value={this.state.user.confirmPassword} onChange={this.changeProperty("confirmPassword").bind(this)} />
+                      <input type="password" placeholder="Confirme sua senha" className="input-xlarge" value={this.state.user.confirmPassword} onChange={this.changeProperty("confirmPassword").bind(this)} />
                     </div>
                   </div>
                   <div style={{marginBottom: '8px'}}><input style={{margin: '0 10px 2px 0'}} type="checkbox" onClick={this.showCnpj.bind(this)}/><span>Cadastrar Loja</span></div>
