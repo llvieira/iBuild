@@ -19,8 +19,8 @@ class App extends Component {
           <div className="row">
             <div className="account pull-right">
               <ul className="user-menu">
-                <li><a href="/registerUser">Registro</a></li>
-                <li><a href="/registerUser">Login</a></li>
+                <li><a href="" onClick={() => history.push('/registerUser')}>Registro</a></li>
+                <li><a href="" onClick={() => history.push('/registerUser')}>Login</a></li>
               </ul>
             </div>
           </div>
@@ -31,7 +31,7 @@ class App extends Component {
               <a href="/" className="logo pull-left"><img src="themes/images/logo.png" className="site_logo" alt=""></img></a>
               <nav id="menu" className="pull-right">
                 <ul>
-                  <li><a href="/products">Produtos</a></li>
+                  <li><a href="" onClick={() => history.push('/products')}>Produtos</a></li>
                   <li><a href="#">Lojas</a></li>
                   <li><a href="#">Top lojas</a></li>
                 </ul>
