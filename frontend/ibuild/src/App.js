@@ -11,6 +11,18 @@ import NewRegisterLayout from './layout/NewRegisterLayout';
 import './index.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      userMenuAuth: [{ optionName: 'My account', path: '/' }],
+      userMenuOpen: [{ optionName: 'Registro', path: '/register' }, { optionName: 'Login', path: '/register' }]
+    };
+  }
+
+  addAuthUser(user) {
+    this.setState({ user });
+  }
 
   render() {
     return (
@@ -19,8 +31,10 @@ class App extends Component {
           <div className="row">
             <div className="account pull-right">
               <ul className="user-menu">
-                <li><a href="" onClick={() => history.push('/register')}>Registro</a></li>
-                <li><a href="" onClick={() => history.push('/register')}>Login</a></li>
+                {(this.state.user ? this.state.userMenuAuth : this.state.userMenuOpen).map(elem =>
+                  <li key={elem.optionName}><a href="" onClick={() => history.push(elem.path)}>{elem.optionName}</a></li>
+                )}
+                {this.state.user ? <li>{'Logged user: ' + this.state.user.name}</li> : undefined}
               </ul>
             </div>
           </div>
@@ -40,8 +54,8 @@ class App extends Component {
           </section>
           <Router history={history}>
             <Switch>
-              <Route exact path="/" component={InitialLayout} />
-              <Route exact path="/register" component={NewRegisterLayout} />
+              <Route exact path="/" render={(props) => <InitialLayout {...props} />} />
+              <Route exact path="/register" render={(props) => <NewRegisterLayout {...props} teste={this.addAuthUser.bind(this)} />} />
               <Route exact path="/oldRegisterUser" component={RegisterLayout} />
               <Route exact path="/registerProduct" component={RegisterUserLayout} />
               <Route exact path="/registertore" component={RegisterStoreLayout} />

@@ -3,6 +3,11 @@ import CarouselProduct from '../components/product/CarouselProduct';
 import './initialLayout.css';
 
 class InitialLayout extends Component {
+  constructor(props) {
+    super(props);
+
+  }
+
   render() {
     return (
       <div>

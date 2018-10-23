@@ -3,9 +3,13 @@ import request from "../config";
 import { history } from '../config/history'
 
 class NewRegisterLayout extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      auth: {
+        email: '',
+        password: ''
+      },
       user: {
         name: '',
         email: '',
@@ -16,6 +20,37 @@ class NewRegisterLayout extends Component {
         show: false
       }
     }
+    console.log(this.props);
+  }
+
+  changeAuthProperty(porpertyName) {
+    return event => {
+      const value = event.target.value;
+      const auth = {
+        ...this.state.auth
+      };
+
+      auth[porpertyName] = value;
+      this.setState({ auth });
+    }
+  }
+
+  auth(e) {
+    e.preventDefault();
+    const method = 'POST';
+    const path = '/auth';
+    request(path, method, this.state.auth, {
+      "Content-Type": "application/json"
+    }).then(response => {
+      if (response.ok)
+        response.json().then(data => {
+          console.log(data);
+          this.props.teste(data.user);
+          history.push('/');
+        });
+      else
+        console.log('Error!');
+    });
   }
 
   changeProperty(porpertyName) {
@@ -29,20 +64,22 @@ class NewRegisterLayout extends Component {
       };
 
       user[porpertyName] = value;
-      this.setState({ user , cnpj});
+      this.setState({ user, cnpj });
     }
   }
 
   register(path) {
-      const method = 'POST';
-      request(path, method, this.state.user, {
-        "Content-Type": "application/json"
-      }).then(response => {
-        if (response.ok)
-          history.push('/success');
-        else
-          console.log('Error!');
-      });
+    const method = 'POST';
+    request(path, method, this.state.user, {
+      "Content-Type": "application/json"
+    }).then(response => {
+      if (response.ok)
+        history.push('/success');
+      else
+        response.json().then(data => {
+          console.log(data);
+        });
+    });
   }
 
   sendRegister(e) {
@@ -67,7 +104,7 @@ class NewRegisterLayout extends Component {
 
     cnpj.show = !cnpj.show;
     console.log(cnpj.show);
-    this.setState({ user , cnpj });
+    this.setState({ user, cnpj });
   }
 
   render() {
@@ -82,19 +119,19 @@ class NewRegisterLayout extends Component {
           <div className="row">
             <div className="span5">
               <h4 className="title"><span className="text"><strong>Login</strong> Form</span></h4>
-              <form>
+              <form onSubmit={this.auth.bind(this)}>
                 <input type="hidden" name="next" value="/" />
                 <fieldset>
                   <div className="control-group">
-                    <label className="control-label">Nome</label>
+                    <label className="control-label">Email</label>
                     <div className="controls">
-                      <input type="text" placeholder="Coloque seu nome" id="username" className="input-xlarge" />
+                      <input type="email" placeholder="Coloque seu email" className="input-xlarge" value={this.state.auth.email} onChange={this.changeAuthProperty("email").bind(this)} />
                     </div>
                   </div>
                   <div className="control-group">
                     <label className="control-label">Senha</label>
                     <div className="controls">
-                      <input type="password" placeholder="Coloque sua senha" id="password" className="input-xlarge" />
+                      <input type="password" placeholder="Coloque sua senha" className="input-xlarge" value={this.state.auth.password} onChange={this.changeAuthProperty("password").bind(this)} />
                     </div>
                   </div>
                   <div className="control-group">
@@ -115,7 +152,7 @@ class NewRegisterLayout extends Component {
                       <input type="text" placeholder="Coloque seu nome" className="input-xlarge" value={this.state.user.name} onChange={this.changeProperty("name").bind(this)} />
                     </div>
                   </div>
-                  <div className="control-group" style={{display: (this.state.cnpj.show) ? 'block' : 'none'}}>
+                  <div className="control-group" style={{ display: (this.state.cnpj.show) ? 'block' : 'none' }}>
                     <label className="control-label">CNPJ:</label>
                     <div className="controls">
                       <input type="text" placeholder="Coloque o cnpj de sua loja" className="input-xlarge" value={this.state.user.cnpj} onChange={this.changeProperty("cnpj").bind(this)} />
@@ -139,7 +176,7 @@ class NewRegisterLayout extends Component {
                       <input type="password" placeholder="Confirme sua senha" className="input-xlarge" value={this.state.user.confirmPassword} onChange={this.changeProperty("confirmPassword").bind(this)} />
                     </div>
                   </div>
-                  <div style={{marginBottom: '8px'}}><input style={{margin: '0 10px 2px 0'}} type="checkbox" onClick={this.showCnpj.bind(this)}/><span>Cadastrar Loja</span></div>
+                  <div style={{ marginBottom: '8px' }}><input style={{ margin: '0 10px 2px 0' }} type="checkbox" onClick={this.showCnpj.bind(this)} /><span>Cadastrar Loja</span></div>
                   <div className="control-group">
                     <p>Agora a diversão começa!</p>
                   </div>
