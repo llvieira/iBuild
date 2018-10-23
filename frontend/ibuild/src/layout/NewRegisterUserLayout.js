@@ -118,7 +118,7 @@ class NewRegisterUserLayout extends Component {
                   <div className="control-group" style={{display: (this.state.cnpj.show) ? 'block' : 'none'}}>
                     <label className="control-label">CNPJ:</label>
                     <div className="controls">
-                      <input type="text" placeholder="Coloque seu email" className="input-xlarge" value={this.state.user.cnpj} onChange={this.changeProperty("cnpj").bind(this)} />
+                      <input type="text" placeholder="Coloque o cnpj de sua loja" className="input-xlarge" value={this.state.user.cnpj} onChange={this.changeProperty("cnpj").bind(this)} />
                     </div>
                   </div>
                   <div className="control-group">
