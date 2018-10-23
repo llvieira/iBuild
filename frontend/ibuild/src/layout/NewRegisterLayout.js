@@ -2,15 +2,18 @@ import React, { Component } from 'react';
 import request from "../config";
 import { history } from '../config/history'
 
-class NewRegisterUserLayout extends Component {
+class NewRegisterLayout extends Component {
   constructor() {
     super();
     this.state = {
       user: {
         name: '',
         email: '',
+        cnpj: '',
         password: '',
         confirmPassword: '',
+      }, cnpj: {
+        show: false
       }
     }
   }
@@ -21,15 +24,16 @@ class NewRegisterUserLayout extends Component {
       const user = {
         ...this.state.user
       };
+      const cnpj = {
+        ...this.state.cnpj
+      };
+
       user[porpertyName] = value;
-      this.setState({ user });
+      this.setState({ user , cnpj});
     }
   }
 
-  registerUser(e) {
-    e.preventDefault();
-    if (this.state.user.password === this.state.user.confirmPassword) {
-      const path = '/users/';
+  register(path) {
       const method = 'POST';
       request(path, method, this.state.user, {
         "Content-Type": "application/json"
@@ -39,12 +43,35 @@ class NewRegisterUserLayout extends Component {
         else
           console.log('Error!');
       });
-    }
+  }
 
+  sendRegister(e) {
+    e.preventDefault();
+    if (this.state.user.password === this.state.user.confirmPassword && !this.state.cnpj.show) {
+      const path = '/users/';
+      this.register(path);
+    } else if (this.state.user.password === this.state.user.confirmPassword && this.state.cnpj.show) {
+      const path = '/stores/';
+      this.register(path);
+    }
     return false;
   }
 
+  showCnpj() {
+    const user = {
+      ...this.state.user
+    };
+    const cnpj = {
+      ...this.state.cnpj
+    };
+
+    cnpj.show = !cnpj.show;
+    console.log(cnpj.show);
+    this.setState({ user , cnpj });
+  }
+
   render() {
+
     return (
       <div>
         <section className="header_text sub">
@@ -80,12 +107,18 @@ class NewRegisterUserLayout extends Component {
             </div>
             <div className="span7">
               <h4 className="title"><span className="text"><strong>Registro</strong> Form</span></h4>
-              <form className="form-stacked" onSubmit={this.registerUser.bind(this)} >
+              <form className="form-stacked" onSubmit={this.sendRegister.bind(this)} >
                 <fieldset>
                   <div className="control-group">
                     <label className="control-label">Nome</label>
                     <div className="controls">
                       <input type="text" placeholder="Coloque seu nome" className="input-xlarge" value={this.state.user.name} onChange={this.changeProperty("name").bind(this)} />
+                    </div>
+                  </div>
+                  <div className="control-group" style={{display: (this.state.cnpj.show) ? 'block' : 'none'}}>
+                    <label className="control-label">CNPJ:</label>
+                    <div className="controls">
+                      <input type="text" placeholder="Coloque o cnpj de sua loja" className="input-xlarge" value={this.state.user.cnpj} onChange={this.changeProperty("cnpj").bind(this)} />
                     </div>
                   </div>
                   <div className="control-group">
@@ -106,6 +139,7 @@ class NewRegisterUserLayout extends Component {
                       <input type="password" placeholder="Comfirme sua senha" className="input-xlarge" value={this.state.user.confirmPassword} onChange={this.changeProperty("confirmPassword").bind(this)} />
                     </div>
                   </div>
+                  <div style={{marginBottom: '8px'}}><input style={{margin: '0 10px 2px 0'}} type="checkbox" onClick={this.showCnpj.bind(this)}/><span>Cadastrar Loja</span></div>
                   <div className="control-group">
                     <p>Agora a diversão começa!</p>
                   </div>
@@ -121,4 +155,4 @@ class NewRegisterUserLayout extends Component {
   }
 }
 
-export default NewRegisterUserLayout;
+export default NewRegisterLayout;
