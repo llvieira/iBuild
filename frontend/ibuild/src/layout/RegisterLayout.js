@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import request from "../config";
 import { history } from '../config/history'
 
-class NewRegisterLayout extends Component {
+class RegisterLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -191,4 +191,4 @@ class NewRegisterLayout extends Component {
   }
 }
 
-export default NewRegisterLayout;
+export default RegisterLayout;
