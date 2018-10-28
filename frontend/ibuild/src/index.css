@@ -172,6 +172,11 @@ section.navbar{
 .navbar-inner.main-menu a.logo{
 	position:absolute;
 }
+
+.navbar-inner.main-menu a.logo:hover {
+	padding-left: 15px; 
+}
+
 .navbar-inner.main-menu ul ul a{
 	font-size:13px;
 	font-weight:normal;
@@ -259,6 +264,10 @@ section.navbar{
 }
 #menu .sf-sub-indicator{
 	display:none;
+}
+
+.link {
+ cursor: pointer;
 }
 
 @media (max-width: 767px){	

@@ -3,7 +3,6 @@ import Input from "../../components/input/Input";
 import AcceptButton from "../../components/button/AcceptButton";
 import request from "../../config";
 import { history } from '../../config/history'
-import '../layout.css';
 
 export default class RegisterUserLayout extends React.Component {
     constructor() {
@@ -13,8 +12,8 @@ export default class RegisterUserLayout extends React.Component {
             store: {
                 name: '',
                 email: '',
-                cnpj:'',
-                phone:'',
+                cnpj: '',
+                phone: '',
                 password: '',
                 confirmPassword: '',
             }
@@ -28,12 +27,12 @@ export default class RegisterUserLayout extends React.Component {
                 ...this.state.store
             };
             store[porpertyName] = value;
-            this.setState({store});
+            this.setState({ store });
         }
     }
 
     showError() {
-        const {password, confirmPassword} = this.state.store;
+        const { password, confirmPassword } = this.state.store;
         const equals = password === confirmPassword;
         this.isValid = equals;
         return !equals;
@@ -118,7 +117,7 @@ export default class RegisterUserLayout extends React.Component {
             <div className="register-layout">
                 <div className="shadow">
                     <div className="background-top">
-                        <h4 style={{margin: 0}}>Criar conta da loja</h4>
+                        <h4 style={{ margin: 0 }}>Criar conta da loja</h4>
                     </div>
                     <div className="background-bottom">
                         <form name="registerStore" onSubmit={this.registerStore.bind(this)}>

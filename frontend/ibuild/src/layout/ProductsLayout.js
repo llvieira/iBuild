@@ -33,67 +33,67 @@ class ProductsLayout extends Component {
   render() {
     return (
       <div>
-        <section class="header_text sub">
-          <img class="pageBanner" src="themes/images/pageBanner.png" alt="New products" />
+        <section className="header_text sub">
+          <img className="pageBanner" src="themes/images/pageBanner.png" alt="New products" />
           <h4><span>Produtos</span></h4>
         </section>
-        <section class="main-content">
-          <div class="row">
-            <div class="span9">
-              <ul class="thumbnails listing-products">
-                {this.state.items.map(elem =>
-                  <li class="span3">
+        <section className="main-content">
+          <div className="row">
+            <div className="span9">
+              <ul className="thumbnails listing-products">
+                {this.state.items.map((elem, index) =>
+                  <li key={index} className="span3">
                     <CardProduct item={elem} />
                   </li>
                 )}
               </ul>
               <hr></hr>
-              <div class="pagination pagination-small pagination-centered">
+              <div className="pagination pagination-small pagination-centered">
                 <ul>
-                  <li><a href="#">Prev</a></li>
-                  <li class="active"><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">4</a></li>
-                  <li><a href="#">Next</a></li>
+                  <li><a className="link">Prev</a></li>
+                  <li className="active"><a className="link">1</a></li>
+                  <li><a className="link">2</a></li>
+                  <li><a className="link">3</a></li>
+                  <li><a className="link">4</a></li>
+                  <li><a className="link">Next</a></li>
                 </ul>
               </div>
             </div>
-            <div class="span3 col">
-              <div class="block">
-                <ul class="nav nav-list">
-                  <li class="nav-header">CATEGORIAS</li>
-                  <li><a href="products.html">Madeiras</a></li>
-                  <li class="active"><a href="products.html">Ferramentas</a></li>
-                  <li><a href="products.html">Ceramicas</a></li>
+            <div className="span3 col">
+              <div className="block">
+                <ul className="nav nav-list">
+                  <li className="nav-header">CATEGORIAS</li>
+                  <li><a className="link">Madeiras</a></li>
+                  <li className="active"><a className="link">Ferramentas</a></li>
+                  <li><a className="link">Ceramicas</a></li>
                 </ul>
                 <br />
-                <ul class="nav nav-list below">
-                  <li class="nav-header">Lojas</li>
-                  <li><a href="products.html">Central da construcao</a></li>
-                  <li><a href="products.html">JcRocha</a></li>
-                  <li><a href="products.html">Atacadao da construcao</a></li>
+                <ul className="nav nav-list below">
+                  <li className="nav-header">Lojas</li>
+                  <li><a className="link">Central da construcao</a></li>
+                  <li><a className="link">JcRocha</a></li>
+                  <li><a className="link">Atacadao da construcao</a></li>
                 </ul>
               </div>
-              <div class="block">
-                <h4 class="title">
-                  <span class="pull-left"><span class="text">Aleatorio</span></span>
-                  <span class="pull-right">
-                    <a class="left button" href="#myCarousel" data-slide="prev"></a><a class="right button" href="#myCarousel" data-slide="next"></a>
+              <div className="block">
+                <h4 className="title">
+                  <span className="pull-left"><span className="text">Aleatorio</span></span>
+                  <span className="pull-right">
+                    <a className="left button" href="#myCarousel" data-slide="prev"> </a><a className="right button" href="#myCarousel" data-slide="next"> </a>
                   </span>
                 </h4>
-                <div id="myCarousel" class="carousel slide">
-                  <div class="carousel-inner">
-                    <div class="active item">
-                      <ul class="thumbnails listing-products">
-                        <li class="span3">
+                <div id="myCarousel" className="carousel slide">
+                  <div className="carousel-inner">
+                    <div className="active item">
+                      <ul className="thumbnails listing-products">
+                        <li className="span3">
                           <CardProduct item={{ img: "https://cdn.leroymerlin.com.br/products/elem_vaz_cer_reto_redondo_18x18x7cm_86622186_0002_600x600.jpg", title: "Tijolo vazado", value: 1.95 }} />
                         </li>
                       </ul>
                     </div>
-                    <div class="item">
-                      <ul class="thumbnails listing-products">
-                        <li class="span3">
+                    <div className="item">
+                      <ul className="thumbnails listing-products">
+                        <li className="span3">
                           <CardProduct item={{ img: "https://cdn.leroymerlin.com.br/products/caibro_eucalipto_nat_bruto_5cmx5,7cmx3m_madvei_89377015_6157_600x600.jpg", title: "Caibro", value: 14.29 }} />
                         </li>
                       </ul>
@@ -101,26 +101,26 @@ class ProductsLayout extends Component {
                   </div>
                 </div>
               </div>
-              <div class="block">
-                <h4 class="title">Mais <strong>vendidos</strong></h4>
-                <ul class="small-product">
+              <div className="block">
+                <h4 className="title">Mais <strong>vendidos</strong></h4>
+                <ul className="small-product">
                   <li>
-                    <a href="#" title="Serra eletrica">
+                    <a className="link" title="Serra eletrica">
                       <img src="themes/images/ladies/3.jpg" alt="Serra eletrica" />
                     </a>
-                    <a href="#">Serra eletrica</a>
+                    <a className="link">Serra eletrica</a>
                   </li>
                   <li>
-                    <a href="#" title="Cimento">
+                    <a className="link" title="Cimento">
                       <img src="themes/images/ladies/4.jpg" alt="Cimento" />
                     </a>
-                    <a href="#">Cimento</a>
+                    <a className="link">Cimento</a>
                   </li>
                   <li>
-                    <a href="#" title="Cimento">
+                    <a className="link" title="Cimento">
                       <img src="themes/images/ladies/5.jpg" alt="Cimento" />
                     </a>
-                    <a href="#">Cimento</a>
+                    <a className="link">Cimento</a>
                   </li>
                 </ul>
               </div>
