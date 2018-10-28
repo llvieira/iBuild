@@ -18,11 +18,14 @@ router.post('/', async (req, res) => {
     return res.status(400).send({ error: 'Invalid password' });
   }
 
+  const token = util.generateToken({ id: user.id });
+
   user.password = undefined;
+  user.id = undefined;
 
   return res.send({
     user,
-    token: util.generateToken({ id: user.id }),
+    token,
   });
 });
 

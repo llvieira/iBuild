@@ -26,6 +26,7 @@ class App extends Component {
 
   logoutUser() {
     localStorage.removeItem('user');
+    localStorage.removeItem('userToken');
     this.setState({ user: undefined });
   }
 
