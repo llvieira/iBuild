@@ -85,14 +85,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Loja cadastrada"
-          },
           "400": {
-            "description": "Loja já cadastrada"
-          },
-          "500": {
-            "description": "Registration failed: mensagem de erro"
+            "description": "Store not found"
           }
         }
       }
