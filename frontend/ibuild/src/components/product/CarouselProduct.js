@@ -25,7 +25,6 @@ class CarouselProduct extends Component {
           let carouselItems = [];
           let newItems = [];
 
-          console.log(data.length);
           data.forEach((elem, index) => {
             carouselItems.push(elem);
 
@@ -40,7 +39,6 @@ class CarouselProduct extends Component {
           newItems.push(carouselItems);
 
           this.setState({ items: newItems });
-          console.log(newItems);
         });
       }
     });
@@ -51,10 +49,10 @@ class CarouselProduct extends Component {
       <div id={this.props.id} className="myCarousel carousel slide">
         <div className="carousel-inner">
           {this.state.items.map((elem, index) =>
-            <div className={index === 0 ? "active item" : "item"} >
+            <div key={index} className={index === 0 ? "active item" : "item"} >
               <ul className="thumbnails">
-                {elem.map(item =>
-                  <li className="span3">
+                {elem.map((item, index) =>
+                  <li key={index} className="span3">
                     <CardProduct item={item} />
                   </li>
                 )}

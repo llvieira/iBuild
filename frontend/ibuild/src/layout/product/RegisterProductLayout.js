@@ -1,7 +1,6 @@
 import React from "react";
 import Input from "../../components/input/Input";
 import AcceptButton from "../../components/button/AcceptButton";
-import request from "../../config";
 import { history } from '../../config/history'
 
 export default class RegisterProductLayout extends React.Component {
@@ -23,21 +22,21 @@ export default class RegisterProductLayout extends React.Component {
                 ...this.state.product
             };
             product[porpertyName] = value;
-            this.setState({product});
+            this.setState({ product });
         }
     }
 
     registerProduct(e) {
         e.preventDefault();
         // if (this.isValid) {
-            // const path = '/stores/:id/items'; // how about that ID???
-            // const method = 'POST';
-            // request(path, method, this.state.product, {
-                // "Content-Type": "application/json"
-            // }).then(response => {
-                // if (response.ok)
-                    history.push('/success');
-            // });
+        // const path = '/stores/:id/items'; // how about that ID???
+        // const method = 'POST';
+        // request(path, method, this.state.product, {
+        // "Content-Type": "application/json"
+        // }).then(response => {
+        // if (response.ok)
+        history.push('/success');
+        // });
         // }
 
         return false;
@@ -45,7 +44,7 @@ export default class RegisterProductLayout extends React.Component {
 
     render() {
         const inputs = [
-            {   
+            {
                 key: "1",
                 showError: () => false,
                 value: this.state.product.img,
@@ -79,7 +78,7 @@ export default class RegisterProductLayout extends React.Component {
         return (
             <div className="shadow">
                 <div className="background-top">
-                    <h4 style={{margin: 0}}>Adicionar produto</h4>
+                    <h4 style={{ margin: 0 }}>Adicionar produto</h4>
                 </div>
                 <div className="background-bottom">
                     <form name="registerUser" onSubmit={this.registerProduct.bind(this)}>
