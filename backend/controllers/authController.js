@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const Store = require('../models/store');
 const util = require('../util/util');
 
 const router = express.Router();
@@ -26,6 +27,31 @@ router.post('/', async (req, res) => {
 
   return res.send({
     user,
+    token,
+  });
+});
+
+router.post('/store', async (req, res) => {
+  const { email, password } = req.body;
+
+  const store = await Store.findOne({ email }).select('+password');
+
+  if (!store) {
+    return res.status(400).send({ error: 'Store not found' });
+  }
+
+  if (!await bcrypt.compare(password, store.password)) {
+    return res.status(400).send({ error: 'Invalid password' });
+  }
+
+  const token = util.generateToken({ id: store.id });
+
+  store.password = undefined;
+  store.id = undefined;
+  store.email = undefined;
+
+  return res.send({
+    store,
     token,
   });
 });
