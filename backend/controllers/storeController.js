@@ -2,6 +2,7 @@ const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 const Store = require('../models/store');
 const util = require('../util/util');
+const User = require('../models/user');
 
 const authRouter = express.Router();
 const openRouter = express.Router();
@@ -74,6 +75,34 @@ openRouter.get('/items', async (req, res) => {
     return res.send(products);
   } catch (e) {
     return res.status(400).send({ error: `Get failed: ${e}` });
+  }
+});
+
+authRouter.put('/', async (req, res) => {
+  try {
+    const store = await Store.findById(req.userId);
+
+    if (req.body.name) {
+      store.name = req.body.name;
+    }
+    if (req.body.password) {
+      store.password = req.body.password;
+    }
+
+    if (req.body.email) {
+      const emailStore = await Store.find({ email: req.body.email });
+      const emailUser = await User.find({ email: req.body.email });
+      if (emailStore === [] || emailUser === []) {
+        return res.status(400).send({ error: 'Email is already in use' });
+      }
+      store.email = req.body.email;
+    }
+
+    store.save();
+
+    res.send(store);
+  } catch (e) {
+    return res.status(400).send({ error: `Updated failed: ${e}` });
   }
 });
 
