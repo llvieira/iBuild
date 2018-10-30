@@ -88,7 +88,6 @@ class UpdateStoreLayout extends Component {
             <div>
                 <section className="header_text sub">
                     <img className="pageBanner" src="themes/images/pageBanner.png" alt="New products" />
-                    <h4><span>Login ou Registro</span></h4>
                 </section>
                 <section className="main-content">
                     <div className="row">
