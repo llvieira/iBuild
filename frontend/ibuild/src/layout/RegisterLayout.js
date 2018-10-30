@@ -8,14 +8,15 @@ class RegisterLayout extends Component {
     this.state = {
       auth: {
         email: '',
-        password: ''
+        password: '',
+        type: 'user'
       },
       user: {
         name: '',
         email: '',
         cnpj: '',
         password: '',
-        confirmPassword: '',
+        confirmPassword: ''
       },
       cnpj: {
         show: false
@@ -45,26 +46,36 @@ class RegisterLayout extends Component {
 
   auth(e) {
     e.preventDefault();
-    const method = 'POST';
-    const path = '/auth/user';
-    request(path, method, this.state.auth, {
-      "Content-Type": "application/json"
-    }).then(response => {
-      console.log('passou');
-      if (response.ok)
-        response.json().then(data => {
-          localStorage.setItem('user', JSON.stringify(data.user));
-          localStorage.setItem('userToken', data.token);
-          this.props.loginUser(data.user);
-          history.push('/');
-        });
-      else
-        response.json().then(data => {
-          this.setState({ alertLogin: { show: true, text: data.error } });
-        });
-    }).catch(error => {
-      this.setState({ alertLogin: { show: true, text: error.toString() } });
-    });
+    if (!localStorage.getItem('userToken') && !localStorage.getItem('user') && !localStorage.getItem('storeToken') && !localStorage.getItem('store')) {
+      const method = 'POST';
+      const path = '/auth/' + this.state.auth.type;
+      request(path, method, this.state.auth, {
+        "Content-Type": "application/json"
+      }).then(response => {
+        if (response.ok)
+          response.json().then(data => {
+            if (data.user) {
+              localStorage.setItem('user', JSON.stringify(data.user));
+              localStorage.setItem('userToken', data.token);
+              this.props.login(data.user, 'user');
+            } else {
+              localStorage.setItem('store', JSON.stringify(data.store));
+              localStorage.setItem('storeToken', data.token);
+              this.props.login(data.store, 'store');
+            }
+
+            history.push('/');
+          });
+        else
+          response.json().then(data => {
+            this.setState({ alertLogin: { show: true, text: data.error } });
+          });
+      }).catch(error => {
+        this.setState({ alertLogin: { show: true, text: error.toString() } });
+      });
+    } else {
+      this.setState({ alertLogin: { show: true, text: 'Already a user or store logged in' } });
+    }
   }
 
   changeProperty(porpertyName) {
@@ -141,15 +152,22 @@ class RegisterLayout extends Component {
                 <input type="hidden" name="next" value="/" />
                 <fieldset>
                   <div className="control-group">
-                    <label className="control-label">Email</label>
+                    <label className="control-label">Email:</label>
                     <div className="controls">
                       <input type="email" placeholder="Coloque seu email" className="input-xlarge" value={this.state.auth.email} onChange={this.changeAuthProperty("email").bind(this)} />
                     </div>
                   </div>
                   <div className="control-group">
-                    <label className="control-label">Senha</label>
+                    <label className="control-label">Senha:</label>
                     <div className="controls">
                       <input type="password" placeholder="Coloque sua senha" className="input-xlarge" value={this.state.auth.password} onChange={this.changeAuthProperty("password").bind(this)} />
+                    </div>
+                  </div>
+                  <div className="control-group">
+                    <label className="control-label">Tipo de login:</label>
+                    <div className="controls">
+                      <label className="radio"><input type="radio" value="user" checked={this.state.auth.type === 'user'} onChange={this.changeAuthProperty("type").bind(this)} />Usuário</label>
+                      <label className="radio"><input type="radio" value="store" checked={this.state.auth.type === 'store'} onChange={this.changeAuthProperty("type").bind(this)} />Loja</label>
                     </div>
                   </div>
                   <div className="control-group">
