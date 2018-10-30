@@ -108,7 +108,7 @@ authRouter.put('/', async (req, res) => {
 
 authRouter.get('/', async (req, res) => {
   try {
-    const store = await Store.findById(req.userId);
+    const store = await Store.findById(req.idLogged);
 
     if (store) {
       return res.send(store);
