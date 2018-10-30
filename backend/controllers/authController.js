@@ -6,7 +6,7 @@ const util = require('../util/util');
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/user', async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email }).select('+password');

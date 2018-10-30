@@ -37,7 +37,7 @@ class RegisterLayout extends Component {
   auth(e) {
     e.preventDefault();
     const method = 'POST';
-    const path = '/auth';
+    const path = '/auth/user';
     request(path, method, this.state.auth, {
       "Content-Type": "application/json"
     }).then(response => {
