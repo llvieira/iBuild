@@ -106,5 +106,19 @@ authRouter.put('/', async (req, res) => {
   }
 });
 
+authRouter.get('/', async (req, res) => {
+  try {
+    const store = await Store.findById(req.userId);
+
+    if (store) {
+      return res.send(store);
+    }
+
+    return res.status(404).send({ error: 'Store not found' });
+  } catch (e) {
+    return res.status(400).send({ error: `Get failed: ${e}` });
+  }
+});
+
 
 module.exports = app => app.use('/stores', openRouter, authRouter);

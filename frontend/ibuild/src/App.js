@@ -8,6 +8,7 @@ import ProductsLayout from './layout/ProductsLayout';
 import InitialLayout from './layout/InitialLayout';
 import RegisterLayout from './layout/RegisterLayout';
 import './index.css';
+import UpdateStoreLayout from "./layout/UpdateStoreLayout";
 
 class App extends Component {
   constructor(props) {
@@ -68,6 +69,8 @@ class App extends Component {
                 <Route exact path="/registertore" component={RegisterStoreLayout} />
                 <Route exact path="/success" component={SuccessLayout} />
                 <Route exact path="/products" component={ProductsLayout} />
+                <Route exact path="/updateStore" component={UpdateStoreLayout} />
+
               </Switch>
             </div>
             <section id="footer-bar">

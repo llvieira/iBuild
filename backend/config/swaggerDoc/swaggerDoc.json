@@ -89,10 +89,37 @@
             "description": "Store not found"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Store user in system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucess"
+          },
+          "400": {
+            "description": "Get failed"
+          },
+          "404": {
+            "description": "Store not Found"
+          }
+        }
       }
 
     },
-
     "/stores/{storeId}": {
       "get": {
         "tags": [
