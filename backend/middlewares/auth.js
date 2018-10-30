@@ -24,7 +24,7 @@ module.exports = (req, res, next) => {
       return res.status(401).send({ error: 'Token invalid' });
     }
 
-    req.userId = decoded.id; // ID DO USUARIO QUE USA O SISTEMA
+    req.idLogged = decoded.id; // ID DA ENTIDADE LOGADA NO SISTEMA
 
     return next();
   });

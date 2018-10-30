@@ -29,7 +29,7 @@ openRouter.post('/', async (req, res) => {
 
 authRouter.put('/', async (req, res) => {
   try {
-    const user = await User.findById(req.userId);
+    const user = await User.findById(req.idLogged);
 
     if (req.body.name) {
       user.name = req.body.name;

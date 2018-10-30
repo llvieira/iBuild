@@ -8,16 +8,26 @@ class RegisterLayout extends Component {
     this.state = {
       auth: {
         email: '',
-        password: ''
+        password: '',
+        type: 'user'
       },
       user: {
         name: '',
         email: '',
         cnpj: '',
         password: '',
-        confirmPassword: '',
-      }, cnpj: {
+        confirmPassword: ''
+      },
+      cnpj: {
         show: false
+      },
+      alertLogin: {
+        show: false,
+        text: ''
+      },
+      alertRegister: {
+        show: false,
+        text: ''
       }
     }
   }
@@ -36,21 +46,36 @@ class RegisterLayout extends Component {
 
   auth(e) {
     e.preventDefault();
-    const method = 'POST';
-    const path = '/auth';
-    request(path, method, this.state.auth, {
-      "Content-Type": "application/json"
-    }).then(response => {
-      if (response.ok)
-        response.json().then(data => {
-          localStorage.setItem('user', JSON.stringify(data.user));
-          localStorage.setItem('userToken', data.token);
-          this.props.loginUser(data.user);
-          history.push('/');
-        });
-      else
-        console.log('Error!');
-    });
+    if (!localStorage.getItem('userToken') && !localStorage.getItem('user') && !localStorage.getItem('storeToken') && !localStorage.getItem('store')) {
+      const method = 'POST';
+      const path = '/auth/' + this.state.auth.type;
+      request(path, method, this.state.auth, {
+        "Content-Type": "application/json"
+      }).then(response => {
+        if (response.ok)
+          response.json().then(data => {
+            if (data.user) {
+              localStorage.setItem('user', JSON.stringify(data.user));
+              localStorage.setItem('userToken', data.token);
+              this.props.login(data.user, 'user');
+            } else {
+              localStorage.setItem('store', JSON.stringify(data.store));
+              localStorage.setItem('storeToken', data.token);
+              this.props.login(data.store, 'store');
+            }
+
+            history.push('/');
+          });
+        else
+          response.json().then(data => {
+            this.setState({ alertLogin: { show: true, text: data.error } });
+          });
+      }).catch(error => {
+        this.setState({ alertLogin: { show: true, text: error.toString() } });
+      });
+    } else {
+      this.setState({ alertLogin: { show: true, text: 'Already a user or store logged in' } });
+    }
   }
 
   changeProperty(porpertyName) {
@@ -77,8 +102,10 @@ class RegisterLayout extends Component {
         history.push('/success');
       else
         response.json().then(data => {
-          console.log(data);
+          this.setState({ alertRegister: { show: true, text: data.error } });
         });
+    }).catch(error => {
+      this.setState({ alertRegister: { show: true, text: error.toString() } });
     });
   }
 
@@ -90,8 +117,9 @@ class RegisterLayout extends Component {
     } else if (this.state.user.password === this.state.user.confirmPassword && this.state.cnpj.show) {
       const path = '/stores/';
       this.register(path);
+    } else {
+      this.setState({ alertRegister: { show: true, text: 'Passwords not equals!' } });
     }
-    return false;
   }
 
   showCnpj() {
@@ -107,7 +135,6 @@ class RegisterLayout extends Component {
   }
 
   render() {
-
     return (
       <div>
         <section className="header_text sub">
@@ -118,19 +145,29 @@ class RegisterLayout extends Component {
           <div className="row">
             <div className="span5">
               <h4 className="title"><span className="text"><strong>Login</strong> Form</span></h4>
+              <div className="alert alert-warning" style={this.state.alertLogin.show ? undefined : { display: 'none' }}>
+                {this.state.alertLogin.text}
+              </div>
               <form onSubmit={this.auth.bind(this)}>
                 <input type="hidden" name="next" value="/" />
                 <fieldset>
                   <div className="control-group">
-                    <label className="control-label">Email</label>
+                    <label className="control-label">Email:</label>
                     <div className="controls">
                       <input type="email" placeholder="Coloque seu email" className="input-xlarge" value={this.state.auth.email} onChange={this.changeAuthProperty("email").bind(this)} />
                     </div>
                   </div>
                   <div className="control-group">
-                    <label className="control-label">Senha</label>
+                    <label className="control-label">Senha:</label>
                     <div className="controls">
                       <input type="password" placeholder="Coloque sua senha" className="input-xlarge" value={this.state.auth.password} onChange={this.changeAuthProperty("password").bind(this)} />
+                    </div>
+                  </div>
+                  <div className="control-group">
+                    <label className="control-label">Tipo de login:</label>
+                    <div className="controls">
+                      <label className="radio"><input type="radio" value="user" checked={this.state.auth.type === 'user'} onChange={this.changeAuthProperty("type").bind(this)} />Usuário</label>
+                      <label className="radio"><input type="radio" value="store" checked={this.state.auth.type === 'store'} onChange={this.changeAuthProperty("type").bind(this)} />Loja</label>
                     </div>
                   </div>
                   <div className="control-group">
@@ -143,6 +180,9 @@ class RegisterLayout extends Component {
             </div>
             <div className="span7">
               <h4 className="title"><span className="text"><strong>Registro</strong> Form</span></h4>
+              <div className="alert alert-warning" style={this.state.alertRegister.show ? undefined : { display: 'none' }}>
+                {this.state.alertRegister.text}
+              </div>
               <form className="form-stacked" onSubmit={this.sendRegister.bind(this)} >
                 <fieldset>
                   <div className="control-group">

@@ -15,6 +15,14 @@
     {
       "name": "Store",
       "description": "Api for manipulate Store"
+    },
+    {
+      "name": "User",
+      "description": "APi for manipulate User"
+    },
+    {
+      "name": "Auth",
+      "description": "APi for provide Authentication"
     }
   ],
   "schemes": [
@@ -32,16 +40,16 @@
         "tags": [
           "Store"
         ],
-        "summary": "Store user in system",
+        "summary": "Create a new store in system",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
             "in": "body",
-            "name": "user",
+            "name": "store",
             "description": "Store that added in system",
-            "required": false,
+            "required": true,
             "schema": {
               "$ref": "#/definitions/Store"
             }
@@ -63,16 +71,16 @@
         "tags": [
           "Store"
         ],
-        "summary": "Store user in system",
+        "summary": "Updated user in system",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
             "in": "body",
-            "name": "user",
-            "description": "Store that added in system",
-            "required": false,
+            "name": "store",
+            "description": "Store params that updated in system",
+            "required": true,
             "schema": {
               "$ref": "#/definitions/Store"
             }
@@ -90,9 +98,7 @@
           }
         }
       }
-
     },
-
     "/stores/{storeId}": {
       "get": {
         "tags": [
@@ -131,16 +137,16 @@
         "tags": [
           "Store"
         ],
-        "summary": "Store user in system",
+        "summary": "Add a new item to a store",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
             "in": "body",
-            "name": "user",
-            "description": "Store that added in system",
-            "required": false,
+            "name": "Item",
+            "description": "Item that added in system",
+            "required": true,
             "schema": {
               "$ref": "#/definitions/Item"
             }
@@ -166,7 +172,26 @@
             "description": "Store not registered"
           },
           "500": {
-            "description": "Registration failed: Error"
+            "description": "Registration failed: Mensagem de erro"
+          }
+        }
+      }
+    },
+    "/stores/items": {
+      "get": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Get all items in stores",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Obtém todos os items das lojas"
+          },
+          "400": {
+            "description": "Get failed: mensagem de erro"
           }
         }
       }
@@ -174,7 +199,7 @@
     "/auth/store": {
       "post": {
         "tags": [
-          "Auth/"
+          "Auth"
         ],
         "summary": "Auth system",
         "produces": [
@@ -183,9 +208,9 @@
         "parameters": [
           {
             "in": "body",
-            "name": "user",
+            "name": "store",
             "description": "Auth system",
-            "required": false,
+            "required": true,
             "schema": {
               "$ref": "#/definitions/Auth"
             }
@@ -196,10 +221,107 @@
             "description": "Autenticado com sucesso"
           },
           "400": {
-            "description": "Loja já cadastrada"
+            "description": "Loja não encontrada ou password invalido"
+          }
+        }
+      }
+    },
+    "/auth/user": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Auth system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "Auth system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Auth"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Autenticado com sucesso"
+          },
+          "400": {
+            "description": "Usuario não encontrado ou password invalido"
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new user in system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "User that added in system",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usario cadastrado com sucesso"
+          },
+          "400": {
+            "description": "Usuário já cadastrado"
           },
           "500": {
             "description": "Registration failed: mensagem de erro"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update a user in system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "User params that updated in system",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update feito com sucesso"
+          },
+          "400": {
+            "description": "Email já cadastrado"
+          },
+          "500": {
+            "description": "Updated failed: mensagem de erro"
           }
         }
       }
@@ -210,7 +332,6 @@
       "required": [
         "name",
         "email",
-        "phone",
         "password",
         "cnpj"
       ],
@@ -281,7 +402,39 @@
           "type": "string"
         }
       }
+    },
+    "User": {
+      "required": [
+        "name",
+        "email",
+        "password"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "cpf": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "name": "Nome do usuario",
+        "email": "emailusuario@email.com",
+        "phone": "(XX)XXXXX-XXXX",
+        "password": "senhadousuario"
+      }
     }
   }
 }
-
