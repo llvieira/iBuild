@@ -15,10 +15,7 @@ class UpdateStoreLayout extends Component {
             }
         }
 
-        console.log(this.getStore());
-
-        console.log(this.state.store);
-
+        this.getStore();
     }
 
     getStore() {
@@ -30,14 +27,8 @@ class UpdateStoreLayout extends Component {
         }).then(response => {
             if (response.ok)
                 response.json().then(data => {
-                  console.log(data);
-                    this.state.store = data;
-                    const store = {
-                        ...this.state.store
-                    };
-
-                    this.setState({ store });
-                    });
+                    this.setState({ store: data });
+                });
             else
                 console.log('Error!');
         });
@@ -88,6 +79,7 @@ class UpdateStoreLayout extends Component {
             <div>
                 <section className="header_text sub">
                     <img className="pageBanner" src="themes/images/pageBanner.png" alt="New products" />
+                    <h4><span>Atualizar dados da Loja</span></h4>
                 </section>
                 <section className="main-content">
                     <div className="row">

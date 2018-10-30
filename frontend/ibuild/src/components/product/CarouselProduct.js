@@ -37,8 +37,10 @@ class CarouselProduct extends Component {
             count++;
           });
           newItems.push(carouselItems);
-
-          this.setState({ items: newItems });
+          
+          if (data.length !== 0) {
+            this.setState({ items: newItems });
+          }
         });
       }
     });

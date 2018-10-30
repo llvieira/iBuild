@@ -13,10 +13,6 @@ class UserAccountLayout extends Component {
         newPassword: '',
         oldPassword: ''
       },
-      alertLogin: {
-        show: false,
-        text: ''
-      },
       alertRegister: {
         show: false,
         text: ''
@@ -66,12 +62,12 @@ class UserAccountLayout extends Component {
       <div>
         <section className="header_text sub">
           <img className="pageBanner" src="themes/images/pageBanner.png" alt="New products" />
-          <h4><span>Login ou Registro</span></h4>
+          <h4><span>Atualizar conta</span></h4>
         </section>
         <section className="main-content">
           <div className="row">
             <div className="span7">
-              <h4 className="title"><span className="text"><strong>Dados de cadastro</strong></span></h4>
+              <h4 className="title"><span className="text"><strong>Dados</strong> de cadastro</span></h4>
               <div className="alert alert-warning" style={this.state.alertRegister.show ? undefined : { display: 'none' }}>
                 {this.state.alertRegister.text}
               </div>
@@ -102,7 +98,7 @@ class UserAccountLayout extends Component {
                     </div>
                   </div>
                   <hr></hr>
-                  <div className="actions"><input className="btn btn-inverse large" type="submit" value="Salvar" /></div>
+                  <div className="actions"><input className="btn btn-inverse large" type="submit" value="Atualizar" /></div>
                 </fieldset>
               </form>
             </div>

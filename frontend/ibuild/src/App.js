@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
-import RegisterUserLayout from './layout/product/RegisterLayout'
 import { history } from './config/history';
 import SuccessLayout from './layout/SuccessLayout';
-import RegisterStoreLayout from "./layout/store/RegisterStoreLayout";
 import ProductsLayout from './layout/ProductsLayout';
 import InitialLayout from './layout/InitialLayout';
 import RegisterLayout from './layout/RegisterLayout';
@@ -81,8 +79,6 @@ class App extends Component {
                             <Switch>
                                 <Route exact path="/" render={(props) => <InitialLayout {...props} />} />
                                 <Route exact path="/register" render={(props) => <RegisterLayout {...props} login={this.login.bind(this)} />} />
-                                <Route exact path="/registerProduct" component={RegisterUserLayout} />
-                                <Route exact path="/registertore" component={RegisterStoreLayout} />
                                 <Route exact path="/success" component={SuccessLayout} />
                                 <Route exact path="/products" component={ProductsLayout} />
                                 <Route exact path="/updateStore" component={UpdateStoreLayout} />
