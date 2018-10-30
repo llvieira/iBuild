@@ -1,10 +1,14 @@
 const express = require('express');
 const User = require('../models/user');
+const authMiddleware = require('../middlewares/auth');
 const util = require('../util/util');
 
-const router = express.Router();
+const authRouter = express.Router();
+const openRouter = express.Router();
 
-router.post('/', async (req, res) => {
+authRouter.use(authMiddleware);
+
+openRouter.post('/', async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -23,4 +27,32 @@ router.post('/', async (req, res) => {
   }
 });
 
-module.exports = app => app.use('/users', router);
+authRouter.put('/', async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+
+    if (req.body.name) {
+      user.name = req.body.name;
+    }
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    if (req.body.email) {
+      const emailStore = await User.find({ email: req.body.email });
+      const emailUser = await User.find({ email: req.body.email });
+      if (emailStore === [] || emailUser === []) {
+        return res.status(400).send({ error: 'Email is already in use' });
+      }
+      user.email = req.body.email;
+    }
+
+    user.save();
+
+    res.send(user);
+  } catch (e) {
+    return res.status(400).send({ error: `Updated failed: ${e}` });
+  }
+});
+
+module.exports = app => app.use('/users', openRouter, authRouter);

@@ -23,7 +23,6 @@ router.post('/', async (req, res) => {
 
   user.password = undefined;
   user.id = undefined;
-  user.email = undefined;
 
   return res.send({
     user,
