@@ -24,7 +24,9 @@ class ProductsLayout extends Component {
     request(pathProducts, method, undefined, {}).then(response => {
       if (response.ok) {
         response.json().then(data => {
-          this.setState({ items: data });
+          if (data.length !== 0) {
+            this.setState({ items: data });
+          }
         });
       }
     });
