@@ -80,7 +80,7 @@ openRouter.get('/items', async (req, res) => {
 
 authRouter.put('/', async (req, res) => {
   try {
-    const store = await Store.findById(req.userId);
+    const store = await Store.findById(req.idLogged);
 
     if (req.body.name) {
       store.name = req.body.name;
