@@ -26,7 +26,7 @@ class UpdateStoreLayout extends Component {
         const path = '/stores';
         request(path, method, this.state.auth, {
             "Content-Type": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZDdhNGE3MmM1YWEwMGIyN2NiODdlMCIsImlhdCI6MTU0MDg1OTA3MiwiZXhwIjoxNTQwOTQ1NDcyfQ.qAG6DeTMTcrckvY-pLZUT7KbH30MbGgcLphJGIx3bas"
+            "Authorization": "Bearer "+ localStorage.getItem('userToken')
         }).then(response => {
             if (response.ok)
                 response.json().then(data => {
@@ -62,7 +62,7 @@ class UpdateStoreLayout extends Component {
         const method = 'PUT';
         request(path, method, this.state.store, {
             "Content-Type": "application/json",
-            "Authorization": "Bearer "+JSON.parse(localStorage.getItem('userToken')),
+            "Authorization": "Bearer "+ localStorage.getItem('userToken')
         }).then(response => {
             if (response.ok)
                 history.push('/success');
