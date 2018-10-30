@@ -34,8 +34,8 @@ authRouter.put('/', async (req, res) => {
     if (req.body.name) {
       user.name = req.body.name;
     }
-    if (req.body.password) {
-      user.password = req.body.password;
+    if (req.body.newPassword) {
+      user.password = req.body.newPassword;
     }
 
     if (req.body.email) {

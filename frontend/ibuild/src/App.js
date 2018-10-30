@@ -7,6 +7,7 @@ import RegisterStoreLayout from "./layout/store/RegisterStoreLayout";
 import ProductsLayout from './layout/ProductsLayout';
 import InitialLayout from './layout/InitialLayout';
 import RegisterLayout from './layout/RegisterLayout';
+import UserAccountLayout from './layout/UserAccountLayout';
 import './index.css';
 
 class App extends Component {
@@ -16,7 +17,7 @@ class App extends Component {
     this.state = {
       user: JSON.parse(localStorage.getItem('user')),
       store: JSON.parse(localStorage.getItem('store')),
-      userMenuAuth: [{ optionName: 'My account', path: '/' }],
+      userMenuAuth: [{ optionName: 'My account', path: '/userAccount' }],
       userMenuOpen: [{ optionName: 'Registro/Login', path: '/register' }]
     };
   }
@@ -78,6 +79,7 @@ class App extends Component {
                 <Route exact path="/registertore" component={RegisterStoreLayout} />
                 <Route exact path="/success" component={SuccessLayout} />
                 <Route exact path="/products" component={ProductsLayout} />
+                <Route exact path="/userAccount" component={UserAccountLayout} />
               </Switch>
             </div>
             <section id="footer-bar">
