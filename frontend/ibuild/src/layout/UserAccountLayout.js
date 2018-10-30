@@ -58,11 +58,6 @@ class UserAccountLayout extends Component {
     if (this.state.user.password === this.state.user.confirmPassword) {
       const path = '/users/';
       this.register(path);
-    } else if (this.state.user.password === this.state.user.confirmPassword && this.state.cnpj.show) {
-      const path = '/stores/';
-      this.register(path);
-    } else {
-      this.setState({ alertRegister: { show: true, text: 'Passwords not equals!' } });
     }
   }
 
