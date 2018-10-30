@@ -16,8 +16,17 @@ class RegisterLayout extends Component {
         cnpj: '',
         password: '',
         confirmPassword: '',
-      }, cnpj: {
+      },
+      cnpj: {
         show: false
+      },
+      alertLogin: {
+        show: false,
+        text: ''
+      },
+      alertRegister: {
+        show: false,
+        text: ''
       }
     }
   }
@@ -41,6 +50,7 @@ class RegisterLayout extends Component {
     request(path, method, this.state.auth, {
       "Content-Type": "application/json"
     }).then(response => {
+      console.log('passou');
       if (response.ok)
         response.json().then(data => {
           localStorage.setItem('user', JSON.stringify(data.user));
@@ -49,7 +59,11 @@ class RegisterLayout extends Component {
           history.push('/');
         });
       else
-        console.log('Error!');
+        response.json().then(data => {
+          this.setState({ alertLogin: { show: true, text: data.error } });
+        });
+    }).catch(error => {
+      this.setState({ alertLogin: { show: true, text: error.toString() } });
     });
   }
 
@@ -77,8 +91,10 @@ class RegisterLayout extends Component {
         history.push('/success');
       else
         response.json().then(data => {
-          console.log(data);
+          this.setState({ alertRegister: { show: true, text: data.error } });
         });
+    }).catch(error => {
+      this.setState({ alertRegister: { show: true, text: error.toString() } });
     });
   }
 
@@ -90,8 +106,9 @@ class RegisterLayout extends Component {
     } else if (this.state.user.password === this.state.user.confirmPassword && this.state.cnpj.show) {
       const path = '/stores/';
       this.register(path);
+    } else {
+      this.setState({ alertRegister: { show: true, text: 'Passwords not equals!' } });
     }
-    return false;
   }
 
   showCnpj() {
@@ -107,7 +124,6 @@ class RegisterLayout extends Component {
   }
 
   render() {
-
     return (
       <div>
         <section className="header_text sub">
@@ -118,6 +134,9 @@ class RegisterLayout extends Component {
           <div className="row">
             <div className="span5">
               <h4 className="title"><span className="text"><strong>Login</strong> Form</span></h4>
+              <div className="alert alert-warning" style={this.state.alertLogin.show ? undefined : { display: 'none' }}>
+                {this.state.alertLogin.text}
+              </div>
               <form onSubmit={this.auth.bind(this)}>
                 <input type="hidden" name="next" value="/" />
                 <fieldset>
@@ -143,6 +162,9 @@ class RegisterLayout extends Component {
             </div>
             <div className="span7">
               <h4 className="title"><span className="text"><strong>Registro</strong> Form</span></h4>
+              <div className="alert alert-warning" style={this.state.alertRegister.show ? undefined : { display: 'none' }}>
+                {this.state.alertRegister.text}
+              </div>
               <form className="form-stacked" onSubmit={this.sendRegister.bind(this)} >
                 <fieldset>
                   <div className="control-group">
