@@ -44,6 +44,20 @@ class RegisterLayout extends Component {
     }
   }
 
+  authSave(responseData) {
+    return responseData.json().then(data => {
+      if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('userToken', data.token);
+        this.props.login(data.user, 'user');
+      } else {
+        localStorage.setItem('store', JSON.stringify(data.store));
+        localStorage.setItem('storeToken', data.token);
+        this.props.login(data.store, 'store');
+      }
+    });
+  }
+
   auth(e) {
     e.preventDefault();
     if (!localStorage.getItem('userToken') && !localStorage.getItem('user') && !localStorage.getItem('storeToken') && !localStorage.getItem('store')) {
@@ -53,19 +67,7 @@ class RegisterLayout extends Component {
         "Content-Type": "application/json"
       }).then(response => {
         if (response.ok)
-          response.json().then(data => {
-            if (data.user) {
-              localStorage.setItem('user', JSON.stringify(data.user));
-              localStorage.setItem('userToken', data.token);
-              this.props.login(data.user, 'user');
-            } else {
-              localStorage.setItem('store', JSON.stringify(data.store));
-              localStorage.setItem('storeToken', data.token);
-              this.props.login(data.store, 'store');
-            }
-
-            history.push('/');
-          });
+          this.authSave(response).then(() => history.push('/'));
         else
           response.json().then(data => {
             this.setState({ alertLogin: { show: true, text: data.error } });
@@ -98,9 +100,9 @@ class RegisterLayout extends Component {
     request(path, method, this.state.user, {
       "Content-Type": "application/json"
     }).then(response => {
-      if (response.ok)
-        history.push('/success');
-      else
+      if (response.ok) {
+        this.authSave(response).then(() => history.push('/success'));
+      } else
         response.json().then(data => {
           this.setState({ alertRegister: { show: true, text: data.error } });
         });
