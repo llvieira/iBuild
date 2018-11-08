@@ -23,7 +23,7 @@ class UpdateStoreLayout extends Component {
         const path = '/stores';
         request(path, method, this.state.auth, {
             "Content-Type": "application/json",
-            "Authorization": "Bearer "+ localStorage.getItem('storeToken')
+            "Authorization": "Bearer " + localStorage.getItem('storeToken')
         }).then(response => {
             if (response.ok)
                 response.json().then(data => {
@@ -53,7 +53,7 @@ class UpdateStoreLayout extends Component {
         const method = 'PUT';
         request(path, method, this.state.store, {
             "Content-Type": "application/json",
-            "Authorization": "Bearer "+ localStorage.getItem('storeToken')
+            "Authorization": "Bearer " + localStorage.getItem('storeToken')
         }).then(response => {
             if (response.ok)
                 history.push('/success');
@@ -89,7 +89,7 @@ class UpdateStoreLayout extends Component {
                             <form className="form-stacked" onSubmit={this.sendRegister.bind(this)} >
                                 <fieldset>
                                     <div className="control-group">
-                                        <label className="control-label">Nome</label>
+                                        <label className="control-label">Nome:</label>
                                         <div className="controls">
                                             <input type="text" placeholder="Coloque seu nome" className="input-xlarge" value={this.state.store.name} onChange={this.changeProperty("name").bind(this)} />
                                         </div>
