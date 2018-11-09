@@ -6,8 +6,9 @@ import ProductsLayout from './layout/ProductsLayout';
 import InitialLayout from './layout/InitialLayout';
 import RegisterLayout from './layout/RegisterLayout';
 import UserAccountLayout from './layout/UserAccountLayout';
+import UpdateStoreLayout from './layout/UpdateStoreLayout';
+import RegisterProductLayout from './layout/RegisterProductLayout';
 import './index.css';
-import UpdateStoreLayout from "./layout/UpdateStoreLayout";
 
 class App extends Component {
     constructor(props) {
@@ -16,8 +17,8 @@ class App extends Component {
         this.state = {
             user: JSON.parse(localStorage.getItem('user')),
             store: JSON.parse(localStorage.getItem('store')),
-            userMenuAuth: { optionName: 'My account', path: '/userAccount' },
-            userMenuAuthStore: { optionName: 'My store', path: '/updateStore' },
+            userMenuAuth: { optionName: 'Minha conta', path: '/userAccount' },
+            userMenuAuthStore: [{ optionName: 'Minha Loja', path: '/updateStore' }, { optionName: 'Cadastrar Produto', path: '/registerProduct' }],
             userMenuOpen: { optionName: 'Registro/Login', path: '/register' }
         };
     }
@@ -54,7 +55,7 @@ class App extends Component {
                                 <ul className="user-menu">
                                     {!this.state.user && !this.state.store ? <li><a className="link" onClick={() => history.push(this.state.userMenuOpen.path)}>{this.state.userMenuOpen.optionName}</a></li> : undefined}
                                     {this.state.user ? <li><a className="link" onClick={() => history.push(this.state.userMenuAuth.path)}>{this.state.userMenuAuth.optionName}</a></li> : undefined}
-                                    {this.state.store ? <li><a className="link" onClick={() =>  history.push(this.state.userMenuAuthStore.path)}>{this.state.userMenuAuthStore.optionName}</a></li> : undefined}
+                                    {this.state.store ? this.state.userMenuAuthStore.map(elem => <li key={elem.path}><a className="link" onClick={() => history.push(elem.path)}>{elem.optionName}</a></li>) : undefined}
                                     {this.state.user || this.state.store ? <li><a className="link" onClick={() => this.logout()}>Logout</a></li> : undefined}
                                     {this.state.user ? <li>{'Logged user: ' + this.state.user.name}</li> : undefined}
                                     {this.state.store ? <li>{'Logged store: ' + this.state.store.name}</li> : undefined}
@@ -83,6 +84,7 @@ class App extends Component {
                                 <Route exact path="/products" component={ProductsLayout} />
                                 <Route exact path="/updateStore" component={UpdateStoreLayout} />
                                 <Route exact path="/userAccount" component={UserAccountLayout} />
+                                <Route exact path="/registerProduct" component={RegisterProductLayout} />
                             </Switch>
                         </div>
                         <section id="footer-bar">
