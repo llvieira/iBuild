@@ -43,10 +43,10 @@ openRouter.post('/', async (req, res) => {
   }
 });
 
-authRouter.post('/:id/items', async (req, res) => {
+authRouter.post('/items', async (req, res) => {
   const item = req.body;
 
-  Store.findById(req.params.id, (err, store) => {
+  Store.findById(req.idLogged, (err, store) => {
     if (err) return res.status(400).send({ error: 'store not registered' });
 
     if (!store.storage) {
