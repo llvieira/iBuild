@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('../database/index');
 
+const ItemCart = new mongoose.Schema({ id: String, idStore: String, amount: Number }, { noId: true });
+
 const UserSchema = new mongoose.Schema({
 
   name: {
@@ -35,7 +37,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-
+  cart: [ItemCart],
 });
 
 UserSchema.pre('save', async function (next) {

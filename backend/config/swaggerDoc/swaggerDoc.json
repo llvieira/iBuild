@@ -160,7 +160,24 @@
         }
       }
     },
-    "/stores/{id}/items": {
+    "/stores/items": {
+      "get": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Get all items in stores",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Obtém todos os items das lojas"
+          },
+          "400": {
+            "description": "Get failed: mensagem de erro"
+          }
+        }
+      },
       "post": {
         "tags": [
           "Store"
@@ -184,12 +201,6 @@
             "name": "authorization",
             "description": "Token when logged in",
             "required": true
-          },
-          {
-            "in": "path",
-            "name": "id",
-            "description": "Store id",
-            "required": true
           }
         ],
         "responses": {
@@ -201,25 +212,6 @@
           },
           "500": {
             "description": "Registration failed: Mensagem de erro"
-          }
-        }
-      }
-    },
-    "/stores/items": {
-      "get": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Get all items in stores",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "Obtém todos os items das lojas"
-          },
-          "400": {
-            "description": "Get failed: mensagem de erro"
           }
         }
       }
@@ -284,7 +276,7 @@
         }
       }
     },
-    "/user": {
+    "/users": {
       "post": {
         "tags": [
           "User"
@@ -353,6 +345,45 @@
           }
         }
       }
+    },
+    "/users/cart": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in cart user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "cart",
+            "description": "Save a item in cart user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Cart"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -393,7 +424,10 @@
         "img",
         "title",
         "value",
-        "delivery"
+        "delivery",
+        "quantity",
+        "category",
+        "brand"
       ],
       "properties": {
         "img": {
@@ -408,13 +442,26 @@
         },
         "delivery": {
           "type": "boolean"
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "category": {
+          "type": "string"
+        },
+        "brand": {
+          "type": "string"
         }
       },
       "example": {
         "img": "Nome Item",
         "title": "Titulo",
         "value": 300,
-        "delivery": true
+        "delivery": true,
+        "quantity": 30,
+        "category": "casa",
+        "brand": "brand"
       }
     },
     "Auth": {
@@ -462,6 +509,29 @@
         "email": "emailusuario@email.com",
         "phone": "(XX)XXXXX-XXXX",
         "password": "senhadousuario"
+      }
+    },
+    "Cart": {
+      "required": [
+        "idItem",
+        "idStore",
+        "amount"
+      ],
+      "properties": {
+        "idItem": {
+          "type": "string"
+        },
+        "idStore": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "id": "7t2y268e72ye621e7828eg123eo",
+        "idStore": "7321y3n1238712yo216h312o8",
+        "amount": "3"
       }
     }
   }
