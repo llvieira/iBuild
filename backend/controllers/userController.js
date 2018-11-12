@@ -77,12 +77,24 @@ authRouter.post('/cart/', async (req, res) => {
       }
     });
 
-    // user.cart.put(item);
-    //
-    // user.save();
     return res.status(404).send(user);
   } catch (e) {
     return res.status(400).send({ error: `Registration failed ${e}` });
+  }
+});
+
+authRouter.get('/cart/', async (req, res) => {
+  const user = await User.findById(req.idLogged);
+
+  try {
+    if (!user) {
+      return res.status(404).send({ error: 'User not Found' });
+    }
+
+    return res.status(404).send(user.cart);
+
+  } catch (e) {
+    return res.status(400).send({ error: `Get failed ${e}` });
   }
 });
 

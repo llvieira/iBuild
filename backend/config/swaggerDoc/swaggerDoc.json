@@ -383,6 +383,34 @@
             "description": "Registration failed: mensagem de erro"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in cart user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Items"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Get failed"
+          }
+        }
       }
     }
   },
@@ -529,7 +557,7 @@
         }
       },
       "example": {
-        "id": "7t2y268e72ye621e7828eg123eo",
+        "idItem": "7t2y268e72ye621e7828eg123eo",
         "idStore": "7321y3n1238712yo216h312o8",
         "amount": "3"
       }
