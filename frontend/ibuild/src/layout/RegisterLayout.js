@@ -9,7 +9,7 @@ class RegisterLayout extends Component {
       auth: {
         email: '',
         password: '',
-        type: 'user'
+        type: this.props.type
       },
       user: {
         name: '',
@@ -19,7 +19,7 @@ class RegisterLayout extends Component {
         confirmPassword: ''
       },
       cnpj: {
-        show: false
+        show: (this.props.type === 'store') ? true : false
       },
       alertLogin: {
         show: false,
@@ -30,6 +30,8 @@ class RegisterLayout extends Component {
         text: ''
       }
     }
+
+    console.log(this.state.auth);
   }
 
   changeAuthProperty(porpertyName) {
@@ -166,13 +168,6 @@ class RegisterLayout extends Component {
                     </div>
                   </div>
                   <div className="control-group">
-                    <label className="control-label">Tipo de login:</label>
-                    <div className="controls">
-                      <label className="radio"><input type="radio" value="user" checked={this.state.auth.type === 'user'} onChange={this.changeAuthProperty("type").bind(this)} />Usuário</label>
-                      <label className="radio"><input type="radio" value="store" checked={this.state.auth.type === 'store'} onChange={this.changeAuthProperty("type").bind(this)} />Loja</label>
-                    </div>
-                  </div>
-                  <div className="control-group">
                     <input className="btn btn-inverse large" type="submit" value="Login" />
                     <hr></hr>
                     <p className="reset">Recupere sua <a className="link" title="Recover your username or password">senha</a></p>
@@ -217,7 +212,6 @@ class RegisterLayout extends Component {
                       <input type="password" placeholder="Confirme sua senha" className="input-xlarge" value={this.state.user.confirmPassword} onChange={this.changeProperty("confirmPassword").bind(this)} />
                     </div>
                   </div>
-                  <div style={{ marginBottom: '8px' }}><input style={{ margin: '0 10px 2px 0' }} type="checkbox" onClick={this.showCnpj.bind(this)} /><span>Cadastrar Loja</span></div>
                   <div className="control-group">
                     <p>Agora a diversão começa!</p>
                   </div>
