@@ -8,6 +8,7 @@ import RegisterLayout from './layout/RegisterLayout';
 import UserAccountLayout from './layout/UserAccountLayout';
 import UpdateStoreLayout from './layout/UpdateStoreLayout';
 import RegisterProductLayout from './layout/RegisterProductLayout';
+import CartLayout from './layout/CartLayout';
 import './index.css';
 
 class App extends Component {
@@ -19,7 +20,8 @@ class App extends Component {
             store: JSON.parse(localStorage.getItem('store')),
             userMenuAuth: { optionName: 'Minha conta', path: '/userAccount' },
             userMenuAuthStore: [{ optionName: 'Minha Loja', path: '/updateStore' }, { optionName: 'Cadastrar Produto', path: '/registerProduct' }],
-            userMenuOpen: { optionName: 'Registro/Login', path: '/register' }
+            userMenuOpen: { optionName: 'Registro/Login', path: '/register' },
+            userCartOpen: { optionName: 'Cart', path: '/cart' }
         };
     }
 
@@ -57,6 +59,7 @@ class App extends Component {
                                     {this.state.user ? <li><a className="link" onClick={() => history.push(this.state.userMenuAuth.path)}>{this.state.userMenuAuth.optionName}</a></li> : undefined}
                                     {this.state.store ? this.state.userMenuAuthStore.map(elem => <li key={elem.path}><a className="link" onClick={() => history.push(elem.path)}>{elem.optionName}</a></li>) : undefined}
                                     {this.state.user || this.state.store ? <li><a className="link" onClick={() => this.logout()}>Logout</a></li> : undefined}
+                                    {this.state.user ? <li><a className="link" onClick={() => history.push(this.state.userCartOpen.path)}>{this.state.userCartOpen.optionName}</a></li> : undefined}
                                     {this.state.user ? <li>{'Logged user: ' + this.state.user.name}</li> : undefined}
                                     {this.state.store ? <li>{'Logged store: ' + this.state.store.name}</li> : undefined}
                                 </ul>
@@ -85,6 +88,8 @@ class App extends Component {
                                 <Route exact path="/updateStore" component={UpdateStoreLayout} />
                                 <Route exact path="/userAccount" component={UserAccountLayout} />
                                 <Route exact path="/registerProduct" component={RegisterProductLayout} />
+                                <Route exact path="/cart" component={CartLayout} />
+
                             </Switch>
                         </div>
                         <section id="footer-bar">

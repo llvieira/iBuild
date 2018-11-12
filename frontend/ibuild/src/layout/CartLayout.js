@@ -3,10 +3,10 @@ import CardProduct from "../components/product/CardProduct";
 import request from "../config";
 import './productsLayout.css';
 
-const pathProducts = '/stores/items';
+const pathCart = '/users/cart';
 const method = 'GET';
 
-class ProductsLayout extends Component {
+class CartLayout extends Component {
   constructor(props) {
     super(props);
 
@@ -21,7 +21,10 @@ class ProductsLayout extends Component {
       }, { img: "https://cdn.leroymerlin.com.br/products/telha_ceram_mediterranea_grena_41_80_24_90_cm_maristela_telhas_87012961_0001_600x600.jpg", title: "Telha ceramica", value: 2.99 }]
     };
 
-    request(pathProducts, method, undefined, {}).then(response => {
+    request(pathCart, method, undefined, {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + localStorage.getItem("userToken")
+    }).then(response => {
       if (response.ok) {
         response.json().then(data => {
           if (data.length !== 0) {
@@ -37,8 +40,8 @@ class ProductsLayout extends Component {
     return (
       <div>
         <section className="header_text sub">
-          <img className="pageBanner" src="themes/images/pageBanner.png" alt="Cart products" />
-          <h4><span>Cart</span></h4>
+          <img className="pageBanner" src="themes/images/pageBanner.png" alt="New products" />
+          <h4><span>Produtos</span></h4>
         </section>
         <section className="main-content">
           <div className="row">
@@ -135,4 +138,4 @@ class ProductsLayout extends Component {
   }
 }
 
-export default ProductsLayout;
+export default CartLayout;
