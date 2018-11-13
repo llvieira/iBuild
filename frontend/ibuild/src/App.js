@@ -9,6 +9,7 @@ import UserAccountLayout from './layout/UserAccountLayout';
 import UpdateStoreLayout from './layout/UpdateStoreLayout';
 import RegisterProductLayout from './layout/RegisterProductLayout';
 import './index.css';
+import FavoriteLayout from "./layout/FavoriteLayout";
 
 class App extends Component {
     constructor(props) {
@@ -89,6 +90,7 @@ class App extends Component {
                                 <Route exact path="/updateStore" component={UpdateStoreLayout} />
                                 <Route exact path="/userAccount" component={UserAccountLayout} />
                                 <Route exact path="/registerProduct" component={RegisterProductLayout} />
+                                <Route exact path="/favorites" component={FavoriteLayout} />
                             </Switch>
                         </div>
                         <section id="footer-bar">

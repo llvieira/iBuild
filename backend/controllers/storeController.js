@@ -52,6 +52,7 @@ authRouter.post('/items', async (req, res) => {
     if (!store.storage) {
       store.storage = [];
     }
+    item.storeId = req.idLogged;
 
     store.storage.push(item);
 

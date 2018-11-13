@@ -478,7 +478,45 @@
             "description": "Get failed"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in favorite user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "favorite",
+            "description": "Save a item in favorite user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Favorites"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
       }
+
     },
     "/users/ItemStore": {
       "post": {

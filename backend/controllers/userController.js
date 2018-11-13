@@ -97,6 +97,30 @@ authRouter.get('/favorites/', async (req, res) => {
   }
 });
 
+authRouter.delete('/favorites/', async (req, res) => {
+  const { id } = req.body;
+  const user = await User.findById(req.idLogged);
+  try {
+    if (!user) {
+      return res.status(404).send({ error: 'User not Found' });
+    }
+    let i = 0;
+    user.favorites.forEach((itemFavorite) => {
+      if (id == itemFavorite.id) {
+        user.favorites.splice(i, 1);
+        user.save();
+      }
+      i++;
+    });
+
+    const valor = user.favorites;
+
+    return res.status(200).send(valor);
+  } catch (e) {
+    return res.status(400).send({ error: `Get failed ${e}` });
+  }
+});
+
 authRouter.post('/ItemStore/', async (req, res) => {
   const { id, idStore } = req.body;
   const store = await Store.findById(idStore);

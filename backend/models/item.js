@@ -31,6 +31,9 @@ const itemSchema = new mongoose.Schema({
     required: true,
     min: 1,
   },
+  storeId: {
+    type: String,
+  },
 });
 
 module.exports = itemSchema;
