@@ -92,7 +92,29 @@ authRouter.get('/cart/', async (req, res) => {
     }
 
     return res.status(404).send(user.cart);
+  } catch (e) {
+    return res.status(400).send({ error: `Get failed ${e}` });
+  }
+});
 
+
+authRouter.delete('/cart/', async (req, res) => {
+  const { id } = req.body;
+  const user = await User.findById(req.idLogged);
+  try {
+    if (!user) {
+      return res.status(404).send({ error: 'User not Found' });
+    }
+    let i = 0;
+    user.cart.forEach((itemCart) => {
+      if (id == itemCart.id) {
+        user.cart.splice(i, 1);
+        user.save();
+      }
+      i++;
+    });
+
+    return res.status(200).send(user.cart);
   } catch (e) {
     return res.status(400).send({ error: `Get failed ${e}` });
   }

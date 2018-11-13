@@ -411,7 +411,45 @@
             "description": "Get failed"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in cart user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "cart",
+            "description": "Save a item in cart user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Cart"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
       }
+
     },
     "/users/favorites": {
       "post": {
