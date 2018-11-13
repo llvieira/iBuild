@@ -10,6 +10,7 @@ import UpdateStoreLayout from './layout/UpdateStoreLayout';
 import RegisterProductLayout from './layout/RegisterProductLayout';
 import CartLayout from './layout/CartLayout';
 import './index.css';
+import FavoriteLayout from "./layout/FavoriteLayout";
 
 class App extends Component {
     constructor(props) {
@@ -75,8 +76,9 @@ class App extends Component {
                                 <nav id="menu" className="pull-right">
                                     <ul>
                                         <li><a className="link" onClick={() => history.push('/products')}>Produtos</a></li>
-                                        <li><a className="link">Lojas</a></li>
-                                        <li><a className="link">Top lojas</a></li>
+                                        <li><a className="link" onClick={() => history.push('/store')}>Lojas</a></li>
+                                        <li><a className="link" onClick={() => history.push('/top-stores')}>Top lojas</a></li>
+                                        {this.state.user ? <li><a className="link" onClick={() => history.push('/favorites')}>Favoritos</a></li> : undefined}
                                     </ul>
                                 </nav>
                             </div>
@@ -92,7 +94,7 @@ class App extends Component {
                                 <Route exact path="/userAccount" component={UserAccountLayout} />
                                 <Route exact path="/registerProduct" component={RegisterProductLayout} />
                                 <Route exact path="/cart" component={CartLayout} />
-
+                                <Route exact path="/favorites" component={FavoriteLayout} />
                             </Switch>
                         </div>
                         <section id="footer-bar">

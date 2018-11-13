@@ -412,6 +412,150 @@
           }
         }
       }
+    },
+    "/users/favorites": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in favorite user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "favorite",
+            "description": "Save a item in favorite user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Favorites"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get a item in favorite user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Items"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Get failed"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in favorite user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "favorite",
+            "description": "Save a item in favorite user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Favorites"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      }
+
+    },
+    "/users/ItemStore": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in favorite user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "favorite",
+            "description": "Save a item in favorite user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Favorites"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -560,6 +704,24 @@
         "idItem": "7t2y268e72ye621e7828eg123eo",
         "idStore": "7321y3n1238712yo216h312o8",
         "amount": "3"
+      }
+    },
+    "Favorites": {
+      "required": [
+        "id",
+        "idStore"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "idStore": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "id": "7t2y268e72ye621e7828eg123eo",
+        "idStore": "7321y3n1238712yo216h312o8"
       }
     }
   }
