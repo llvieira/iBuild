@@ -72,8 +72,9 @@ class App extends Component {
                                 <nav id="menu" className="pull-right">
                                     <ul>
                                         <li><a className="link" onClick={() => history.push('/products')}>Produtos</a></li>
-                                        <li><a className="link">Lojas</a></li>
-                                        <li><a className="link">Top lojas</a></li>
+                                        <li><a className="link" onClick={() => history.push('/store')}>Lojas</a></li>
+                                        <li><a className="link" onClick={() => history.push('/top-stores')}>Top lojas</a></li>
+                                        {this.state.user ? <li><a className="link" onClick={() => history.push('/favorites')}>Favoritos</a></li> : undefined}
                                     </ul>
                                 </nav>
                             </div>
