@@ -12,7 +12,7 @@ const itemSchema = new mongoose.Schema({
   value: {
     type: Number,
     required: true,
-    min: 0
+    min: 0,
   },
   delivery: {
     type: Boolean,
@@ -20,17 +20,17 @@ const itemSchema = new mongoose.Schema({
   },
   brand: {
     type: String,
-    required: true
+    required: true,
   },
   category: {
     type: String,
-    required: true
+    required: true,
   },
   quantity: {
     type: Number,
     required: true,
-    min: 1
-  }
-}, { noId: true });
+    min: 1,
+  },
+});
 
 module.exports = itemSchema;

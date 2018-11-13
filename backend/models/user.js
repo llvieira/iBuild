@@ -1,6 +1,10 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('../database/index');
 
+
+const Favorites = new mongoose.Schema({ id: String, idStore: String }, { noId: true });
+
+
 const UserSchema = new mongoose.Schema({
 
   name: {
@@ -35,6 +39,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  favorites: [Favorites],
+
 
 });
 

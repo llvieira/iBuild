@@ -2,6 +2,8 @@ const express = require('express');
 const User = require('../models/user');
 const authMiddleware = require('../middlewares/auth');
 const util = require('../util/util');
+const Store = require('../models/store');
+const Item = require('../models/item');
 
 const authRouter = express.Router();
 const openRouter = express.Router();
@@ -54,5 +56,68 @@ authRouter.put('/', async (req, res) => {
     return res.status(400).send({ error: `Updated failed: ${e}` });
   }
 });
+
+authRouter.post('/favorites/', async (req, res) => {
+  const { id, idStore } = req.body;
+  const user = await User.findById(req.idLogged);
+  const store = await Store.findById(idStore);
+
+  try {
+    if (!store) {
+      return res.status(404).send({ error: 'Store not Found' });
+    }
+
+
+    store.storage.forEach((itemStore) => {
+      if (id == itemStore._id) {
+        const itemFavorite = { id, idStore: store._id };
+        user.favorites.push(itemFavorite);
+        user.save();
+      }
+    });
+
+    return res.status(200).send(user);
+  } catch (e) {
+    return res.status(400).send({ error: `Registration failed ${e}` });
+  }
+});
+
+authRouter.get('/favorites/', async (req, res) => {
+  const user = await User.findById(req.idLogged);
+  try {
+    if (!user) {
+      return res.status(404).send({ error: 'User not Found' });
+    }
+
+    const valor = user.favorites;
+
+    return res.status(200).send(valor);
+  } catch (e) {
+    return res.status(400).send({ error: `Get failed ${e}` });
+  }
+});
+
+authRouter.post('/ItemStore/', async (req, res) => {
+  const { id, idStore } = req.body;
+  const store = await Store.findById(idStore);
+
+  try {
+    if (!store) {
+      return res.status(404).send({ error: 'Store not Found' });
+    }
+
+
+    store.storage.forEach((itemStore) => {
+      if (id == itemStore._id) {
+        res.send(itemStore);
+      }
+    });
+
+    return res.status(404).send({ error: 'Item not found' });
+  } catch (e) {
+    return res.status(400).send({ error: `Registration failed ${e}` });
+  }
+});
+
 
 module.exports = app => app.use('/users', openRouter, authRouter);
