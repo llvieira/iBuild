@@ -20,7 +20,8 @@ class App extends Component {
             store: JSON.parse(localStorage.getItem('store')),
             userMenuAuth: { optionName: 'Minha conta', path: '/userAccount' },
             userMenuAuthStore: [{ optionName: 'Minha Loja', path: '/updateStore' }, { optionName: 'Cadastrar Produto', path: '/registerProduct' }],
-            userMenuOpen: { optionName: 'Registro/Login', path: '/register' },
+            userMenuOpen: { optionName: 'Registro/Login - usuário', path: '/register/user' },
+            storeMenuOpen: { optionName: 'Registro/Login - loja', path: '/register/store' }
             userCartOpen: { optionName: 'Cart', path: '/cart' }
         };
     }
@@ -56,6 +57,7 @@ class App extends Component {
                             <div className="account pull-right">
                                 <ul className="user-menu">
                                     {!this.state.user && !this.state.store ? <li><a className="link" onClick={() => history.push(this.state.userMenuOpen.path)}>{this.state.userMenuOpen.optionName}</a></li> : undefined}
+                                    {!this.state.user && !this.state.store ? <li><a className="link" onClick={() => history.push(this.state.storeMenuOpen.path)}>{this.state.storeMenuOpen.optionName}</a></li> : undefined}
                                     {this.state.user ? <li><a className="link" onClick={() => history.push(this.state.userMenuAuth.path)}>{this.state.userMenuAuth.optionName}</a></li> : undefined}
                                     {this.state.store ? this.state.userMenuAuthStore.map(elem => <li key={elem.path}><a className="link" onClick={() => history.push(elem.path)}>{elem.optionName}</a></li>) : undefined}
                                     {this.state.user || this.state.store ? <li><a className="link" onClick={() => this.logout()}>Logout</a></li> : undefined}
@@ -82,7 +84,8 @@ class App extends Component {
                         <div>
                             <Switch>
                                 <Route exact path="/" render={(props) => <InitialLayout {...props} />} />
-                                <Route exact path="/register" render={(props) => <RegisterLayout {...props} login={this.login.bind(this)} />} />
+                                <Route exact path="/register/user" render={(props) => <RegisterLayout {...props} type="user" login={this.login.bind(this)} />} />
+                                <Route exact path="/register/store" render={(props) => <RegisterLayout {...props} type="store" login={this.login.bind(this)} />} />
                                 <Route exact path="/success" component={SuccessLayout} />
                                 <Route exact path="/products" component={ProductsLayout} />
                                 <Route exact path="/updateStore" component={UpdateStoreLayout} />
