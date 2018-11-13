@@ -67,6 +67,24 @@ class ProductsLayout extends Component {
 
     }
 
+    addCart(ev) {
+        let itemFavorite = {idItem: ev._id, idStore: ev.storeId, amount: 0};
+
+        console.log(itemFavorite);
+        request('/users/cart/', 'POST', itemFavorite, {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("userToken")
+        }).then(response => {
+            if (response.ok) {
+                response.json().then(data => {
+                });
+            }
+            window.location.reload();
+
+        })
+
+    }
+
     render() {
         return (
             <div>
@@ -83,6 +101,9 @@ class ProductsLayout extends Component {
                                         <CardProduct item={elem} />
                                         <button onClick={this.favoritar.bind(this, elem)}>
                                             Favoritar
+                                        </button>
+                                        <button onClick={this.addCart.bind(this, elem)}>
+                                            Colocar no carrinho
                                         </button>
                                     </li>
                                 )}

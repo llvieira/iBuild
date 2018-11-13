@@ -68,6 +68,13 @@ authRouter.post('/cart/', async (req, res) => {
       return res.status(404).send({ error: 'Store not Found' });
     }
 
+    await user.cart.forEach((itemCart) => {
+      console.log(itemCart);
+      if (idItem == itemCart.id) {
+        return res.end.send({ error: 'See Other' });
+      }
+    });
+
 
     store.storage.forEach((itemStore) => {
       if (idItem == itemStore._id) {
@@ -77,7 +84,7 @@ authRouter.post('/cart/', async (req, res) => {
       }
     });
 
-    return res.status(404).send(user);
+    return res.status(200).send(user);
   } catch (e) {
     return res.status(400).send({ error: `Registration failed ${e}` });
   }
@@ -91,7 +98,7 @@ authRouter.get('/cart/', async (req, res) => {
       return res.status(404).send({ error: 'User not Found' });
     }
 
-    return res.status(404).send(user.cart);
+    return res.status(200).send(user.cart);
   } catch (e) {
     return res.status(400).send({ error: `Get failed ${e}` });
   }
