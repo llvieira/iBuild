@@ -67,6 +67,13 @@ authRouter.post('/favorites/', async (req, res) => {
       return res.status(404).send({ error: 'Store not Found' });
     }
 
+    await user.favorites.forEach((itemFavorite) => {
+      console.log(itemFavorite);
+      if (id == itemFavorite.id) {
+        return res.end.send({ error: 'See Other' });
+      }
+    });
+
 
     store.storage.forEach((itemStore) => {
       if (id == itemStore._id) {
@@ -113,9 +120,7 @@ authRouter.delete('/favorites/', async (req, res) => {
       i++;
     });
 
-    const valor = user.favorites;
-
-    return res.status(200).send(valor);
+    return res.status(200).send(user.favorites);
   } catch (e) {
     return res.status(400).send({ error: `Get failed ${e}` });
   }

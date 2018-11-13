@@ -59,9 +59,10 @@ class ProductsLayout extends Component {
         }).then(response => {
             if (response.ok) {
                 response.json().then(data => {
-
                 });
             }
+            window.location.reload();
+
         })
 
     }
