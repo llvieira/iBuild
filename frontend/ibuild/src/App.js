@@ -21,7 +21,7 @@ class App extends Component {
             userMenuAuth: { optionName: 'Minha conta', path: '/userAccount' },
             userMenuAuthStore: [{ optionName: 'Minha Loja', path: '/updateStore' }, { optionName: 'Cadastrar Produto', path: '/registerProduct' }],
             userMenuOpen: { optionName: 'Registro/Login - usuário', path: '/register/user' },
-            storeMenuOpen: { optionName: 'Registro/Login - loja', path: '/register/store' }
+            storeMenuOpen: { optionName: 'Registro/Login - loja', path: '/register/store' },
             userCartOpen: { optionName: 'Cart', path: '/cart' }
         };
     }

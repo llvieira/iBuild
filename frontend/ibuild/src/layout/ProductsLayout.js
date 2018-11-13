@@ -48,7 +48,7 @@ class ProductsLayout extends Component {
                   <li key={index} className="span3">
                     <CardProduct item={elem} />
                   </li>
-                )}
+                 )}
               </ul>
               <hr></hr>
               <div className="pagination pagination-small pagination-centered">
