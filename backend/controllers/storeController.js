@@ -2,6 +2,7 @@ const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 const Store = require('../models/store');
 const util = require('../util/util');
+const User = require('../models/user');
 
 const authRouter = express.Router();
 const openRouter = express.Router();
@@ -42,15 +43,16 @@ openRouter.post('/', async (req, res) => {
   }
 });
 
-authRouter.post('/:id/items', async (req, res) => {
+authRouter.post('/items', async (req, res) => {
   const item = req.body;
 
-  Store.findById(req.params.id, (err, store) => {
+  Store.findById(req.idLogged, (err, store) => {
     if (err) return res.status(400).send({ error: 'store not registered' });
 
     if (!store.storage) {
       store.storage = [];
     }
+    item.storeId = req.idLogged;
 
     store.storage.push(item);
 
@@ -59,8 +61,6 @@ authRouter.post('/:id/items', async (req, res) => {
 
       return res.send(updatedStore);
     });
-
-    return res.send(store);
   });
 });
 
@@ -74,6 +74,48 @@ openRouter.get('/items', async (req, res) => {
     });
 
     return res.send(products);
+  } catch (e) {
+    return res.status(400).send({ error: `Get failed: ${e}` });
+  }
+});
+
+authRouter.put('/', async (req, res) => {
+  try {
+    const store = await Store.findById(req.idLogged);
+
+    if (req.body.name) {
+      store.name = req.body.name;
+    }
+    if (req.body.password) {
+      store.password = req.body.password;
+    }
+
+    if (req.body.email) {
+      const emailStore = await Store.find({ email: req.body.email });
+      const emailUser = await User.find({ email: req.body.email });
+      if (emailStore === [] || emailUser === []) {
+        return res.status(400).send({ error: 'Email is already in use' });
+      }
+      store.email = req.body.email;
+    }
+
+    store.save();
+
+    res.send(store);
+  } catch (e) {
+    return res.status(400).send({ error: `Updated failed: ${e}` });
+  }
+});
+
+authRouter.get('/', async (req, res) => {
+  try {
+    const store = await Store.findById(req.idLogged);
+
+    if (store) {
+      return res.send(store);
+    }
+
+    return res.status(404).send({ error: 'Store not found' });
   } catch (e) {
     return res.status(400).send({ error: `Get failed: ${e}` });
   }

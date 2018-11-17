@@ -1,0 +1,766 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Project IBUILD",
+    "version": "1.0.0",
+    "title": "IBUILD",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3001",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Store",
+      "description": "Api for manipulate Store"
+    },
+    {
+      "name": "User",
+      "description": "APi for manipulate User"
+    },
+    {
+      "name": "Auth",
+      "description": "APi for provide Authentication"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/stores": {
+      "post": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Create a new store in system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "store",
+            "description": "Store that added in system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Store"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Loja cadastrada"
+          },
+          "400": {
+            "description": "Loja já cadastrada"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Updated user in system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "store",
+            "description": "Store params that updated in system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Store"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Store not found"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Store user in system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucess"
+          },
+          "400": {
+            "description": "Get failed"
+          },
+          "404": {
+            "description": "Store not Found"
+          }
+        }
+      }
+    },
+    "/stores/{storeId}": {
+      "get": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Get user in system by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "description": "Store ID",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Busca concluída com Sucesso"
+          },
+          "400": {
+            "description": "Store not registered"
+          },
+          "500": {
+            "description": "Error fetching items from a store"
+          }
+        }
+      }
+    },
+    "/stores/items": {
+      "get": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Get all items in stores",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Obtém todos os items das lojas"
+          },
+          "400": {
+            "description": "Get failed: mensagem de erro"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Add a new item to a store",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Item",
+            "description": "Item that added in system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item cadastrado na loja"
+          },
+          "400": {
+            "description": "Store not registered"
+          },
+          "500": {
+            "description": "Registration failed: Mensagem de erro"
+          }
+        }
+      }
+    },
+    "/auth/store": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Auth system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "store",
+            "description": "Auth system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Auth"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Autenticado com sucesso"
+          },
+          "400": {
+            "description": "Loja não encontrada ou password invalido"
+          }
+        }
+      }
+    },
+    "/auth/user": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Auth system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "Auth system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Auth"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Autenticado com sucesso"
+          },
+          "400": {
+            "description": "Usuario não encontrado ou password invalido"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new user in system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "User that added in system",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usario cadastrado com sucesso"
+          },
+          "400": {
+            "description": "Usuário já cadastrado"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update a user in system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "User params that updated in system",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update feito com sucesso"
+          },
+          "400": {
+            "description": "Email já cadastrado"
+          },
+          "500": {
+            "description": "Updated failed: mensagem de erro"
+          }
+        }
+      }
+    },
+    "/users/cart": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in cart user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "cart",
+            "description": "Save a item in cart user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Cart"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in cart user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Items"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Get failed"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in cart user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "cart",
+            "description": "Save a item in cart user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Cart"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      }
+
+    },
+    "/users/favorites": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in favorite user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "favorite",
+            "description": "Save a item in favorite user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Favorites"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get a item in favorite user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Items"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Get failed"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in favorite user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "favorite",
+            "description": "Save a item in favorite user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Favorites"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      }
+
+    },
+    "/users/ItemStore": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in favorite user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "favorite",
+            "description": "Save a item in favorite user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Favorites"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Store": {
+      "required": [
+        "name",
+        "email",
+        "password",
+        "cnpj"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "cnpj": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "name": "Nome da loja",
+        "email": "emailloja@email.com",
+        "phone": "(XX)XXXXX-XXXX",
+        "password": "senhadaLoja",
+        "cnpj": "78.425.986/0036-15"
+      }
+    },
+    "Item": {
+      "required": [
+        "img",
+        "title",
+        "value",
+        "delivery",
+        "quantity",
+        "category",
+        "brand"
+      ],
+      "properties": {
+        "img": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "value": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "delivery": {
+          "type": "boolean"
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "category": {
+          "type": "string"
+        },
+        "brand": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "img": "Nome Item",
+        "title": "Titulo",
+        "value": 300,
+        "delivery": true,
+        "quantity": 30,
+        "category": "casa",
+        "brand": "brand"
+      }
+    },
+    "Auth": {
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "required": [
+        "name",
+        "email",
+        "password"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "cpf": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "name": "Nome do usuario",
+        "email": "emailusuario@email.com",
+        "phone": "(XX)XXXXX-XXXX",
+        "password": "senhadousuario"
+      }
+    },
+    "Cart": {
+      "required": [
+        "idItem",
+        "idStore",
+        "amount"
+      ],
+      "properties": {
+        "idItem": {
+          "type": "string"
+        },
+        "idStore": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "idItem": "7t2y268e72ye621e7828eg123eo",
+        "idStore": "7321y3n1238712yo216h312o8",
+        "amount": "3"
+      }
+    },
+    "Favorites": {
+      "required": [
+        "id",
+        "idStore"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "idStore": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "id": "7t2y268e72ye621e7828eg123eo",
+        "idStore": "7321y3n1238712yo216h312o8"
+      }
+    }
+  }
+}
