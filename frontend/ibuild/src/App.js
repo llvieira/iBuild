@@ -9,6 +9,7 @@ import UserAccountLayout from './layout/UserAccountLayout';
 import UpdateStoreLayout from './layout/UpdateStoreLayout';
 import RegisterProductLayout from './layout/RegisterProductLayout';
 import CartLayout from './layout/CartLayout';
+import ProductDetail from './layout/ProductDetailLayout';
 import './index.css';
 import FavoriteLayout from "./layout/FavoriteLayout";
 
@@ -93,6 +94,7 @@ class App extends Component {
                                 <Route exact path="/updateStore" component={UpdateStoreLayout} />
                                 <Route exact path="/userAccount" component={UserAccountLayout} />
                                 <Route exact path="/registerProduct" component={RegisterProductLayout} />
+                                <Route exact path="/productDetail" component={ProductDetail}></Route>
                                 <Route exact path="/cart" component={CartLayout} />
                                 <Route exact path="/favorites" component={FavoriteLayout} />
                             </Switch>
