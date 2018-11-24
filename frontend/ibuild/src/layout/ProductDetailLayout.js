@@ -5,20 +5,35 @@ import request from "../config";
 class ProductDetail extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            item: {
+                brand: "..",
+                category: "...",
+                delivery: true,
+                img: "...",
+                quantity: 0,
+                storeId: "...",
+                title: "...",
+                value: 0
+            }
+        };
 
-    console.log(this.props.location.search);
+        const { location } = this.props;
+        const { search } = location;
+        const itemID = search.split("=")[1];
+
+        this.getItem(itemID);
     }
 
     getItem(item) {
 
         const method = 'GET';
-        const path = `/stores/${item}`;
-        request(path, method, this.state.auth, {
-            "Content-Type": "application/json"
-        }).then(response => {
+        const path = `/stores/items/${item}`;
+        request(path, method, undefined, {}).then(response => {
             if (response.ok)
                 response.json().then(data => {
-                    this.setState({ store: data });
+                    this.setState({ item: data });
+                    console.log(data);
                 });
             else
                 console.log('Error!');
@@ -37,7 +52,7 @@ class ProductDetail extends Component {
                         <div className="span9">
                             <div className="row">
                                 <div className="span4">
-                                    <a href="themes/images/ladies/1.jpg" className="thumbnail" data-fancybox-group="group1" title="Description 1"><img alt="" src="themes/images/ladies/1.jpg"/></a>												
+                                    <a href={this.state.item.img} className="thumbnail" data-fancybox-group="group1" title="Description 1"><img alt="" src={this.state.item.img}/></a>												
                                     <ul className="thumbnails small">								
                                         <li className="span1">
                                             <a href="themes/images/ladies/2.jpg" className="thumbnail" data-fancybox-group="group1" title="Description 2"><img src="themes/images/ladies/2.jpg" alt=""/></a>
@@ -55,12 +70,12 @@ class ProductDetail extends Component {
                                 </div>
                                 <div className="span5">
                                     <address>
-                                        <strong>Brand:</strong> <span>Apple</span><br/>
-                                        <strong>Product Code:</strong> <span>Product 14</span><br/>
+                                        <strong>Marca:</strong> <span>{this.state.item.brand}</span><br/>
+                                        <strong>Código do Produto:</strong> <span>{this.state.item.title}</span><br/>
                                         <strong>Reward Points:</strong> <span>0</span><br/>
                                         <strong>Availability:</strong> <span>Out Of Stock</span><br/>								
                                     </address>									
-                                    <h4><strong>Price: $587.50</strong></h4>
+                                    <h4><strong>Preço: R$ {this.state.item.value}</strong></h4>
                                 </div>
                                 <div className="span5">
                                     <form className="form-inline">
@@ -74,11 +89,11 @@ class ProductDetail extends Component {
                                         <p>&nbsp;</p>
                                         <label>Qty:</label>
                                         <input type="text" className="span1" placeholder="1"/>
-                                        <button className="btn btn-inverse" type="submit">Add to cart</button>
+                                        <button className="btn btn-inverse" type="submit">adicionar ao carrinho</button>
                                     </form>
                                 </div>							
                             </div>
-                            <div className="row">
+                            <div className="row" style={{display: 'none'}}>
                                 <div className="span9">
                                     <ul className="nav nav-tabs" id="myTab">
                                         <li className="active"><a href="#home">Description</a></li>
@@ -177,7 +192,7 @@ class ProductDetail extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="span3 col">
+                        <div className="span3 col" style={{display: 'none'}}>
                             <div className="block">	
                                 <ul className="nav nav-list">
                                     <li className="nav-header">SUB CATEGORIES</li>

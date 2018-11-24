@@ -3,7 +3,7 @@ import { history } from '../../config/history';
 
 class CardProduct extends Component {
   f() {
-    history.push(`/productDetail?product=12112${this.props.item._id}`);
+    history.push(`/productDetail?product=${this.props.item._id}`);
   }
 
   render() {
