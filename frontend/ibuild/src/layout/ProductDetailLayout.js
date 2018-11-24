@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import request from "../config";
+import { history } from '../config/history';
 
 
 class ProductDetail extends Component {
@@ -40,19 +41,38 @@ class ProductDetail extends Component {
         });
     }
 
+    addCart(ev) {
+        let itemFavorite = {idItem: ev._id, idStore: ev.storeId, amount: 0};
+
+        console.log(itemFavorite);
+        request('/users/cart/', 'POST', itemFavorite, {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("userToken")
+        }).then(response => {
+            if (response.ok) {
+                response.json().then(data => {
+                    history.location.push('/cart');
+                });
+            }
+            window.location.reload();
+
+        })
+
+    }
+
     render() {
         return (
             <div>
                 <section className="header_text sub">
                 <img className="pageBanner" src="themes/images/pageBanner.png" alt="New products" />
-                    <h4><span>Product Detail</span></h4>
+                    <h4><span>Detalhes do Produto</span></h4>
                 </section>
                 <section className="main-content">				
                     <div className="row">						
                         <div className="span9">
                             <div className="row">
                                 <div className="span4">
-                                    <a href={this.state.item.img} className="thumbnail" data-fancybox-group="group1" title="Description 1"><img alt="" src={this.state.item.img}/></a>												
+                                    <a href={this.state.item.img} className="thumbnail" data-fancybox-group="group1" title="Description 1"><img alt="" src={this.state.item.img ? this.state.item.img : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqFzl9mGc1V-lVby07rYcp0wT0-uF-xW_RddMBRBueliOEJ-TC1g"}/></a>												
                                     <ul className="thumbnails small">								
                                         <li className="span1">
                                             <a href="themes/images/ladies/2.jpg" className="thumbnail" data-fancybox-group="group1" title="Description 2"><img src="themes/images/ladies/2.jpg" alt=""/></a>
@@ -71,33 +91,23 @@ class ProductDetail extends Component {
                                 <div className="span5">
                                     <address>
                                         <strong>Marca:</strong> <span>{this.state.item.brand}</span><br/>
-                                        <strong>Código do Produto:</strong> <span>{this.state.item.title}</span><br/>
+                                        <strong>Nome:</strong> <span>{this.state.item.title}</span><br/>
                                         <strong>Reward Points:</strong> <span>0</span><br/>
                                         <strong>Availability:</strong> <span>Out Of Stock</span><br/>								
                                     </address>									
                                     <h4><strong>Preço: R$ {this.state.item.value}</strong></h4>
                                 </div>
                                 <div className="span5">
-                                    <form className="form-inline">
-                                        <label className="checkbox">
-                                            <input type="checkbox" value=""/> Option one is this and that
-                                        </label>
-                                        <br/>
-                                        <label className="checkbox">
-                                        <input type="checkbox" value=""/> Be sure to include why it's great
-                                        </label>
-                                        <p>&nbsp;</p>
-                                        <label>Qty:</label>
+                                    <form className="form-inline" onSubmit={(e) => {e.preventDefault();}}>
                                         <input type="text" className="span1" placeholder="1"/>
-                                        <button className="btn btn-inverse" type="submit">adicionar ao carrinho</button>
+                                        <button className="btn btn-inverse" type="submit" onClick={this.addCart.bind(this, this.state.item)}>adicionar ao carrinho</button>
                                     </form>
                                 </div>							
                             </div>
-                            <div className="row" style={{display: 'none'}}>
+                            <div className="row">
                                 <div className="span9">
                                     <ul className="nav nav-tabs" id="myTab">
-                                        <li className="active"><a href="#home">Description</a></li>
-                                        <li className=""><a href="#profile">Additional Information</a></li>
+                                        <li className="active"><a href="#home">Descrição</a></li>
                                     </ul>							 
                                     <div className="tab-content">
                                         <div className="tab-pane active" id="home">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem</div>
@@ -117,7 +127,7 @@ class ProductDetail extends Component {
                                         </div>
                                     </div>							
                                 </div>						
-                                <div className="span9">	
+                                <div className="span9" style={{display: 'none'}}>	
                                     <br/>
                                     <h4 className="title">
                                         <span className="pull-left"><span className="text"><strong>Related</strong> Products</span></span>
