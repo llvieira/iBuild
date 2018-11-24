@@ -34,6 +34,10 @@ const itemSchema = new mongoose.Schema({
   storeId: {
     type: String,
   },
+  description: {
+    type: String,
+    required: false
+  }
 });
 
 module.exports = itemSchema;
