@@ -79,6 +79,24 @@ openRouter.get('/items', async (req, res) => {
   }
 });
 
+openRouter.get('/items/:itemID', async (req, res) => {
+  try {
+    const itemID = req.params.itemID;
+    const stores = await Store.find({});
+
+    const item = stores
+                  .reduce((items, store) => [...items, ...store.storage] , [])
+                  .reduce((found, item) => (item.id === itemID) ? item : found, null);
+
+    if (item)
+      return res.send(item);
+    else
+      throw "Item not found";
+  } catch (e) {
+    return res.status(400).send({ error: `Get failed: ${e}` });
+  }
+});
+
 authRouter.put('/', async (req, res) => {
   try {
     const store = await Store.findById(req.idLogged);

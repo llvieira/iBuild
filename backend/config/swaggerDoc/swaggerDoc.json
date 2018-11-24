@@ -216,6 +216,33 @@
         }
       }
     },
+    "/stores/items/{itemID}": {
+      "get": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Get item in system by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "itemId",
+            "description": "Item ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Busca concluída com Sucesso"
+          },
+          "400": {
+            "description": "Item not registered"
+          },
+          "500": {
+            "description": "Error fetching items from a store"
+          }
+        }
+      }
+    },
     "/auth/store": {
       "post": {
         "tags": [
