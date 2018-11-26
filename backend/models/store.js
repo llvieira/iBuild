@@ -7,7 +7,10 @@ const StoreSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  storage: [item],
+  storage: {
+    type: [item],
+    default: []
+  },
   email: {
     type: String,
     unique: true,

@@ -77,13 +77,8 @@ class UpdateStoreLayout extends Component {
     render() {
         return (
             <div>
-                <section className="header_text sub">
-                    <img className="pageBanner" src="themes/images/pageBanner.png" alt="New products" />
-                    <h4><span>Atualizar dados da Loja</span></h4>
-                </section>
                 <section className="main-content">
                     <div className="row">
-
                         <div className="span7">
                             <h4 className="title"><span className="text"><strong>Atualização</strong> Loja</span></h4>
                             <form className="form-stacked" onSubmit={this.sendRegister.bind(this)} >

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CardProduct from './CardProduct';
 import request from '../../config';
 
-const pathProducts = '/stores/items';
+const pathProducts = '/stores/allItems';
 const method = 'GET';
 
 class CarouselProduct extends Component {
@@ -37,7 +37,7 @@ class CarouselProduct extends Component {
             count++;
           });
           newItems.push(carouselItems);
-          
+
           if (data.length !== 0) {
             this.setState({ items: newItems });
           }

@@ -6,12 +6,11 @@ import ProductsLayout from './layout/ProductsLayout';
 import InitialLayout from './layout/InitialLayout';
 import RegisterLayout from './layout/RegisterLayout';
 import UserAccountLayout from './layout/UserAccountLayout';
-import UpdateStoreLayout from './layout/UpdateStoreLayout';
-import RegisterProductLayout from './layout/RegisterProductLayout';
 import CartLayout from './layout/CartLayout';
 import ProductDetail from './layout/ProductDetailLayout';
-import './index.css';
 import FavoriteLayout from "./layout/FavoriteLayout";
+import StoreMenuLayout from "./layout/StoreMenuLayout";
+import './index.css';
 
 class App extends Component {
     constructor(props) {
@@ -21,9 +20,9 @@ class App extends Component {
             user: JSON.parse(localStorage.getItem('user')),
             store: JSON.parse(localStorage.getItem('store')),
             userMenuAuth: { optionName: 'Minha conta', path: '/userAccount' },
-            userMenuAuthStore: [{ optionName: 'Minha Loja', path: '/updateStore' }, { optionName: 'Cadastrar Produto', path: '/registerProduct' }],
-            userMenuOpen: { optionName: 'Registro/Login - usuário', path: '/register/user' },
-            storeMenuOpen: { optionName: 'Registro/Login - loja', path: '/register/store' },
+            userMenuAuthStore: [{ optionName: 'Minha Loja', path: '/storeMenu' }],
+            userMenuOpen: { optionName: 'Registro/Login - usuário', path: '/registerUser' },
+            storeMenuOpen: { optionName: 'Registro/Login - loja', path: '/registerStore' },
             userCartOpen: { optionName: 'Cart', path: '/cart' }
         };
     }
@@ -87,16 +86,15 @@ class App extends Component {
                         <div>
                             <Switch>
                                 <Route exact path="/" render={(props) => <InitialLayout {...props} />} />
-                                <Route exact path="/register/user" render={(props) => <RegisterLayout {...props} type="user" login={this.login.bind(this)} />} />
-                                <Route exact path="/register/store" render={(props) => <RegisterLayout {...props} type="store" login={this.login.bind(this)} />} />
+                                <Route exact path="/registerUser" render={(props) => <RegisterLayout {...props} type="user" login={this.login.bind(this)} />} />
+                                <Route exact path="/registerStore" render={(props) => <RegisterLayout {...props} type="store" login={this.login.bind(this)} />} />
                                 <Route exact path="/success" component={SuccessLayout} />
                                 <Route exact path="/products" component={ProductsLayout} />
-                                <Route exact path="/updateStore" component={UpdateStoreLayout} />
                                 <Route exact path="/userAccount" component={UserAccountLayout} />
-                                <Route exact path="/registerProduct" component={RegisterProductLayout} />
-                                <Route exact path="/productDetail" component={ProductDetail}></Route>
+                                <Route exact path="/productDetail" component={ProductDetail} />
                                 <Route exact path="/cart" component={CartLayout} />
                                 <Route exact path="/favorites" component={FavoriteLayout} />
+                                <Route path="/storeMenu" component={StoreMenuLayout} />
                             </Switch>
                         </div>
                         <section id="footer-bar">
