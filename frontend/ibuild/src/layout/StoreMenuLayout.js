@@ -5,6 +5,7 @@ import RegisterProductLayout from '../layout/RegisterProductLayout';
 import UpdateStoreLayout from '../layout/UpdateStoreLayout';
 import StoreProductLayout from '../layout/StoreProductsLayout';
 import StoreUpdateProductLayout from '../layout/StoreUpdateProductLayout';
+import StorePerfilLayout from '../layout/StorePerfilLayout';
 
 class StoreMenuLayout extends Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class StoreMenuLayout extends Component {
         </section>
         <section>
           <div>
+            <Route exact path="/storeMenu" component={StorePerfilLayout} />
             <Route exact path="/storeMenu/registerProduct" component={RegisterProductLayout} />
             <Route exact path="/storeMenu/updateStore" component={UpdateStoreLayout} />
             <Route exact path="/storeMenu/products" component={StoreProductLayout} />
