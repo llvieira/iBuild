@@ -659,7 +659,36 @@
             "description": "Registration failed: mensagem de erro"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in order user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Orders"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Get failed"
+          }
+        }
       }
+
     }
   },
   "definitions": {

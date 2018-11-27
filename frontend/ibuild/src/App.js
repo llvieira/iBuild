@@ -11,6 +11,7 @@ import ProductDetail from './layout/ProductDetailLayout';
 import FavoriteLayout from "./layout/FavoriteLayout";
 import StoreMenuLayout from "./layout/StoreMenuLayout";
 import './index.css';
+import OrdersLayout from "./layout/OrdersLayout";
 
 class App extends Component {
     constructor(props) {
@@ -23,7 +24,8 @@ class App extends Component {
             userMenuAuthStore: [{ optionName: 'Minha Loja', path: '/storeMenu' }],
             userMenuOpen: { optionName: 'Registro/Login - usuário', path: '/registerUser' },
             storeMenuOpen: { optionName: 'Registro/Login - loja', path: '/registerStore' },
-            userCartOpen: { optionName: 'Cart', path: '/cart' }
+            userCartOpen: { optionName: 'Cart', path: '/cart' },
+            userOrderOpen: { optionName: 'Order', path: '/order' }
         };
     }
 
@@ -63,6 +65,7 @@ class App extends Component {
                                     {this.state.store ? this.state.userMenuAuthStore.map(elem => <li key={elem.path}><a className="link" onClick={() => history.push(elem.path)}>{elem.optionName}</a></li>) : undefined}
                                     {this.state.user || this.state.store ? <li><a className="link" onClick={() => this.logout()}>Logout</a></li> : undefined}
                                     {this.state.user ? <li><a className="link" onClick={() => history.push(this.state.userCartOpen.path)}>{this.state.userCartOpen.optionName}</a></li> : undefined}
+                                    {this.state.user ? <li><a className="link" onClick={() => history.push(this.state.userOrderOpen.path)}>{this.state.userOrderOpen.optionName}</a></li> : undefined}
                                     {this.state.user ? <li>{'Logged user: ' + this.state.user.name}</li> : undefined}
                                     {this.state.store ? <li>{'Logged store: ' + this.state.store.name}</li> : undefined}
                                 </ul>
@@ -95,6 +98,7 @@ class App extends Component {
                                 <Route exact path="/cart" component={CartLayout} />
                                 <Route exact path="/favorites" component={FavoriteLayout} />
                                 <Route path="/storeMenu" component={StoreMenuLayout} />
+                                <Route exact path="/order" component={OrdersLayout} />
                             </Switch>
                         </div>
                         <section id="footer-bar">

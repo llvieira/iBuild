@@ -239,5 +239,18 @@ authRouter.post('/order/', async (req, res) => {
   }
 });
 
+authRouter.get('/order/', async (req, res) => {
+  const user = await User.findById(req.idLogged);
+  try {
+    if (!user) {
+      return res.status(404).send({ error: 'User not Found' });
+    }
+
+    return res.status(200).send(user.orders);
+  } catch (e) {
+    return res.status(400).send({ error: `Get Orders failed ${e}` });
+  }
+});
+
 
 module.exports = app => app.use('/users', openRouter, authRouter);
