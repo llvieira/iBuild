@@ -75,6 +75,21 @@ class CartLayout extends Component {
 
     }
 
+    addOrder(ev) {
+        console.log(ev);
+        request('/users/order/', 'POST', ev, {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("userToken")
+        }).then(response => {
+            if (response.ok) {
+                response.json().then(data => {
+                });
+            }
+            window.location.reload();
+        })
+
+    }
+
   render() {
     return (
         <div>
@@ -95,6 +110,9 @@ class CartLayout extends Component {
                             )}
                         </ul>
                         <hr></hr>
+                        <button onClick={this.addOrder.bind(this, this.state.items)}>
+                            Finalizar Compra
+                        </button>
                     </div>
                 </div>
             </section>

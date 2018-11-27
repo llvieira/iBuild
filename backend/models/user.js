@@ -2,6 +2,9 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('../database/index');
 
 const ItemCart = new mongoose.Schema({ id: String, idStore: String, amount: Number }, { noId: true });
+const ItemOrder = new mongoose.Schema({
+    _id: String, storeId: String, amount: {type: Number, default: 0}, img: String, title: String, value: Number,
+}, { noId: true });
 
 
 const Favorites = new mongoose.Schema({ id: String, idStore: String }, { noId: true });
@@ -43,6 +46,7 @@ const UserSchema = new mongoose.Schema({
   },
   cart: [ItemCart],
   favorites: [Favorites],
+  orders: [ItemOrder],
 });
 
 UserSchema.pre('save', async function (next) {

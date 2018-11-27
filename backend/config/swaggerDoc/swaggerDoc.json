@@ -621,6 +621,45 @@
           }
         }
       }
+    },
+    "/users/order": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Save a item in order user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "order",
+            "description": "Save a item in order user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token when logged in",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item"
+          },
+          "404": {
+            "description": "Item not found"
+          },
+          "500": {
+            "description": "Registration failed: mensagem de erro"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -788,6 +827,45 @@
         "id": "7t2y268e72ye621e7828eg123eo",
         "idStore": "7321y3n1238712yo216h312o8"
       }
+    },
+    "Order": {
+      "required": [
+        "_id",
+        "storeId",
+        "amount",
+        "img",
+        "title",
+        "value"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "storeId": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "string"
+        },
+        "img": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "_id": "9ye8yn297ey21eu1289ue12",
+        "storeId": "32180eud8ud8923u9d812u",
+        "amount": 0,
+        "img": "3213u1209u3m128ud80u212u1.png",
+        "title": "titulo",
+        "value": 200
+      }
     }
+
   }
 }
