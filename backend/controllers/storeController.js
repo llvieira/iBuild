@@ -9,20 +9,6 @@ const openRouter = express.Router();
 
 authRouter.use(authMiddleware);
 
-authRouter.get('/:storeId', async (req, res) => {
-  try {
-    const store = await Store.findById(req.params.storeId);
-
-    if (!store) {
-      return res.status(400).send({ error: 'store not registered' });
-    }
-
-    return res.send(store);
-  } catch (e) {
-    return res.status(400).send({ error: 'error fetching items from a store' });
-  }
-});
-
 openRouter.post('/', async (req, res) => {
   const { email } = req.body;
 
@@ -43,28 +29,25 @@ openRouter.post('/', async (req, res) => {
   }
 });
 
-authRouter.post('/items', async (req, res) => {
-  const item = req.body;
+openRouter.get('/items/:itemID', async (req, res) => {
+  try {
+    const itemID = req.params.itemID;
+    const stores = await Store.find({});
 
-  Store.findById(req.idLogged, (err, store) => {
-    if (err) return res.status(400).send({ error: 'store not registered' });
+    const item = stores
+      .reduce((items, store) => [...items, ...store.storage], [])
+      .reduce((found, item) => (item.id === itemID) ? item : found, null);
 
-    if (!store.storage) {
-      store.storage = [];
-    }
-    item.storeId = req.idLogged;
-
-    store.storage.push(item);
-
-    store.save((err, updatedStore) => {
-      if (err) return res.status(400).send({ error: `Registration failed: ${err}` });
-
-      return res.send(updatedStore);
-    });
-  });
+    if (item)
+      return res.send(item);
+    else
+      throw "Item not found";
+  } catch (e) {
+    return res.status(400).send({ error: `Get failed: ${e}` });
+  }
 });
 
-openRouter.get('/items', async (req, res) => {
+openRouter.get('/allItems', async (req, res) => {
   try {
     const stores = await Store.find({});
     let products = [];
@@ -79,19 +62,102 @@ openRouter.get('/items', async (req, res) => {
   }
 });
 
-openRouter.get('/items/:itemID', async (req, res) => {
+openRouter.get('/store/:storeId', async (req, res) => {
   try {
-    const itemID = req.params.itemID;
-    const stores = await Store.find({});
+    const store = await Store.findById(req.params.storeId);
 
-    const item = stores
-                  .reduce((items, store) => [...items, ...store.storage] , [])
-                  .reduce((found, item) => (item.id === itemID) ? item : found, null);
+    if (!store) {
+      return res.status(400).send({ error: 'store not registered' });
+    }
 
-    if (item)
-      return res.send(item);
-    else
-      throw "Item not found";
+    return res.send(store);
+  } catch (e) {
+    return res.status(400).send({ error: 'error fetching items from a store' });
+  }
+});
+
+authRouter.post('/items', async (req, res) => {
+  const item = req.body;
+
+  Store.findById(req.idLogged, (err, store) => {
+    if (err) return res.status(400).send({ error: 'store not registered' });
+
+    item.storeId = req.idLogged;
+
+    store.storage.push(item);
+
+    store.save((err, updatedStore) => {
+      if (err) return res.status(400).send({ error: `Registration failed: ${err}` });
+
+      return res.send(updatedStore);
+    });
+  });
+});
+
+authRouter.put('/items', async (req, res) => {
+  const item = req.body;
+
+  Store.findOneAndUpdate({ "_id": req.idLogged, "storage._id": item._id },
+    {
+      "$set": {
+        "storage.$.img": item.img,
+        "storage.$.title": item.title,
+        "storage.$.value": item.value,
+        "storage.$.delivery": item.delivery,
+        "storage.$.brand": item.brand,
+        "storage.$.category": item.category,
+        "storage.$.quantity": item.quantity,
+        "storage.$.description": item.description,
+      }
+    },
+    {
+      new: true
+    },
+    (err, store) => {
+      if (err) return res.status(400).send({ error: `Updated failed: ${err}` });
+
+      return res.status(200).send(store);
+    }
+  );
+});
+
+authRouter.delete('/items/:itemId', async (req, res) => {
+  Store.findById(req.idLogged, (err, store) => {
+    if (err) return res.status(400).send({ error: 'store not registered' });
+
+    const item = store.storage.id(req.params.itemId);
+
+    if (!item) return res.status(400).send({ error: 'item not registered' });
+
+    item.remove();
+
+    store.save((err, updatedStore) => {
+      if (err) return res.status(400).send({ error: `Remove failed: ${err}` });
+
+      return res.status(200).send(updatedStore);
+    });
+  });
+});
+
+authRouter.get('/items', async (req, res) => {
+  try {
+    const store = await Store.findById(req.idLogged);
+
+    return res.send(store.storage);
+  } catch (e) {
+    return res.status(400).send({ error: `Get failed: ${e}` });
+  }
+});
+
+authRouter.get('/', async (req, res) => {
+  try {
+    const store = await Store.findById(req.idLogged);
+
+    if (store) {
+      return res.send(store);
+    }
+
+    return res.status(404).send({ error: 'Store not found' });
   } catch (e) {
     return res.status(400).send({ error: `Get failed: ${e}` });
   }
@@ -124,20 +190,5 @@ authRouter.put('/', async (req, res) => {
     return res.status(400).send({ error: `Updated failed: ${e}` });
   }
 });
-
-authRouter.get('/', async (req, res) => {
-  try {
-    const store = await Store.findById(req.idLogged);
-
-    if (store) {
-      return res.send(store);
-    }
-
-    return res.status(404).send({ error: 'Store not found' });
-  } catch (e) {
-    return res.status(400).send({ error: `Get failed: ${e}` });
-  }
-});
-
 
 module.exports = app => app.use('/stores', openRouter, authRouter);

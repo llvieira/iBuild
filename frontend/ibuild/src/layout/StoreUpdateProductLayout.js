@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import request from "../config";
 import { history } from '../config/history'
+import qs from 'querystring';
 
-class RegisterProductLayout extends Component {
+class StoreUpdateProductLayout extends Component {
   constructor(props) {
     super(props);
 
@@ -13,7 +14,7 @@ class RegisterProductLayout extends Component {
         value: 0,
         delivery: "false",
         brand: "",
-        category: "Ferramentas",
+        category: "",
         description: "",
         quantity: 0
       },
@@ -22,9 +23,28 @@ class RegisterProductLayout extends Component {
         text: ''
       }
     };
+
+    const params = qs.parse(this.props.location.search.slice(1));
+    const productId = params.productId;
+
+    this.getProduct(productId);
   }
 
-  changeRegisterProperty(porpertyName) {
+  getProduct(productId) {
+    const method = 'GET';
+    const path = `/stores/items/${productId}`;
+    request(path, method, undefined, {}).then(response => {
+      if (response.ok)
+        response.json().then(data => {
+          data.delivery = data.delivery.toString();
+          this.setState({ product: data });
+        });
+      else
+        console.log('Error!');
+    });
+  }
+
+  changeProductProperty(porpertyName) {
     return event => {
       const value = event.target.value;
       const product = {
@@ -36,9 +56,9 @@ class RegisterProductLayout extends Component {
     }
   }
 
-  registerProduct(e) {
+  updateProduct(e) {
     e.preventDefault();
-    const method = 'POST';
+    const method = 'PUT';
     const path = '/stores/items';
     request(path, method, this.state.product, {
       "Content-Type": "application/json",
@@ -68,30 +88,30 @@ class RegisterProductLayout extends Component {
                 <h4 className="title"></h4>
               </div>
               <div className="span8">
-                <h4 className="title"><span className="text"><strong>Cadastrar</strong> novo produto</span></h4>
+                <h4 className="title"><span className="text"><strong>Atualizar</strong> produto</span></h4>
                 <div className="span5">
                   <div className="alert alert-warning" style={this.state.alert.show ? undefined : { display: 'none' }}>
                     {this.state.alert.text}
                   </div>
                 </div>
-                <form className="form-stacked" onSubmit={this.registerProduct.bind(this)} >
+                <form className="form-stacked" onSubmit={this.updateProduct.bind(this)} >
                   <fieldset>
                     <div className="control-group">
                       <label className="control-label">Nome:</label>
                       <div className="controls">
-                        <input type="text" placeholder="Coloque o nome do produto" className="input-xlarge" value={this.state.product.title} onChange={this.changeRegisterProperty("title").bind(this)} />
+                        <input type="text" placeholder="Coloque o nome do produto" className="input-xlarge" value={this.state.product.title} onChange={this.changeProductProperty("title").bind(this)} />
                       </div>
                     </div>
                     <div className="control-group">
                       <label className="control-label">Marca:</label>
                       <div className="controls">
-                        <input type="text" placeholder="Coloque a marca do produto" className="input-xlarge" value={this.state.product.brand} onChange={this.changeRegisterProperty("brand").bind(this)} />
+                        <input type="text" placeholder="Coloque a marca do produto" className="input-xlarge" value={this.state.product.brand} onChange={this.changeProductProperty("brand").bind(this)} />
                       </div>
                     </div>
                     <div className="control-group">
                       <label className="control-label">Categoria:</label>
                       <div className="controls">
-                        <select className="span3" value={this.state.product.category} onChange={this.changeRegisterProperty("category").bind(this)}>
+                        <select className="span3" value={this.state.product.category} onChange={this.changeProductProperty("category").bind(this)}>
                           <option>Ferramentas</option>
                           <option>Construção</option>
                           <option>Madeiras</option>
@@ -101,26 +121,26 @@ class RegisterProductLayout extends Component {
                     <div className="control-group">
                       <label className="control-label">Preço:</label>
                       <div className="controls">
-                        <input type="number" placeholder="Preço do produto" className="input-large" step="0.01" value={this.state.product.value} onChange={this.changeRegisterProperty("value").bind(this)} />
+                        <input type="number" placeholder="Preço do produto" className="input-large" step="0.01" value={this.state.product.value} onChange={this.changeProductProperty("value").bind(this)} />
                       </div>
                     </div>
                     <div className="control-group">
                       <label className="control-label">Quantidade:</label>
                       <div className="controls">
-                        <input type="number" placeholder="Quantidade do produto" className="input-large" value={this.state.product.quantity} onChange={this.changeRegisterProperty("quantity").bind(this)} />
+                        <input type="number" placeholder="Quantidade do produto" className="input-large" value={this.state.product.quantity} onChange={this.changeProductProperty("quantity").bind(this)} />
                       </div>
                     </div>
                     <div className="control-group">
                       <label className="control-label">Entrega em casa:</label>
                       <div className="controls controls-row">
-                        <label className="radio span1"><input type="radio" value="true" checked={this.state.product.delivery === "true"} onChange={this.changeRegisterProperty("delivery").bind(this)} />Sim</label>
-                        <label className="radio span1"><input type="radio" value="false" checked={this.state.product.delivery === "false"} onChange={this.changeRegisterProperty("delivery").bind(this)} />Não</label>
+                        <label className="radio span1"><input type="radio" value="true" checked={this.state.product.delivery === "true"} onChange={this.changeProductProperty("delivery").bind(this)} />Sim</label>
+                        <label className="radio span1"><input type="radio" value="false" checked={this.state.product.delivery === "false"} onChange={this.changeProductProperty("delivery").bind(this)} />Não</label>
                       </div>
                     </div>
                     <div className="control-group">
                       <label className="control-label">Foto (URL foto):</label>
                       <div className="controls">
-                        <input type="url" placeholder="Url da foto" className="input-large" value={this.state.product.img} onChange={this.changeRegisterProperty("img").bind(this)} />
+                        <input type="url" placeholder="Url da foto" className="input-large" value={this.state.product.img} onChange={this.changeProductProperty("img").bind(this)} />
                       </div>
                     </div>
                     <div className="control-group controls-row">
@@ -132,11 +152,11 @@ class RegisterProductLayout extends Component {
                     <div className="control-group">
                       <label className="control-label">Descrição:</label>
                       <div className="controls">
-                        <textarea placeholder="Descrição do produto" className="input-large" value={this.state.product.description} onChange={this.changeRegisterProperty("description").bind(this)}></textarea>
+                        <textarea placeholder="Descrição do produto" className="input-large" value={this.state.product.description} onChange={this.changeProductProperty("description").bind(this)}></textarea>
                       </div>
                     </div>
                     <div className="actions">
-                      <input className="btn btn-inverse large" type="submit" value="Registrar" />
+                      <input className="btn btn-inverse large" type="submit" value="Atualizar" />
                     </div>
                   </fieldset>
                 </form>
@@ -149,4 +169,4 @@ class RegisterProductLayout extends Component {
   }
 }
 
-export default RegisterProductLayout;
+export default StoreUpdateProductLayout;
