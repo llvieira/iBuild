@@ -219,5 +219,25 @@ authRouter.post('/ItemStore/', async (req, res) => {
   }
 });
 
+authRouter.post('/order/', async (req, res) => {
+  const user = await User.findById(req.idLogged);
+  try {
+    if (!user) {
+      return res.status(404).send({ error: 'User not Found' });
+    }
+
+    const newOrders = user.orders.concat(req.body);
+
+    user.orders = newOrders;
+    user.cart = [];
+
+    user.save();
+
+    return res.status(200).send(user);
+  } catch (e) {
+    return res.status(400).send({ error: `Registration Order failed ${e}` });
+  }
+});
+
 
 module.exports = app => app.use('/users', openRouter, authRouter);

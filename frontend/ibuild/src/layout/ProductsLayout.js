@@ -18,7 +18,8 @@ class ProductsLayout extends Component {
             { img: "https://cdn.leroymerlin.com.br/products/caibro_eucalipto_nat_bruto_5cmx5,7cmx3m_madvei_89377015_6157_600x600.jpg", title: "Caibro", value: 14.29 },
             { img: "https://www.palaciodasferramentas.com.br/uploads/produtos/full/90908297-2016-10-9-9-31.png", title: "Martelo", value: 20 }, { img: "http://terrafortedf.com.br/2017/wp-content/uploads/2016/12/701610024180963.jpg", title: "Tijolo-unidade", value: 50 }, {
                 img: "https://carrinho.cec.com.br/img-prod/images/standard/cimento-todas-as-obras-50kg-votorantim-1175514-foto-1.png", title: "Cimento-unidade", value: 80
-            }, { img: "https://cdn.leroymerlin.com.br/products/telha_ceram_mediterranea_grena_41_80_24_90_cm_maristela_telhas_87012961_0001_600x600.jpg", title: "Telha ceramica", value: 2.99 }]
+            }, { img: "https://cdn.leroymerlin.com.br/products/telha_ceram_mediterranea_grena_41_80_24_90_cm_maristela_telhas_87012961_0001_600x600.jpg", title: "Telha ceramica", value: 2.99 }],
+            user: JSON.parse(localStorage.getItem('user'))
         };
 
         request(pathProducts, method, undefined, {}).then(response => {
@@ -35,21 +36,6 @@ class ProductsLayout extends Component {
             }
         });
     }
-
-    // itemStore(item) {
-    //     request('/users/favorites', 'POST', item, {
-    //         "Content-Type": "application/json",
-    //         "Authorization": "Bearer " + localStorage.getItem("userToken")
-    //     }).then(response => {
-    //         if (response.ok) {
-    //             response.json().then(data => {
-    //                 console.log(data);
-    //                 favorites.push(data);
-    //                 this.setState({ items: favorites });
-    //             });
-    //         }
-    //     })
-    // }
 
     favoritar(ev) {
         console.log(ev);
@@ -89,6 +75,7 @@ class ProductsLayout extends Component {
 
     }
 
+
     render() {
         return (
             <div>
@@ -103,12 +90,13 @@ class ProductsLayout extends Component {
                                 {this.state.items.map((elem, index) =>
                                     <li key={index} className="span3">
                                         <CardProduct item={elem} />
-                                        <button onClick={this.favoritar.bind(this, elem)}>
+                                        {this.state.user ? <button onClick={this.favoritar.bind(this, elem)}>
                                             Favoritar
-                                        </button>
-                                        <button onClick={this.addCart.bind(this, elem)}>
+                                        </button> : null}
+
+                                        {this.state.user ? <button onClick={this.addCart.bind(this, elem)}>
                                             Colocar no carrinho
-                                        </button>
+                                        </button> : null}
                                     </li>
                                 )}
                             </ul>
