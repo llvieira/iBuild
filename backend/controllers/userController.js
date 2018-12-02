@@ -226,7 +226,21 @@ authRouter.post('/order/', async (req, res) => {
       return res.status(404).send({ error: 'User not Found' });
     }
 
-    const newOrders = user.orders.concat(req.body);
+    const { body } = req;
+    const newOrders = user.orders.concat(body);
+    
+    body.forEach(async item => {
+      const store = await Store.findById(item.storeId);
+
+      store.storage.forEach(product => {
+        if (product.title === item.title) {
+          if (! product.sold)
+            product.sold = 0;
+          product.sold += 1;
+        }
+      })
+      store.save();
+    });
 
     user.orders = newOrders;
     user.cart = [];

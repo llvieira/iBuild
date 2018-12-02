@@ -36,6 +36,7 @@ class CardProduct extends Component {
 
   render() {
     const item = this.props.item ? this.props.item : {};
+    const isStorePage = window.location.pathname === '/storeMenu/products';
 
     return (
       <div className="product-box" onClick={this.f.bind(this)}>
@@ -44,6 +45,7 @@ class CardProduct extends Component {
         <a className="title link">{item.title ? item.title : "None"}</a><br />
         <a className="category link">Construcao</a>
         <p className="price">{item.value ? '$' + item.value : "$150"}</p>
+        {isStorePage ?  <p>Vendidos: {item.sold ? item.sold : "0"}</p> : ''}
       </div>
     );
   }
