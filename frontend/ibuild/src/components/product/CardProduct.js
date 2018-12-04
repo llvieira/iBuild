@@ -41,7 +41,7 @@ class CardProduct extends Component {
     return (
       <div className="product-box" onClick={this.f.bind(this)}>
         {this.props.isCardStore ? <span className="sale_tag"><button type="button" className="btn btn-danger" onClick={this.remove.bind(this)}>Remover</button><button type="button" className="btn btn-info" onClick={this.edit.bind(this)} style={{ marginTop: '1px' }}>Editar</button></span> : undefined}
-        <p><a className="link"><img src={item.img ? item.img : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqFzl9mGc1V-lVby07rYcp0wT0-uF-xW_RddMBRBueliOEJ-TC1g"} alt="" /></a></p>
+        <p style={{width: '270px', height: '270px'}}><a className="link"><img src={item.img ? item.img : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqFzl9mGc1V-lVby07rYcp0wT0-uF-xW_RddMBRBueliOEJ-TC1g"} alt="" /></a></p>
         <a className="title link">{item.title ? item.title : "None"}</a><br />
         <a className="category link">Construcao</a>
         <p className="price">{item.value ? '$' + item.value : "$150"}</p>

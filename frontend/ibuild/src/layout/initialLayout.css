@@ -130,10 +130,8 @@ section.header_text.sub h4{
 }
 .product-box img {
 	overflow:hidden;
-	max-width: 342px;
-	max-height: 342px;
-	width: 270px;
-	height: 270px;
+	max-height: 100%; 
+	max-width: 100%;
 }
 .product-box a.title{
 	text-transform:uppercase;
