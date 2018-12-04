@@ -36,6 +36,7 @@ class CardProduct extends Component {
 
   render() {
     const item = this.props.item ? this.props.item : {};
+    const isStorePage = window.location.pathname === '/storeMenu/products';
 
     return (
       <div className="product-box" onClick={this.f.bind(this)}>
@@ -43,7 +44,8 @@ class CardProduct extends Component {
         <p style={{width: '270px', height: '270px'}}><a className="link"><img src={item.img ? item.img : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqFzl9mGc1V-lVby07rYcp0wT0-uF-xW_RddMBRBueliOEJ-TC1g"} alt="" /></a></p>
         <a className="title link">{item.title ? item.title : "None"}</a><br />
         <a className="category link">Construcao</a>
-        <p className="price">{item.value ? 'R$ ' + item.value : "R$ 150"}</p>
+        <p className="price">{item.value ? '$' + item.value : "$150"}</p>
+        {isStorePage ?  <p>Vendidos: {item.sold ? item.sold : "0"}</p> : ''}
       </div>
     );
   }
