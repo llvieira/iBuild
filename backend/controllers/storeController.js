@@ -3,6 +3,7 @@ const authMiddleware = require('../middlewares/auth');
 const Store = require('../models/store');
 const util = require('../util/util');
 const User = require('../models/user');
+const Item = require('../models/item');
 
 const authRouter = express.Router();
 const openRouter = express.Router();
@@ -16,6 +17,8 @@ openRouter.post('/', async (req, res) => {
     if (await Store.findOne({ email })) {
       return res.status(400).send({ error: 'Loja já cadastrada' });
     }
+
+    req.body.storage = [];
 
     const store = await Store.create(req.body);
 
@@ -32,11 +35,7 @@ openRouter.post('/', async (req, res) => {
 openRouter.get('/items/:itemID', async (req, res) => {
   try {
     const itemID = req.params.itemID;
-    const stores = await Store.find({});
-
-    const item = stores
-      .reduce((items, store) => [...items, ...store.storage], [])
-      .reduce((found, item) => (item.id === itemID) ? item : found, null);
+    const item = await Item.findById(itemID);
 
     if (item)
       return res.send(item);
@@ -49,12 +48,11 @@ openRouter.get('/items/:itemID', async (req, res) => {
 
 openRouter.get('/allItems', async (req, res) => {
   try {
-    const stores = await Store.find({});
-    let products = [];
+    const page_size = req.query.pageSize || 6;
+    const page_num = req.query.pageNum || 0;
+    const skip = page_size * page_num;
 
-    stores.forEach((item) => {
-      products = products.concat(item.storage);
-    });
+    const products = await Item.find({}).skip(skip).limit(page_size);
 
     return res.send(products);
   } catch (e) {
@@ -77,73 +75,86 @@ openRouter.get('/store/:storeId', async (req, res) => {
 });
 
 authRouter.post('/items', async (req, res) => {
-  const item = req.body;
+  try {
+    const store = await Store.findById(req.idLogged);
 
-  Store.findById(req.idLogged, (err, store) => {
-    if (err) return res.status(400).send({ error: 'store not registered' });
+    if (!store) {
+      return res.status(400).send({ error: 'Store not registered' });
+    }
 
-    item.storeId = req.idLogged;
+    req.body.storeId = store._id;
+    const newItem = await Item.create(req.body);
 
-    store.storage.push(item);
+    store.storage.push(newItem._id);
+    await store.save();
 
-    store.save((err, updatedStore) => {
-      if (err) return res.status(400).send({ error: `Registration failed: ${err}` });
-
-      return res.send(updatedStore);
-    });
-  });
+    return res.status(200).send(newItem);
+  } catch (e) {
+    return res.status(400).send({ error: `Registration failed: ${e}` });
+  }
 });
 
 authRouter.put('/items', async (req, res) => {
   const item = req.body;
 
-  Store.findOneAndUpdate({ "_id": req.idLogged, "storage._id": item._id },
-    {
-      "$set": {
-        "storage.$.img": item.img,
-        "storage.$.title": item.title,
-        "storage.$.value": item.value,
-        "storage.$.delivery": item.delivery,
-        "storage.$.brand": item.brand,
-        "storage.$.category": item.category,
-        "storage.$.quantity": item.quantity,
-        "storage.$.description": item.description,
-      }
-    },
-    {
-      new: true
-    },
-    (err, store) => {
-      if (err) return res.status(400).send({ error: `Updated failed: ${err}` });
+  try {
+    const stores = await Store.find({ "_id": req.idLogged, "storage": item._id });
 
-      return res.status(200).send(store);
+    if (stores.length === 0) {
+      return res.status(400).send({ error: 'Store or item not registered' });
     }
-  );
+
+    const updateItem = await Item.findById(item._id);
+
+    updateItem.img = item.img;
+    updateItem.title = item.title;
+    updateItem.value = item.value;
+    updateItem.delivery = item.delivery;
+    updateItem.brand = item.brand;
+    updateItem.category = item.category;
+    updateItem.description = item.description;
+    updateItem.quantity = item.quantity;
+
+    await updateItem.save();
+
+    return res.status(200).send(updateItem);
+  } catch (e) {
+    return res.status(400).send({ error: `Updated failed: ${e}` });
+  }
 });
 
 authRouter.delete('/items/:itemId', async (req, res) => {
-  Store.findById(req.idLogged, (err, store) => {
-    if (err) return res.status(400).send({ error: 'store not registered' });
+  const itemId = req.params.itemId;
 
-    const item = store.storage.id(req.params.itemId);
+  try {
+    const stores = await Store.find({ "_id": req.idLogged, "storage": itemId });
 
-    if (!item) return res.status(400).send({ error: 'item not registered' });
+    if (stores.length === 0) {
+      return res.status(400).send({ error: 'Store or item not registered' });
+    }
 
-    item.remove();
+    const store = stores[0];
 
-    store.save((err, updatedStore) => {
-      if (err) return res.status(400).send({ error: `Remove failed: ${err}` });
+    await Item.findByIdAndDelete(itemId);
+    store.storage.splice(store.storage.indexOf(itemId), 1);
 
-      return res.status(200).send(updatedStore);
-    });
-  });
+    const updatedStore = await store.save();
+
+    return res.status(200).send(updatedStore);
+  } catch (e) {
+    return res.status(400).send({ error: `Remove failed: ${err}` })
+  }
 });
 
 authRouter.get('/items', async (req, res) => {
   try {
-    const store = await Store.findById(req.idLogged);
+    const page_size = req.query.pageSize || 6;
+    const page_num = req.query.pageNum || 0;
+    const skip = page_size * page_num;
 
-    return res.send(store.storage);
+    const products = await Item.find({ storeId: req.idLogged }).skip(skip).limit(page_size);
+
+    return res.send(products);
   } catch (e) {
     return res.status(400).send({ error: `Get failed: ${e}` });
   }
@@ -177,7 +188,7 @@ authRouter.put('/', async (req, res) => {
     if (req.body.email) {
       const emailStore = await Store.find({ email: req.body.email });
       const emailUser = await User.find({ email: req.body.email });
-      if (emailStore === [] || emailUser === []) {
+      if (emailStore.length !== 0 || emailUser.length !== 0) {
         return res.status(400).send({ error: 'Email is already in use' });
       }
       store.email = req.body.email;

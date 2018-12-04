@@ -1,6 +1,6 @@
 const mongoose = require('../database/index');
 
-const itemSchema = new mongoose.Schema({
+const ItemSchema = new mongoose.Schema({
   img: {
     type: String,
     required: false,
@@ -40,8 +40,9 @@ const itemSchema = new mongoose.Schema({
   },
   sold: {
     type: Number,
-    required:false
+    required: false
   }
 });
 
-module.exports = itemSchema;
+const Item = mongoose.model('Item', ItemSchema);
+module.exports = Item;

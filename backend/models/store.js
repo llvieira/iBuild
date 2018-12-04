@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('../database/index');
-const item = require('./item');
 
 const StoreSchema = new mongoose.Schema({
   name: {
@@ -8,7 +7,7 @@ const StoreSchema = new mongoose.Schema({
     required: true,
   },
   storage: {
-    type: [item],
+    type: [mongoose.Schema.Types.ObjectId],
     default: []
   },
   email: {
