@@ -54,6 +54,7 @@ class storeProductsLayout extends Component {
           <div className="row">
             <div className="span9">
               <ul className="thumbnails listing-products">
+
                 {this.state.items.map((elem, index) =>
                   <li key={index} className="span3">
                     <CardProduct item={elem} isCardStore={true} updateItems={this.updateItems.bind(this)} />

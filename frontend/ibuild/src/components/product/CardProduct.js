@@ -39,13 +39,13 @@ class CardProduct extends Component {
     const isStorePage = window.location.pathname === '/storeMenu/products';
 
     return (
-      <div className="product-box" onClick={this.f.bind(this)}>
-        {this.props.isCardStore ? <span className="sale_tag"><button type="button" className="btn btn-danger" onClick={this.remove.bind(this)}>Remover</button><button type="button" className="btn btn-info" onClick={this.edit.bind(this)} style={{ marginTop: '1px' }}>Editar</button></span> : undefined}
-        <p style={{width: '270px', height: '270px'}}><a className="link"><img src={item.img ? item.img : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqFzl9mGc1V-lVby07rYcp0wT0-uF-xW_RddMBRBueliOEJ-TC1g"} alt="" /></a></p>
-        <a className="title link">{item.title ? item.title : "None"}</a><br />
+      <div className={this.props.isCardStore ? "product-box" : "product-box product-initial-box"} onClick={this.props.isCardStore ? undefined : this.f.bind(this)}>
+        {this.props.isCardStore ? <span className="row"><button type="button" className="btn btn-danger" onClick={this.remove.bind(this)}>Remover</button><button type="button" className="btn btn-info" onClick={this.edit.bind(this)} style={{ marginTop: '1px' }}>Editar</button></span> : undefined}
+        {this.props.isCardStore ? undefined : <p style={{ width: '270px', height: '270px' }}><a className="link"><img src={item.img ? item.img : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqFzl9mGc1V-lVby07rYcp0wT0-uF-xW_RddMBRBueliOEJ-TC1g"} alt="" /></a></p>}
+        <a className="title link" onClick={this.props.isCardStore ? this.f.bind(this) : undefined} > {item.title ? item.title : "None"}</a><br />
         <a className="category link">Construcao</a>
-        <p className="price">{item.value ? '$' + item.value : "$150"}</p>
-        {isStorePage ?  <p>Vendidos: {item.sold ? item.sold : "0"}</p> : ''}
+        <p className="price">{item.value ? 'R$' + (item.value).toFixed(2).replace('.', ',') : "R$150,00"}</p>
+        {isStorePage ? <p>Vendidos: {item.sold ? item.sold : "0"}</p> : ''}
       </div>
     );
   }
