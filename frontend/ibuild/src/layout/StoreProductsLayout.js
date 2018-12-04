@@ -10,14 +10,16 @@ class storeProductsLayout extends Component {
     super(props);
     this.state = {
       items: [],
-      pageActive: 1
+      pageActive: 1,
+      search: ""
     };
 
     this.getPageProducts(6, 1);
   }
 
-  getPageProducts(pageSize, pageNumber) {
-    const path = pathProducts + "?pageSize=" + pageSize + "&" + "pageNumber=" + (pageNumber - 1);
+  getPageProducts(pageSize, pageNumber, productName) {
+    const queryProductName = productName ? "&title=" + productName : "";
+    const path = pathProducts + "?pageSize=" + pageSize + "&" + "pageNumber=" + (pageNumber - 1) + queryProductName;
     request(path, method, undefined, {
       "Content-Type": "application/json",
       "Authorization": "Bearer " + localStorage.getItem("storeToken")
@@ -42,6 +44,12 @@ class storeProductsLayout extends Component {
     const pageSize = 6;
     return (
       <div>
+        <div className="span10" style={{ marginBottom: "10px" }}>
+          <div className="form-horizontal" >
+            <input type="text" className="span10" placeholder="Buscar items" value={this.state.search} onChange={(e) => this.setState({ search: e.target.value })} />
+            <button class="btn btn-inverse large" onClick={() => this.getPageProducts(pageSize, 1, this.state.search)}>Search</button>
+          </div>
+        </div>
         <section className="main-content">
           <div className="row">
             <div className="span9">
@@ -55,12 +63,12 @@ class storeProductsLayout extends Component {
               <hr></hr>
               <div className="pagination pagination-small pagination-centered">
                 <ul>
-                  <li onClick={(e) => this.state.pageActive > 1 ? this.getPageProducts(pageSize, (this.state.pageActive - 1)) : undefined}><a className="link">Prev</a></li>
-                  <li className={this.state.pageActive === 1 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 1)}><a className="link">1</a></li>
-                  <li className={this.state.pageActive === 2 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 2)}><a className="link">2</a></li>
-                  <li className={this.state.pageActive === 3 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 3)}><a className="link">3</a></li>
-                  <li className={this.state.pageActive === 4 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 4)}><a className="link">4</a></li>
-                  <li onClick={(e) => this.state.pageActive < 4 ? this.getPageProducts(pageSize, (this.state.pageActive + 1)) : undefined}><a className="link">Next</a></li>
+                  <li onClick={(e) => this.state.pageActive > 1 ? this.getPageProducts(pageSize, (this.state.pageActive - 1, undefined)) : undefined}><a className="link">Prev</a></li>
+                  <li className={this.state.pageActive === 1 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 1, undefined)}><a className="link">1</a></li>
+                  <li className={this.state.pageActive === 2 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 2, undefined)}><a className="link">2</a></li>
+                  <li className={this.state.pageActive === 3 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 3, undefined)}><a className="link">3</a></li>
+                  <li className={this.state.pageActive === 4 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 4, undefined)}><a className="link">4</a></li>
+                  <li onClick={(e) => this.state.pageActive < 4 ? this.getPageProducts(pageSize, (this.state.pageActive + 1), undefined) : undefined}><a className="link">Next</a></li>
                 </ul>
               </div>
             </div>

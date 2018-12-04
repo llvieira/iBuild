@@ -50,9 +50,11 @@ openRouter.get('/allItems', async (req, res) => {
   try {
     const page_size = parseInt(req.query.pageSize) || 6;
     const page_num = parseInt(req.query.pageNumber) || 0;
+    const title = req.query.title || "";
+
     const skip = page_size * page_num;
 
-    const products = await Item.find({}).skip(skip).limit(page_size);
+    const products = await Item.find({ title: new RegExp(title, "i") }).skip(skip).limit(page_size);
 
     return res.send(products);
   } catch (e) {
@@ -150,9 +152,11 @@ authRouter.get('/items', async (req, res) => {
   try {
     const page_size = parseInt(req.query.pageSize) || 6;
     const page_num = parseInt(req.query.pageNumber) || 0;
+    const title = req.query.title || "";
+
     const skip = page_size * page_num;
 
-    const products = await Item.find({ storeId: req.idLogged }).skip(skip).limit(page_size);
+    const products = await Item.find({ title: new RegExp(title, "i"), storeId: req.idLogged }).skip(skip).limit(page_size);
 
     return res.send(products);
   } catch (e) {
