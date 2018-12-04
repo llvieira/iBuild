@@ -11,23 +11,22 @@ class ProductsLayout extends Component {
         super(props);
 
         this.state = {
-            items: [{ img: "https://cdn.leroymerlin.com.br/products/carrinho_de_mao_super_forte_aco_60l_com_pneu_e_camara_89056170_0001_220x220.jpg", title: "Carinho de mao", value: 50 },
-            { img: "https://cdn.leroymerlin.com.br/products/elem_vaz_cer_reto_redondo_18x18x7cm_86622186_0002_600x600.jpg", title: "Tijolo vazado", value: 1.95 },
-            { img: "https://cdn.leroymerlin.com.br/products/telha_ceram_mediterranea_grena_41_80_24_90_cm_maristela_telhas_87012961_0001_600x600.jpg", title: "Telha ceramica", value: 2.99 },
-            { img: "https://cdn.leroymerlin.com.br/products/telha_dupla_face_twin_platina_esmaltada_dupla_onda_37x43cm_pointgres_89473482_681b_600x600.jpg", title: "Telha twin", value: 7.59 },
-            { img: "https://cdn.leroymerlin.com.br/products/caibro_eucalipto_nat_bruto_5cmx5,7cmx3m_madvei_89377015_6157_600x600.jpg", title: "Caibro", value: 14.29 },
-            { img: "https://www.palaciodasferramentas.com.br/uploads/produtos/full/90908297-2016-10-9-9-31.png", title: "Martelo", value: 20 }, { img: "http://terrafortedf.com.br/2017/wp-content/uploads/2016/12/701610024180963.jpg", title: "Tijolo-unidade", value: 50 }, {
-                img: "https://carrinho.cec.com.br/img-prod/images/standard/cimento-todas-as-obras-50kg-votorantim-1175514-foto-1.png", title: "Cimento-unidade", value: 80
-            }, { img: "https://cdn.leroymerlin.com.br/products/telha_ceram_mediterranea_grena_41_80_24_90_cm_maristela_telhas_87012961_0001_600x600.jpg", title: "Telha ceramica", value: 2.99 }],
-            user: JSON.parse(localStorage.getItem('user'))
+            items: [],
+            user: JSON.parse(localStorage.getItem('user')),
+            pageActive: 1,
+            search: ""
         };
 
-        request(pathProducts, method, undefined, {}).then(response => {
+        this.getPageProducts(9, 1, undefined);
+    }
+
+    getPageProducts(pageSize, pageNumber, productName) {
+        const queryProductName = productName ? "&title=" + productName : "";
+        const path = pathProducts + "?pageSize=" + pageSize + "&" + "pageNumber=" + (pageNumber - 1) + queryProductName;
+        request(path, method, undefined, {}).then(response => {
             if (response.ok) {
                 response.json().then(data => {
-                    if (data.length !== 0) {
-                        this.setState({ items: data });
-                    }
+                    this.setState({ items: data, pageActive: pageNumber });
                 });
             } else {
                 response.json().then(data => {
@@ -77,11 +76,20 @@ class ProductsLayout extends Component {
 
 
     render() {
+        const pageSize = 9;
         return (
             <div>
                 <section className="header_text sub">
                     <img className="pageBanner" src="themes/images/pageBanner.png" alt="New products" />
                     <h4><span>Produtos</span></h4>
+                </section>
+                <section>
+                    <div className="span10" style={{ marginBottom: "10px" }}>
+                        <div className="form-horizontal" >
+                            <input type="text" className="span10" placeholder="Buscar items" value={this.state.search} onChange={(e) => this.setState({ search: e.target.value })} />
+                            <button class="btn btn-inverse large" onClick={() => this.getPageProducts(pageSize, 1, this.state.search)}>Search</button>
+                        </div>
+                    </div>
                 </section>
                 <section className="main-content">
                     <div className="row">
@@ -103,12 +111,12 @@ class ProductsLayout extends Component {
                             <hr></hr>
                             <div className="pagination pagination-small pagination-centered">
                                 <ul>
-                                    <li><a className="link">Prev</a></li>
-                                    <li className="active"><a className="link">1</a></li>
-                                    <li><a className="link">2</a></li>
-                                    <li><a className="link">3</a></li>
-                                    <li><a className="link">4</a></li>
-                                    <li><a className="link">Next</a></li>
+                                    <li onClick={(e) => this.state.pageActive > 1 ? this.getPageProducts(pageSize, (this.state.pageActive - 1), undefined) : undefined}><a className="link">Prev</a></li>
+                                    <li className={this.state.pageActive === 1 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 1, undefined)}><a className="link">1</a></li>
+                                    <li className={this.state.pageActive === 2 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 2, undefined)}><a className="link">2</a></li>
+                                    <li className={this.state.pageActive === 3 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 3, undefined)}><a className="link">3</a></li>
+                                    <li className={this.state.pageActive === 4 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 4, undefined)}><a className="link">4</a></li>
+                                    <li onClick={(e) => this.state.pageActive < 4 ? this.getPageProducts(pageSize, (this.state.pageActive + 1), undefined) : undefined}><a className="link">Next</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -180,7 +188,7 @@ class ProductsLayout extends Component {
                         </div>
                     </div>
                 </section>
-            </div>
+            </div >
         );
     }
 }
