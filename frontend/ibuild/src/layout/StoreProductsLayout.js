@@ -9,23 +9,22 @@ class storeProductsLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [{ img: "https://cdn.leroymerlin.com.br/products/carrinho_de_mao_super_forte_aco_60l_com_pneu_e_camara_89056170_0001_220x220.jpg", title: "Carinho de mao", value: 50 },
-      { img: "https://cdn.leroymerlin.com.br/products/elem_vaz_cer_reto_redondo_18x18x7cm_86622186_0002_600x600.jpg", title: "Tijolo vazado", value: 1.95 },
-      { img: "https://cdn.leroymerlin.com.br/products/telha_ceram_mediterranea_grena_41_80_24_90_cm_maristela_telhas_87012961_0001_600x600.jpg", title: "Telha ceramica", value: 2.99 },
-      { img: "https://cdn.leroymerlin.com.br/products/telha_dupla_face_twin_platina_esmaltada_dupla_onda_37x43cm_pointgres_89473482_681b_600x600.jpg", title: "Telha twin", value: 7.59 },
-      { img: "https://cdn.leroymerlin.com.br/products/caibro_eucalipto_nat_bruto_5cmx5,7cmx3m_madvei_89377015_6157_600x600.jpg", title: "Caibro", value: 14.29 },
-      { img: "https://www.palaciodasferramentas.com.br/uploads/produtos/full/90908297-2016-10-9-9-31.png", title: "Martelo", value: 20 }]
+      items: [],
+      pageActive: 1
     };
 
-    request(pathProducts, method, undefined, {
+    this.getPageProducts(6, 1);
+  }
+
+  getPageProducts(pageSize, pageNumber) {
+    const path = pathProducts + "?pageSize=" + pageSize + "&" + "pageNumber=" + (pageNumber - 1);
+    request(path, method, undefined, {
       "Content-Type": "application/json",
       "Authorization": "Bearer " + localStorage.getItem("storeToken")
     }).then(response => {
       if (response.ok) {
         response.json().then(data => {
-          if (data.length !== 0) {
-            this.setState({ items: data });
-          }
+          this.setState({ items: data, pageActive: pageNumber });
         });
       } else {
         response.json().then(data => {
@@ -40,6 +39,7 @@ class storeProductsLayout extends Component {
   }
 
   render() {
+    const pageSize = 6;
     return (
       <div>
         <section className="main-content">
@@ -55,12 +55,12 @@ class storeProductsLayout extends Component {
               <hr></hr>
               <div className="pagination pagination-small pagination-centered">
                 <ul>
-                  <li><a className="link">Prev</a></li>
-                  <li className="active"><a className="link">1</a></li>
-                  <li><a className="link">2</a></li>
-                  <li><a className="link">3</a></li>
-                  <li><a className="link">4</a></li>
-                  <li><a className="link">Next</a></li>
+                  <li onClick={(e) => this.state.pageActive > 1 ? this.getPageProducts(pageSize, (this.state.pageActive - 1)) : undefined}><a className="link">Prev</a></li>
+                  <li className={this.state.pageActive === 1 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 1)}><a className="link">1</a></li>
+                  <li className={this.state.pageActive === 2 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 2)}><a className="link">2</a></li>
+                  <li className={this.state.pageActive === 3 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 3)}><a className="link">3</a></li>
+                  <li className={this.state.pageActive === 4 ? "active" : undefined} onClick={(e) => this.getPageProducts(pageSize, 4)}><a className="link">4</a></li>
+                  <li onClick={(e) => this.state.pageActive < 4 ? this.getPageProducts(pageSize, (this.state.pageActive + 1)) : undefined}><a className="link">Next</a></li>
                 </ul>
               </div>
             </div>

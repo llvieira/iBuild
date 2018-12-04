@@ -48,8 +48,8 @@ openRouter.get('/items/:itemID', async (req, res) => {
 
 openRouter.get('/allItems', async (req, res) => {
   try {
-    const page_size = req.query.pageSize || 6;
-    const page_num = req.query.pageNum || 0;
+    const page_size = parseInt(req.query.pageSize) || 6;
+    const page_num = parseInt(req.query.pageNumber) || 0;
     const skip = page_size * page_num;
 
     const products = await Item.find({}).skip(skip).limit(page_size);
@@ -148,8 +148,8 @@ authRouter.delete('/items/:itemId', async (req, res) => {
 
 authRouter.get('/items', async (req, res) => {
   try {
-    const page_size = req.query.pageSize || 6;
-    const page_num = req.query.pageNum || 0;
+    const page_size = parseInt(req.query.pageSize) || 6;
+    const page_num = parseInt(req.query.pageNumber) || 0;
     const skip = page_size * page_num;
 
     const products = await Item.find({ storeId: req.idLogged }).skip(skip).limit(page_size);
