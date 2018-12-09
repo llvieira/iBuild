@@ -94,6 +94,7 @@ class ProductDetail extends Component {
                                         <strong>Reward Points:</strong> <span>0</span><br />
                                         <strong>Availability:</strong> <span>Out Of Stock</span><br />
                                         {this.state.item.size ? <div><span><strong>Dimenção:</strong> {this.state.item.size}</span><br/></div> : undefined}
+                                        {this.state.item.color ?  <div><strong>Cor:</strong><div style={{backgroundColor: this.state.item.color, height: '100px', width:'140px'}}></div></div> : undefined}
                                     </address>
                                     <h4><strong>Preço: R$ {this.state.item.value}</strong></h4>
                                 </div>

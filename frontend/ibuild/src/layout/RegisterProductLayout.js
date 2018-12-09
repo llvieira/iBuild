@@ -16,7 +16,8 @@ class RegisterProductLayout extends Component {
         category: "Ferramentas",
         description: "",
         quantity: 0,
-        size: ""
+        size: "",
+        color: ""
       },
       alert: {
         show: false,
@@ -124,6 +125,14 @@ class RegisterProductLayout extends Component {
                         <input type="url" placeholder="Url da foto" className="input-large" value={this.state.product.img} onChange={this.changeRegisterProperty("img").bind(this)} />
                       </div>
                     </div>
+
+                    <div>
+                      <label className="control-label">Cor do produto:</label>
+                      <div className="controls">
+                        <input type="color" onChange={this.changeRegisterProperty("color").bind(this)}/>
+                      </div>
+                    </div>
+
                     <div className="control-group controls-row">
                       <label className="control-label">Preview foto:</label>
                       <div className="controls">

@@ -45,6 +45,10 @@ const ItemSchema = new mongoose.Schema({
   size: {
     type: String,
     required: false
+  },
+  color: {
+    type: String,
+    required: false
   }
 });
 
