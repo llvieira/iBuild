@@ -41,6 +41,10 @@ const ItemSchema = new mongoose.Schema({
   sold: {
     type: Number,
     required: false
+  },
+  size: {
+    type: String,
+    required: false
   }
 });
 

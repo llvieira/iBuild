@@ -15,7 +15,8 @@ class RegisterProductLayout extends Component {
         brand: "",
         category: "Ferramentas",
         description: "",
-        quantity: 0
+        quantity: 0,
+        size: ""
       },
       alert: {
         show: false,
@@ -127,6 +128,12 @@ class RegisterProductLayout extends Component {
                       <label className="control-label">Preview foto:</label>
                       <div className="controls">
                         <img src={this.state.product.img ? this.state.product.img : "http://saveabandonedbabies.org/wp-content/uploads/2015/08/default.png"} className="img-rounded" alt="" height="270" width="250"></img>
+                      </div>
+                    </div>
+                    <div className="control-group">
+                      <label className="control-label">Dimenção:</label>
+                      <div className="controls">
+                        <textarea placeholder="Dimenção do produto" className="input-large" value={this.state.product.size} onChange={this.changeRegisterProperty("size").bind(this)}></textarea>
                       </div>
                     </div>
                     <div className="control-group">
