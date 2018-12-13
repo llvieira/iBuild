@@ -15,7 +15,9 @@ class RegisterProductLayout extends Component {
         brand: "",
         category: "Ferramentas",
         description: "",
-        quantity: 0
+        quantity: 0,
+        size: "",
+        color: ""
       },
       alert: {
         show: false,
@@ -123,10 +125,24 @@ class RegisterProductLayout extends Component {
                         <input type="url" placeholder="Url da foto" className="input-large" value={this.state.product.img} onChange={this.changeRegisterProperty("img").bind(this)} />
                       </div>
                     </div>
+
+                    <div>
+                      <label className="control-label">Cor do produto:</label>
+                      <div className="controls">
+                        <input type="color" onChange={this.changeRegisterProperty("color").bind(this)}/>
+                      </div>
+                    </div>
+
                     <div className="control-group controls-row">
                       <label className="control-label">Preview foto:</label>
                       <div className="controls">
                         <img src={this.state.product.img ? this.state.product.img : "http://saveabandonedbabies.org/wp-content/uploads/2015/08/default.png"} className="img-rounded" alt="" height="270" width="250"></img>
+                      </div>
+                    </div>
+                    <div className="control-group">
+                      <label className="control-label">Dimenção:</label>
+                      <div className="controls">
+                        <textarea placeholder="Dimenção do produto" className="input-large" value={this.state.product.size} onChange={this.changeRegisterProperty("size").bind(this)}></textarea>
                       </div>
                     </div>
                     <div className="control-group">
