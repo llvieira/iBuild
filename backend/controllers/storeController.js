@@ -178,6 +178,28 @@ authRouter.get('/', async (req, res) => {
   }
 });
 
+authRouter.get('/orders', async (req, res) => {
+  try {
+    const storeId = req.idLogged;
+    const store = await Store.findById(storeId);
+
+    if (!store) {
+      return res.status(404).send({ error: 'Store not found' });
+    }
+
+    const users = await User.find({ 'orders.storeId': storeId });
+
+    let storeOrders = [];
+    users.forEach(user => {
+      storeOrders = storeOrders.concat(user.orders.filter((order) => storeId == order.storeId));
+    });
+
+    return res.status(200).send(storeOrders);
+  } catch (e) {
+    return res.status(400).send({ error: `Get failed: ${e}` });
+  }
+});
+
 authRouter.put('/', async (req, res) => {
   try {
     const store = await Store.findById(req.idLogged);

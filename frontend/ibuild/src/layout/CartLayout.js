@@ -64,16 +64,16 @@ class CartLayout extends Component {
         this.setState({ items: cart });
     }
 
-    addOrder(ev) {
-        request('/users/order/', 'POST', ev, {
+    addOrder() {
+        request('/users/order/', 'POST', this.state.items, {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("userToken")
         }).then(response => {
             if (response.ok) {
                 response.json().then(data => {
+                    this.setState({ items: [] });
                 });
             }
-            window.location.reload();
         })
 
     }
@@ -98,7 +98,7 @@ class CartLayout extends Component {
                                 )}
                             </ul>
                             <hr></hr>
-                            <button onClick={this.addOrder.bind(this, this.state.items)}>
+                            <button onClick={this.addOrder.bind(this)}>
                                 Finalizar Compra
                         </button>
                         </div>

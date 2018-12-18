@@ -129,7 +129,7 @@ class RegisterProductLayout extends Component {
                     <div>
                       <label className="control-label">Cor do produto:</label>
                       <div className="controls">
-                        <input type="color" onChange={this.changeRegisterProperty("color").bind(this)}/>
+                        <input type="color" onChange={this.changeRegisterProperty("color").bind(this)} />
                       </div>
                     </div>
 
@@ -140,9 +140,9 @@ class RegisterProductLayout extends Component {
                       </div>
                     </div>
                     <div className="control-group">
-                      <label className="control-label">Dimenção:</label>
+                      <label className="control-label">Dimensão:</label>
                       <div className="controls">
-                        <textarea placeholder="Dimenção do produto" className="input-large" value={this.state.product.size} onChange={this.changeRegisterProperty("size").bind(this)}></textarea>
+                        <textarea placeholder="Dimensão do produto" className="input-large" value={this.state.product.size} onChange={this.changeRegisterProperty("size").bind(this)}></textarea>
                       </div>
                     </div>
                     <div className="control-group">
