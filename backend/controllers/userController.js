@@ -68,21 +68,17 @@ authRouter.post('/cart/', async (req, res) => {
       return res.status(404).send({ error: 'Store not Found' });
     }
 
-    await user.cart.forEach((itemCart) => {
-      console.log(itemCart);
-      if (idItem == itemCart.id) {
-        return res.end.send({ error: 'See Other' });
-      }
-    });
+    if (user.cart.filter((itemCart) => idItem === itemCart.id).length !== 0) {
+      return res.status(400).send({ error: 'See Other' });
+    }
 
+    if (store.storage.filter((itemId) => idItem == itemId).length === 0) {
+      return res.status(404).send({ error: 'Item not found' });
+    }
 
-    store.storage.forEach((itemStore) => {
-      if (idItem == itemStore._id) {
-        const itemCart = { id: idItem, idStore, amount };
-        user.cart.push(itemCart);
-        user.save();
-      }
-    });
+    const itemCart = { id: idItem, idStore, amount };
+    user.cart.push(itemCart);
+    user.save();
 
     return res.status(200).send(user);
   } catch (e) {
@@ -114,7 +110,7 @@ authRouter.delete('/cart/', async (req, res) => {
     }
     let i = 0;
     user.cart.forEach((itemCart) => {
-      if (id == itemCart.id) {
+      if (id === itemCart.id) {
         user.cart.splice(i, 1);
         user.save();
       }
@@ -127,7 +123,6 @@ authRouter.delete('/cart/', async (req, res) => {
   }
 });
 
-
 authRouter.post('/favorites/', async (req, res) => {
   const { id, idStore } = req.body;
   const user = await User.findById(req.idLogged);
@@ -138,21 +133,17 @@ authRouter.post('/favorites/', async (req, res) => {
       return res.status(404).send({ error: 'Store not Found' });
     }
 
-    await user.favorites.forEach((itemFavorite) => {
-      console.log(itemFavorite);
-      if (id == itemFavorite.id) {
-        return res.end.send({ error: 'See Other' });
-      }
-    });
+    if ((user.favorites.filter((itemFavorite) => id === itemFavorite.id).length !== 0)) {
+      return res.status(400).send({ error: 'See Other' });
+    }
 
+    if (store.storage.filter((itemId) => id == itemId).length === 0) {
+      return res.status(404).send({ error: 'Item not found' });
+    }
 
-    store.storage.forEach((itemStore) => {
-      if (id == itemStore._id) {
-        const itemFavorite = { id, idStore: store._id };
-        user.favorites.push(itemFavorite);
-        user.save();
-      }
-    });
+    const itemFavorite = { id, idStore: store._id };
+    user.favorites.push(itemFavorite);
+    user.save();
 
     return res.status(200).send(user);
   } catch (e) {
@@ -184,7 +175,7 @@ authRouter.delete('/favorites/', async (req, res) => {
     }
     let i = 0;
     user.favorites.forEach((itemFavorite) => {
-      if (id == itemFavorite.id) {
+      if (id === itemFavorite.id) {
         user.favorites.splice(i, 1);
         user.save();
       }
@@ -197,30 +188,9 @@ authRouter.delete('/favorites/', async (req, res) => {
   }
 });
 
-authRouter.post('/ItemStore/', async (req, res) => {
-  const { id, idStore } = req.body;
-  const store = await Store.findById(idStore);
-
-  try {
-    if (!store) {
-      return res.status(404).send({ error: 'Store not Found' });
-    }
-
-
-    store.storage.forEach((itemStore) => {
-      if (id == itemStore._id) {
-        res.send(itemStore);
-      }
-    });
-
-    return res.status(404).send({ error: 'Item not found' });
-  } catch (e) {
-    return res.status(400).send({ error: `Registration failed ${e}` });
-  }
-});
-
 authRouter.post('/order/', async (req, res) => {
   const user = await User.findById(req.idLogged);
+
   try {
     if (!user) {
       return res.status(404).send({ error: 'User not Found' });
@@ -228,18 +198,21 @@ authRouter.post('/order/', async (req, res) => {
 
     const { body } = req;
     const newOrders = user.orders.concat(body);
-    
+
     body.forEach(async item => {
       const store = await Store.findById(item.storeId);
 
-      store.storage.forEach(product => {
-        if (product.title === item.title) {
-          if (! product.sold)
+      store.storage.forEach(productId => {
+        if (productId == item._id) {
+          const product = Item.findById(productId);
+
+          if (!product.sold)
             product.sold = 0;
+
           product.sold += 1;
+          product.save();
         }
       })
-      store.save();
     });
 
     user.orders = newOrders;

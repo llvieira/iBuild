@@ -14,7 +14,12 @@ class ProductsLayout extends Component {
             items: [],
             user: JSON.parse(localStorage.getItem('user')),
             pageActive: 1,
-            search: ""
+            search: "",
+            alert: {
+                type: 'success',
+                show: false,
+                text: ''
+            }
         };
 
         this.getPageProducts(9, 1, undefined);
@@ -37,40 +42,55 @@ class ProductsLayout extends Component {
     }
 
     favoritar(ev) {
-        console.log(ev);
-
         let itemFavorite = { id: ev._id, idStore: ev.storeId };
 
-        console.log(itemFavorite);
         request('/users/favorites', 'POST', itemFavorite, {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("userToken")
         }).then(response => {
             if (response.ok) {
                 response.json().then(data => {
+                    console.log(data);
+                    this.setState({ alert: { show: true, type: "success", text: "Adiconado aos favoritos com sucesso!" } });
+                });
+            } else {
+                response.json().then(data => {
+                    if (data.error === 'See Other') {
+                        this.setState({ alert: { show: true, type: "warning", text: "You already favorite this product!" } });
+                    } else {
+                        this.setState({ alert: { show: true, type: "error", text: data.error } });
+                    }
                 });
             }
-            window.location.reload();
-
-        })
+        }).catch(error => {
+            this.setState({ alert: { show: true, type: "error", text: error } });
+        });
 
     }
 
     addCart(ev) {
-        let itemFavorite = { idItem: ev._id, idStore: ev.storeId, amount: 0 };
+        let itemCart = { idItem: ev._id, idStore: ev.storeId, amount: 0 };
 
-        console.log(itemFavorite);
-        request('/users/cart/', 'POST', itemFavorite, {
+        request('/users/cart/', 'POST', itemCart, {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("userToken")
         }).then(response => {
             if (response.ok) {
                 response.json().then(data => {
+                    this.setState({ alert: { show: true, type: "success", text: "Adiconado ao carinho com sucesso!" } });
+                });
+            } else {
+                response.json().then(data => {
+                    if (data.error === 'See Other') {
+                        this.setState({ alert: { show: true, type: "warning", text: "You already add to cart this product!" } });
+                    } else {
+                        this.setState({ alert: { show: true, type: "error", text: data.error } });
+                    }
                 });
             }
-            window.location.reload();
-
-        })
+        }).catch(error => {
+            this.setState({ alert: { show: true, type: "error", text: error } });
+        });
 
     }
 
@@ -94,6 +114,9 @@ class ProductsLayout extends Component {
                 <section className="main-content">
                     <div className="row">
                         <div className="span9">
+                            <div className={"alert alert-" + this.state.alert.type} style={this.state.alert.show ? undefined : { display: 'none' }}>
+                                {this.state.alert.text}
+                            </div>
                             <ul className="thumbnails listing-products">
                                 {this.state.items.map((elem, index) =>
                                     <li key={index} className="span3">

@@ -16,6 +16,11 @@ class ProductDetail extends Component {
                 storeId: "...",
                 title: "...",
                 value: 0
+            },
+            alert: {
+                type: 'success',
+                show: false,
+                text: ''
             }
         };
 
@@ -43,20 +48,27 @@ class ProductDetail extends Component {
     addCart(ev) {
         let itemFavorite = { idItem: ev._id, idStore: ev.storeId, amount: 0 };
 
-        console.log(itemFavorite);
         request('/users/cart/', 'POST', itemFavorite, {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("userToken")
         }).then(response => {
             if (response.ok) {
                 response.json().then(data => {
-                    history.location.push('/cart');
+                    console.log(data);
+                    history.push('/cart');
+                });
+            } else {
+                response.json().then(data => {
+                    if (data.error === 'See Other') {
+                        this.setState({ alert: { show: true, type: "warning", text: "You already add to cart this product!" } });
+                    } else {
+                        this.setState({ alert: { show: true, type: "error", text: data.error } });
+                    }
                 });
             }
-            window.location.reload();
-
-        })
-
+        }).catch(error => {
+            this.setState({ alert: { show: true, type: "error", text: error } });
+        });
     }
 
     render() {
@@ -69,32 +81,21 @@ class ProductDetail extends Component {
                 <section className="main-content">
                     <div className="row">
                         <div className="span9">
+                            <div className={"alert alert-" + this.state.alert.type} style={this.state.alert.show ? undefined : { display: 'none' }}>
+                                {this.state.alert.text}
+                            </div>
                             <div className="row">
                                 <div className="span4">
                                     <a href={this.state.item.img} className="thumbnail" data-fancybox-group="group1" title="Description 1"><img alt="" src={this.state.item.img ? this.state.item.img : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqFzl9mGc1V-lVby07rYcp0wT0-uF-xW_RddMBRBueliOEJ-TC1g"} /></a>
-                                    <ul className="thumbnails small">
-                                        <li className="span1">
-                                            <a href="themes/images/ladies/2.jpg" className="thumbnail" data-fancybox-group="group1" title="Description 2"><img src="themes/images/ladies/2.jpg" alt="" /></a>
-                                        </li>
-                                        <li className="span1">
-                                            <a href="themes/images/ladies/3.jpg" className="thumbnail" data-fancybox-group="group1" title="Description 3"><img src="themes/images/ladies/3.jpg" alt="" /></a>
-                                        </li>
-                                        <li className="span1">
-                                            <a href="themes/images/ladies/4.jpg" className="thumbnail" data-fancybox-group="group1" title="Description 4"><img src="themes/images/ladies/4.jpg" alt="" /></a>
-                                        </li>
-                                        <li className="span1">
-                                            <a href="themes/images/ladies/5.jpg" className="thumbnail" data-fancybox-group="group1" title="Description 5"><img src="themes/images/ladies/5.jpg" alt="" /></a>
-                                        </li>
-                                    </ul>
                                 </div>
                                 <div className="span5">
-                                    <address>  
+                                    <address>
                                         <strong>Marca:</strong> <span>{this.state.item.brand}</span><br />
                                         <strong>Nome:</strong> <span>{this.state.item.title}</span><br />
                                         <strong>Reward Points:</strong> <span>0</span><br />
                                         <strong>Availability:</strong> <span>Out Of Stock</span><br />
-                                        {this.state.item.size ? <div><span><strong>Dimenção:</strong> {this.state.item.size}</span><br/></div> : undefined}
-                                        {this.state.item.color ?  <div><strong>Cor:</strong><div style={{backgroundColor: this.state.item.color, height: '100px', width:'140px'}}></div></div> : undefined}
+                                        {this.state.item.size ? <div><span><strong>Dimenção:</strong> {this.state.item.size}</span><br /></div> : undefined}
+                                        {this.state.item.color ? <div><strong>Cor:</strong><div style={{ backgroundColor: this.state.item.color, height: '100px', width: '140px' }}></div></div> : undefined}
                                     </address>
                                     <h4><strong>Preço: R$ {this.state.item.value}</strong></h4>
                                 </div>
@@ -107,11 +108,11 @@ class ProductDetail extends Component {
                             </div>
                             <div className="row">
                                 <div className="span9">
-                                    <ul className="nav nav-tabs" id="myTab">
-                                        <li className="active"><a href="#home">Descrição</a></li>
+                                    <ul className="nav nav-tabs">
+                                        <li className="active"><a className="link">Descrição</a></li>
                                     </ul>
                                     <div className="tab-content">
-                                        <div className="tab-pane active" id="home">{(this.state.item.description) ? this.state.item.description : "Não há descrição"}</div>
+                                        <div className="tab-pane active" style={{ marginLeft: "10px" }}>{(this.state.item.description) ? this.state.item.description : "Não há descrição"}</div>
                                         <div className="tab-pane" id="profile">
                                             <table className="table table-striped shop_attributes">
                                                 <tbody>
