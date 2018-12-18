@@ -6,6 +6,7 @@ import UpdateStoreLayout from '../layout/UpdateStoreLayout';
 import StoreProductLayout from '../layout/StoreProductsLayout';
 import StoreUpdateProductLayout from '../layout/StoreUpdateProductLayout';
 import StorePerfilLayout from '../layout/StorePerfilLayout';
+import StoreOrdersLayout from '../layout/StoreOrdersLayout';
 
 class StoreMenuLayout extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class StoreMenuLayout extends Component {
                 <li className={this.state.menu === '/storeMenu/registerProduct' ? "active" : ""}><a className="link" onClick={() => this.pushMenu('/storeMenu/registerProduct')}>Cadastrar Produtos</a></li>
                 <li className={this.state.menu === '/storeMenu/updateStore' ? "active" : ""}><a className="link" onClick={() => this.pushMenu('/storeMenu/updateStore')}>Atualizar dados</a></li>
                 <li className={this.state.menu === '/storeMenu/products' ? "active" : ""}><a className="link" onClick={() => this.pushMenu('/storeMenu/products')}>Meus Produtos</a></li>
+                <li className={this.state.menu === '/storeMenu/orders' ? "active" : ""}><a className="link" onClick={() => this.pushMenu('/storeMenu/orders')}>Meus Pedidos</a></li>
               </ul>
             </div>
           </div>
@@ -43,6 +45,7 @@ class StoreMenuLayout extends Component {
             <Route exact path="/storeMenu/updateStore" component={UpdateStoreLayout} />
             <Route exact path="/storeMenu/products" component={StoreProductLayout} />
             <Route path="/storeMenu/updateProduct" component={StoreUpdateProductLayout} />
+            <Route exact path="/storeMenu/orders" component={StoreOrdersLayout} />
           </div>
         </section>
       </div>
